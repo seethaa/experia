@@ -1,6 +1,6 @@
 # Group Project - *Experia*
 
-How long have you been stuck in routine work and losing passion in your life? It is time to make a change! New learning experiences, discovering new cities more deeply, and enjoying in the moment are great ways to save us from boredom. **Experia** helps make that possible! **Rambled** is an Android app that makes experience matches based on your location in real-time. It can be your local friend to introduce new stuff to do around your area, or your smart guide when you are traveling in a new city and looking for something unique, or even a great tool to make new friends! **Experia** can make you realize *there are so many possibilities of life!*
+How long have you been stuck in routine work and losing passion in your life? It is time to make a change! New learning experiences, discovering new cities more deeply, and enjoying in the moment are great ways to save us from boredom. **Experia** helps make that possible! **Experia** is an Android app that makes experience matches based on your location in real-time. It can be your local friend to introduce new stuff to do around your area, or your smart guide when you are traveling in a new city and looking for something unique, or even a great tool to make new friends! **Experia** can make you realize *there are so many possibilities of life!*
 
 Time spent: **?** hours spent in total
 
@@ -8,8 +8,9 @@ Time spent: **?** hours spent in total
 
 The following **required** functionality is completed:
 * [ ] User can sign in with facebook/gmail account (to save experiences) or browse existing based on location.
-* [ ] User can select current location or type in location (similar to Groupon).
-* [ ] User can select in two time-frame options: **experience over time** or **experience at moment**.
+* [ ] User can see navigation drawer with [Location, Category, Bookmarks, Settings, and Profile]
+  * [ ] User can select current location or type in location in the Location fragment (similar to Groupon).
+* [ ] User can select in two time-frame options: **experience over time** or **experience in the moment**.
 * [ ] User can browse list of activities around him/her and save activity to list (bookmarks)
 * [ ] User can select experience based on three categories of experience: **thrill**, **social**, and **fun** (or all)
   * [ ] when user clicks on a card, he/she can see detailed description, reviews, and related pictures.
