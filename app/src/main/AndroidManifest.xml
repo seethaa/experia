@@ -17,4 +17,7 @@
         </activity>
     </application>
 
+    <service android:name=".RegistrationIntentService" android:exported="false"/>
+
+
 </manifest>

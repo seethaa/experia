@@ -7,7 +7,7 @@ Time spent: **?** hours spent in total
 ## User Stories
 
 The following **required** functionality is completed:
-* [ ] User can sign in with Facebook/Gmail account (to save experiences) or browse existing based on location.
+* [ ] User can sign in with Facebook/Gmail account (to browse and save experiences)
 * [x] User can see navigation drawer with [Location, Category, Bookmarks, Settings, and Profile] fragments.
   * [ ] User can select current location or type in location in the Location fragment (similar to Groupon).
   * [ ] User can select Category filters and show filtered experiences. User can select experience based on three categories of experience: **thrill**, **social**, and **fun** (or all)
