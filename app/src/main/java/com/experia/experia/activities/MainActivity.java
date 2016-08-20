@@ -19,6 +19,7 @@ import com.experia.experia.R;
 import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
+import fragments.MyPostsFragment;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = BookmarksFragment.class;
                 break;
             default:
-                fragmentClass = LocationSettingsFragment.class;
+                fragmentClass = MyPostsFragment.class;
         }
 
         try {
