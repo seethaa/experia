@@ -1,5 +1,6 @@
 package com.experia.experia.activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,9 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.experia.experia.R;
 
+import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
 
@@ -43,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
         // Setup drawer view
         setupDrawerContent(mNavDrawer);
 
+
+        // Button launches NewPostActivity
+        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+            }
+        });
+
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -71,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_category_fragment:
                 fragmentClass = CategoryFragment.class;
                 break;
-            case R.id.nav_third_fragment:
-                fragmentClass = LocationSettingsFragment.class;
+            case R.id.nav_bookmarks_fragment:
+                fragmentClass = BookmarksFragment.class;
                 break;
             default:
                 fragmentClass = LocationSettingsFragment.class;

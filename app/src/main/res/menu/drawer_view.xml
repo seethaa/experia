@@ -11,7 +11,7 @@
             android:icon="@drawable/ic_category"
             android:title="Category" />
         <item
-            android:id="@+id/nav_third_fragment"
+            android:id="@+id/nav_bookmarks_fragment"
             android:icon="@drawable/ic_location"
             android:title="Bookmarks" />
     </group>

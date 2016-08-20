@@ -1,11 +1,9 @@
 package com.experia.experia.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -27,14 +25,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends AppCompatActivity implements
+import models.User;
+
+public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener
 {
 
     @VisibleForTesting
-    public ProgressDialog mProgressDialog;
+//    public ProgressDialog mProgressDialog;
+    private DatabaseReference mDatabase;
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -55,6 +58,8 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -109,8 +114,16 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
+
+
+
+            // Check auth on Activity start
+            if (mAuth.getCurrentUser() != null) {
+                onAuthSuccess(mAuth.getCurrentUser());
+            }
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     // [END on_start_add_listener]
 
     // [START on_stop_remove_listener]
@@ -251,20 +264,32 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
 
-        mProgressDialog.show();
+    private void onAuthSuccess(FirebaseUser user) {
+        String username = usernameFromEmail(user.getEmail());
+
+        // Write new user
+        writeNewUser(user.getUid(), username, user.getEmail());
+
+        // Go to MainActivity
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
         }
     }
+
+    // [START basic_write]
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+    // [END basic_write]
 }
 

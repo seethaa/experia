@@ -6,6 +6,9 @@
         <item name="colorPrimary">#673AB7</item>
         <item name="colorPrimaryDark">#512DA8</item>
         <item name="colorAccent">#FF4081</item>
+
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
+
     </style>
 
     <style name="ThemeOverlay.FirebaseIcon" parent="AppTheme">
@@ -13,7 +16,7 @@
         <item name="android:layout_marginBottom">@dimen/icon_bottom_margin</item>
     </style>
 
-    <style name="ThemeOverlay.MyTextDetail" parent="AppTheme">
+    <style name="ThemeOverlay.MyTextDetail" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fadeScrollbars">true</item>
