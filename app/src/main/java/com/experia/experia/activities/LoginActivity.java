@@ -96,8 +96,8 @@ public class LoginActivity extends BaseActivity implements
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
+                    onAuthSuccess(user);
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -108,6 +108,7 @@ public class LoginActivity extends BaseActivity implements
             }
         };
         // [END auth_state_listener]
+        Log.d(TAG, "test1");
     }
 
     // [START on_start_add_listener]
@@ -117,11 +118,11 @@ public class LoginActivity extends BaseActivity implements
 
 
 
-            // Check auth on Activity start
+//             Check auth on Activity start
             if (mAuth.getCurrentUser() != null) {
                 onAuthSuccess(mAuth.getCurrentUser());
             }
-        else {
+            else {
                 mAuth.addAuthStateListener(mAuthListener);
             }
     }

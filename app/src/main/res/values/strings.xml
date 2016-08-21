@@ -29,4 +29,10 @@
     <string name="hint_password">password</string>
     <string name="hint_email">email</string>
     <string name="sign_in">Sign In</string>
+    <string name="emailpassword_title_text">Email and Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="emailpassword_status_fmt">Email User: %s</string>
+    <string name="facebook_title_text">Facebook Login</string>
+    <string name="facebook_status_fmt">Facebook User: %s</string>
 </resources>
