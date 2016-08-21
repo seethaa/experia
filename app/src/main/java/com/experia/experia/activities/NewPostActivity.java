@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Post;
+import models.Experience;
 import models.User;
 
 public class NewPostActivity extends BaseActivity {
@@ -107,7 +107,9 @@ public class NewPostActivity extends BaseActivity {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body);
+        //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
+
+        Experience post = new Experience(userId, title, username, body);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

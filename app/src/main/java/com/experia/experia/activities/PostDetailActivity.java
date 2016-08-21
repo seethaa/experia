@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Comment;
-import models.Post;
+import models.Experience;
 import models.User;
 
 public class PostDetailActivity extends BaseActivity implements View.OnClickListener {
@@ -87,11 +87,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                Post post = dataSnapshot.getValue(Post.class);
+                Experience post = dataSnapshot.getValue(Experience.class);
                 // [START_EXCLUDE]
                 mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
-                mBodyView.setText(post.body);
+                mBodyView.setText(post.description);
                 // [END_EXCLUDE]
             }
 

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.experia.experia.R;
 
-import models.Post;
+import models.Experience;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,11 +29,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         tvDescription.setVisibility(View.GONE);
     }
 
-    public void bindToPost(Post post, View.OnClickListener starClickListener) {
+    public void bindToPost(Experience post, View.OnClickListener starClickListener) {
         tvTitle.setText(post.title);
         tvSubtext.setText(post.author);
 //        numStarsView.setText(String.valueOf(post.starCount));
-        tvDescription.setText(post.body);
+        tvDescription.setText(post.description);
 
         ivExpand.setOnClickListener(new View.OnClickListener() {
             @Override
