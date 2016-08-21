@@ -121,7 +121,9 @@ public class LoginActivity extends BaseActivity implements
             if (mAuth.getCurrentUser() != null) {
                 onAuthSuccess(mAuth.getCurrentUser());
             }
-        mAuth.addAuthStateListener(mAuthListener);
+        else {
+                mAuth.addAuthStateListener(mAuthListener);
+            }
     }
 
     // [END on_start_add_listener]

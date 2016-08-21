@@ -1,11 +1,18 @@
 package com.experia.experia.activities;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,12 +27,18 @@ import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
 import fragments.MyPostsFragment;
+import helpers.Constants;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    //custom notification
+    private NotificationManager mNotificationManager;
+    private int notificationID = 100;
+    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
+
+        // send notification to user
+        createBigPictureStyleNoti(72,R.drawable.ic_logo_placeholder, "Oktoberfest!",
+                "Live Band playing at the Roxy");
+
 
     }
 
@@ -139,5 +157,58 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    //BigPicture Style Layout
+    private void createBigPictureStyleNoti (int nId, int iconRes, String title, String body) {
+        // First let's define the intent to trigger when notification is selected
+        // Start out by creating a normal intent (in this case to open an activity)
+        Intent intent = new Intent(this, MainActivity.class);
+        // Next, let's turn this into a PendingIntent using
+        //   public static PendingIntent getActivity(Context context, int requestCode,
+        //       Intent intent, int flags)
+        int requestID = (int) System.currentTimeMillis(); //unique requestID to differentiate between various notification with same NotifId
+        int flags = PendingIntent.FLAG_CANCEL_CURRENT; // cancel old intent and create new one
+        PendingIntent pIntent = PendingIntent.getActivity(this, requestID, intent, flags);
+
+        // .setLargeIcon expects a bitmap
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
+                R.drawable.ic_bitmap_lg_crown);
+
+        // Big picture for style
+        final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.big_oktober_fest);
+
+        //Items visible in Collapsed InboxView
+        String contentText = "Learn archery from the best instructors who'll take the time to get " +
+                "you up and running and see you hitting the target.";
+        String subText = "Located in SoMa";
+
+        //Items visible in Expanded InboxView
+        String bigContentText = "Learn the archery of Robin Hood";
+        String summaryText = "Serious fun with bows & arrows";
+
+        // InboxStyle Notification
+        Notification bigPictStyleNotification = new NotificationCompat.Builder(this)
+                .setContentTitle(title)
+                .setContentText(contentText)
+                .addAction(R.drawable.ic_phone_call,"ACTION",pIntent)
+                .addAction(R.drawable.ic_calendar,"ACTION",pIntent)
+                .addAction(R.drawable.ic_invite_friends,"ACTION",pIntent)
+                .setSmallIcon(iconRes)  //miniature
+                .setLargeIcon(largeIcon)
+                .setSubText(subText)
+                .setAutoCancel(true) // Hides the notification after its been selected
+                .setPriority(Constants.NOTICE_PRIORITY_MAX)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .setBigContentTitle(bigContentText)
+                        .setSummaryText(summaryText)
+                        .bigPicture(picture))
+                .build();
+
+        // Get the notification manager system service
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(nId, bigPictStyleNotification);
     }
 }
