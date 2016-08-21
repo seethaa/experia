@@ -67,7 +67,7 @@ public abstract class PostListFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
+        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_experience,
                 PostViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
@@ -86,11 +86,11 @@ public abstract class PostListFragment extends Fragment {
                 });
 
                 // Determine if the current user has liked this post and set UI accordingly
-                if (model.stars.containsKey(getUid())) {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
-                } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
-                }
+//                if (model.stars.containsKey(getUid())) {
+//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
+//                } else {
+//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
+//                }
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 viewHolder.bindToPost(model, new View.OnClickListener() {
@@ -105,6 +105,7 @@ public abstract class PostListFragment extends Fragment {
                         onStarClicked(userPostRef);
                     }
                 });
+
             }
         };
         mRecycler.setAdapter(mAdapter);

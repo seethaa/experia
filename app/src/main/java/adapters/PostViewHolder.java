@@ -11,28 +11,52 @@ import models.Post;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView titleView;
-    public TextView authorView;
+    public TextView tvTitle;
+    public TextView tvSubtext;
     public ImageView starView;
-    public TextView numStarsView;
-    public TextView bodyView;
+    public ImageView ivExpand;
+    public TextView tvDescription;
 
     public PostViewHolder(View itemView) {
         super(itemView);
 
-        titleView = (TextView) itemView.findViewById(R.id.post_title);
-        authorView = (TextView) itemView.findViewById(R.id.post_author);
-        starView = (ImageView) itemView.findViewById(R.id.star);
-        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
-        bodyView = (TextView) itemView.findViewById(R.id.post_body);
+        tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+        tvSubtext = (TextView) itemView.findViewById(R.id.tvSubtext);
+//        starView = (ImageView) itemView.findViewById(R.id.star);
+//        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
+        ivExpand = (ImageView) itemView.findViewById(R.id.ivExpand);
+        tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+        tvDescription.setVisibility(View.GONE);
     }
 
     public void bindToPost(Post post, View.OnClickListener starClickListener) {
-        titleView.setText(post.title);
-        authorView.setText(post.author);
-        numStarsView.setText(String.valueOf(post.starCount));
-        bodyView.setText(post.body);
+        tvTitle.setText(post.title);
+        tvSubtext.setText(post.author);
+//        numStarsView.setText(String.valueOf(post.starCount));
+        tvDescription.setText(post.body);
 
-        starView.setOnClickListener(starClickListener);
+        ivExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (tvDescription.isShown()){
+                    tvDescription.setVisibility(View.GONE);
+                    ivExpand.setImageResource(R.drawable.icon_chevron_up);
+
+                }
+                else{
+                    tvDescription.setVisibility(View.VISIBLE);
+                    ivExpand.setImageResource(R.drawable.icon_chevron_down);
+                }
+//                tvDescription.setVisibility( tvDescription.isShown()
+//                        ? View.GONE
+//                        : View.VISIBLE );
+
+            }
+        });
+
+//        starView.setOnClickListener(starClickListener);
+
+
     }
 }

@@ -1,76 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="440dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvExperiences"
     card_view:cardBackgroundColor="@color/cardview_light_background"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp"
     card_view:contentPaddingLeft="-15dp"
     card_view:contentPaddingRight="-15dp"
-    card_view:contentPaddingTop="-5dp"
     app:cardUseCompatPadding="true"
     android:clickable="true">
 
-    <RelativeLayout
+    <android.support.percent.PercentFrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <ImageView
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:id="@+id/ivExperience"
-            android:src="@drawable/im_cooking_class"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            />
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/btnRSVP"
+            android:layout_alignStart="@+id/btnRSVP">
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ivExperience"
-            android:padding="25dp"
-            android:textColor="#fff"
-            />
+            <ImageView
+                android:layout_width="match_parent"
+                app:layout_widthPercent="100%"
+                app:layout_aspectRatio="178%"
+                android:id="@+id/ivExperience"
+                android:src="@drawable/im_cooking_class"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tvHometown"
-            android:layout_width="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/ivExperience"
-            android:padding="25dp"
-            android:textColor="#fff"
-            />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ivExperience"
+                tools:text="Kayaking in Mendocino"
+                />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivExperience"
-            android:layout_alignParentRight="true"
-            android:padding="25dp"
-            android:src="@drawable/ic_save"/>
+            <TextView
+                android:id="@+id/tvSubtext"
+                android:layout_marginLeft="8dp"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/ivExperience"
+                android:layout_marginBottom="16dp"
+                tools:text="#Thrill #Fun"
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivExperience"
-            android:layout_alignLeft="@+id/ivExperience"
-            android:padding="25dp"
-            android:src="@drawable/ic_map"/>
+                />
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_width="375dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_save"
+                    android:layout_alignTop="@+id/btnRSVP"
+                    android:layout_toRightOf="@+id/btnRSVP"
+                    android:layout_toEndOf="@+id/btnRSVP"
+                    android:padding="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="Bookmark"
+                    android:id="@+id/btnBookmark" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_map"
+                    android:padding="8dp"
+                    android:id="@+id/btnRSVP"
+                    android:text="RSVP" />
+
+                <ImageView
+                    android:id="@+id/ivExpand"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_chevron_up"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="32dp" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/ivExperience"
+                tools:text="blahblahblah"
+                />
+
+        </LinearLayout>
+
+    </android.support.percent.PercentFrameLayout>
 
 
 
-    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
