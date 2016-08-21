@@ -37,9 +37,12 @@
             android:layout_width="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ivExperience"
-            android:padding="25dp"
-            android:textColor="#fff"
+            android:layout_below="@+id/ivExperience"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="25dp"
+            android:paddingBottom="16dp"
+            android:textColor="#000"
+            android:text="Experience Name"
             />
 
         <TextView
@@ -47,26 +50,31 @@
             android:layout_width="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/ivExperience"
-            android:padding="25dp"
-            android:textColor="#fff"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvUserName"
+            android:paddingLeft="25dp"
+            android:paddingBottom="16dp"
+            android:textColor="#949494"
+            android:text="Brief Tagline"
             />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivExperience"
+            android:id="@+id/btSave"
+            android:layout_below="@+id/tvHometown"
             android:layout_alignParentRight="true"
-            android:padding="25dp"
+            android:text="SAVE"
             android:src="@drawable/ic_save"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivExperience"
-            android:layout_alignLeft="@+id/ivExperience"
-            android:padding="25dp"
+            android:id="@+id/btMap"
+            android:layout_below="@+id/tvHometown"
+            android:layout_alignParentLeft="true"
+            android:paddingRight="16dp"
+            android:text="MAP"
             android:src="@drawable/ic_map"/>
 
 

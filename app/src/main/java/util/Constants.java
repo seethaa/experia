@@ -1,4 +1,4 @@
-package helpers;
+package util;
 
 /**
  * Created by doc_dungeon on 8/20/16.

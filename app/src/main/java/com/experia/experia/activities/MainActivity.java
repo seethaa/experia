@@ -27,7 +27,7 @@ import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
 import fragments.MyPostsFragment;
-import helpers.Constants;
+import util.Constants;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
