@@ -2,7 +2,7 @@
     <string name="app_name">experia</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Experia</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -29,13 +29,10 @@
     <string name="hint_password">password</string>
     <string name="hint_email">email</string>
     <string name="sign_in">Sign In</string>
-
-    <string name="snack_bar_text_item_removed">1 item removed</string>
-    <string name="snack_bar_text_group_item_removed">1 group item removed</string>
-    <string name="snack_bar_text_child_item_removed">1 child item removed</string>
-    <string name="snack_bar_text_button_clicked">Button clicked! (position = %1$d)</string>
-    <string name="snack_bar_action_undo">UNDO</string>
-
-    <string name="dialog_message_item_pinned">Item pinned! (position = %1$d)</string>
-
+    <string name="emailpassword_title_text">Email and Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="emailpassword_status_fmt">Email User: %s</string>
+    <string name="facebook_title_text">Facebook Login</string>
+    <string name="facebook_status_fmt">Facebook User: %s</string>
 </resources>

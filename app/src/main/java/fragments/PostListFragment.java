@@ -23,7 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
 import adapters.PostViewHolder;
-import models.Post;
+import models.Experience;
 
 public abstract class PostListFragment extends Fragment {
 
@@ -33,7 +33,7 @@ public abstract class PostListFragment extends Fragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
+    private FirebaseRecyclerAdapter<Experience, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
@@ -67,10 +67,10 @@ public abstract class PostListFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
+        mAdapter = new FirebaseRecyclerAdapter<Experience, PostViewHolder>(Experience.class, R.layout.item_experience,
                 PostViewHolder.class, postsQuery) {
             @Override
-            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
+            protected void populateViewHolder(final PostViewHolder viewHolder, final Experience model, final int position) {
                 final DatabaseReference postRef = getRef(position);
 
                 // Set click listener for the whole post view
@@ -86,11 +86,11 @@ public abstract class PostListFragment extends Fragment {
                 });
 
                 // Determine if the current user has liked this post and set UI accordingly
-                if (model.stars.containsKey(getUid())) {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
-                } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
-                }
+//                if (model.stars.containsKey(getUid())) {
+//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
+//                } else {
+//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
+//                }
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 viewHolder.bindToPost(model, new View.OnClickListener() {
@@ -105,6 +105,7 @@ public abstract class PostListFragment extends Fragment {
                         onStarClicked(userPostRef);
                     }
                 });
+
             }
         };
         mRecycler.setAdapter(mAdapter);
@@ -115,20 +116,20 @@ public abstract class PostListFragment extends Fragment {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Post p = mutableData.getValue(Post.class);
+                Experience p = mutableData.getValue(Experience.class);
                 if (p == null) {
                     return Transaction.success(mutableData);
                 }
 
-                if (p.stars.containsKey(getUid())) {
-                    // Unstar the post and remove self from stars
-                    p.starCount = p.starCount - 1;
-                    p.stars.remove(getUid());
-                } else {
-                    // Star the post and add self to stars
-                    p.starCount = p.starCount + 1;
-                    p.stars.put(getUid(), true);
-                }
+//                if (p.stars.containsKey(getUid())) {
+//                    // Unstar the post and remove self from stars
+//                    p.starCount = p.starCount - 1;
+//                    p.stars.remove(getUid());
+//                } else {
+//                    // Star the post and add self to stars
+//                    p.starCount = p.starCount + 1;
+//                    p.stars.put(getUid(), true);
+//                }
 
                 // Set value and report transaction success
                 mutableData.setValue(p);

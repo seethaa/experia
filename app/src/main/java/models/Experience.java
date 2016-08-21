@@ -11,11 +11,12 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Experience {
-    private String uid;
-    private String title;
-    private String description;
-    private String numGuests;
-    private String duration;
+    public String uid;
+    public String title;
+    public String author;
+    public String description;
+    public String numGuests;
+    public String duration;
 
 
     public Experience(){
@@ -23,9 +24,10 @@ public class Experience {
 
     }
 
-    public Experience(String uid, String title, String description, String numGuests, String duration) {
+    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
         this.uid = uid;
         this.title = title;
+        this.author = author;
         this.description = description;
         this.numGuests = numGuests;
         this.duration = duration;
@@ -35,6 +37,13 @@ public class Experience {
     public Experience(String s, String s1) {
         this.title = s;
         this.description = s1;
+    }
+
+    public Experience(String uid, String title, String author, String description) {
+        this.uid = uid;
+        this.title = title;
+        this.author = author;
+        this.description = description;
     }
 
 //    private void writeNewUser(String userId, String name, String email) {
