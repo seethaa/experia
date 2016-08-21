@@ -50,7 +50,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+        setContentView(R.layout.activity_experience_detail);
 
         // Get post key from intent
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
@@ -65,9 +65,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 .child("post-comments").child(mPostKey);
 
         // Initialize Views
-        mAuthorView = (TextView) findViewById(R.id.post_author);
-        mTitleView = (TextView) findViewById(R.id.post_title);
-        mBodyView = (TextView) findViewById(R.id.post_body);
+        mAuthorView = (TextView) findViewById(R.id.tvHostName);
+        mTitleView = (TextView) findViewById(R.id.tvExperienceTitle);
+        mBodyView = (TextView) findViewById(R.id.tvOverview);
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
@@ -89,7 +89,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 // Get Post object and use the values to update the UI
                 Experience post = dataSnapshot.getValue(Experience.class);
                 // [START_EXCLUDE]
-                mAuthorView.setText(post.author);
+//                mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 // [END_EXCLUDE]
