@@ -75,8 +75,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         // Initialize Views
         mAuthorView = (TextView) findViewById(R.id.tvHostName);
         mTitleView = (TextView) findViewById(R.id.tvExperienceTitle);
-        mBodyView = (TextView) findViewById(R.id.tvOverview);
-        mSpotsAvailable = (TextView) findViewById(R.id.tvPopularity);
+        mBodyView = (TextView) findViewById(R.id.tvDescription);
+        mSpotsAvailable = (TextView) findViewById(R.id.tvSpotsLeft);
         mImageViewExperience = (ImageView) findViewById(R.id.ivExperienceImage);
 
 

@@ -73,15 +73,20 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-        <include layout="@layout/host_detail"/>
 
-        <include layout="@layout/date_time_detail"/>
 
-        <include layout="@layout/venue_detail"/>
 
-        <include layout="@layout/description_detail"/>
 
-        <include layout="@layout/guests_detail"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+        </RelativeLayout>
+
+
 
 
         <TextView
@@ -121,6 +126,32 @@
                 android:textStyle="bold"
                 tools:text="Sam Chu" />
 
+            <TextView
+                android:id="@+id/tvOverviewHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvOverview"
+                android:layout_alignStart="@+id/tvOverview"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:text="Overview"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tvOverview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/ivExperienceImage"
+                android:layout_alignStart="@+id/ivExperienceImage"
+                android:layout_below="@+id/ivExperienceImage"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pharetra arcu mauris, commodo rutrum magna bibendum vitae. Quisque ac massa magna. Curabitur volutpat vitae tortor vitae molestie. Sed sit amet orci aliquam, consequat arcu eu, finibus velit. Etiam ut luctus nisl. In tincidunt nisi in aliquet scelerisque. Duis consectetur magna quis nunc consectetur, in condimentum libero efficitur. Vestibulum faucibus at lacus at consectetur." />
+
             <include layout="@layout/layout_comment_section"/>
 
 
@@ -129,6 +160,14 @@
     </ScrollView>
 
 
+    <!--<ImageButton-->
+            <!--android:id="@+id/ibPlayTrailer"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_above="@+id/linearLayout"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:src="@drawable/youtube_play_shadow" />-->
 
 
     </RelativeLayout>
