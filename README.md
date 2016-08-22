@@ -36,6 +36,7 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+Experience cards and card detail view: http://imgur.com/gkVFali.gif
 <img src='http://imgur.com/gkVFali.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='http://imgur.com/uPVzIeu.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
