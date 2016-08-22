@@ -27,6 +27,7 @@ import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
 import fragments.MyPostsFragment;
+import fragments.RecentPostsFragment;
 import util.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_bookmarks_fragment:
                 fragmentClass = BookmarksFragment.class;
+                break;
+            case R.id.nav_account_fragment:
+                fragmentClass = RecentPostsFragment.class;
+                break;
+            case R.id.nav_profile_fragment:
+                fragmentClass = MyPostsFragment.class;
                 break;
             default:
                 fragmentClass = MyPostsFragment.class;
