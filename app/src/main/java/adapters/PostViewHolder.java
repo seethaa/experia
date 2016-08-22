@@ -73,7 +73,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         String img = post.imgURL;
         if (!TextUtils.isEmpty(post.imgURL)) {
-            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
+            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.placeholderimg)
                     .into(ivExperience);
 //            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
 
