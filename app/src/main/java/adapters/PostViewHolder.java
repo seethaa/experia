@@ -17,7 +17,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView tvTitle;
     public TextView tvSubtext;
     public ImageView ivExperience;
-    public ImageView ivExpand;
+    public TextView tvExpand;
     public TextView tvDescription;
     public Context mContext;
 
@@ -30,7 +30,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         ivExperience = (ImageView) itemView.findViewById(R.id.ivExperienceImage);
 //        starView = (ImageView) itemView.findViewById(R.id.star);
 //        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
-        ivExpand = (ImageView) itemView.findViewById(R.id.ivExpand);
+        tvExpand = (TextView) itemView.findViewById(R.id.tvExpand);
         tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
         tvDescription.setVisibility(View.GONE);
 
@@ -44,18 +44,28 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
 
-        ivExpand.setOnClickListener(new View.OnClickListener() {
+        tvExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (tvDescription.isShown()){
                     tvDescription.setVisibility(View.GONE);
-                    ivExpand.setImageResource(R.drawable.icon_chevron_up);
+//                    tvExpand.setImageResource(R.drawable.icon_chevron_up);
+                    tvExpand.setCompoundDrawablesWithIntrinsicBounds(
+                            0, //left
+                            0, //top
+                            R.drawable.icon_chevron_up, //right
+                            0);//bottom
 
                 }
                 else{
                     tvDescription.setVisibility(View.VISIBLE);
-                    ivExpand.setImageResource(R.drawable.icon_chevron_down);
+//                    ivExpand.setImageResource(R.drawable.icon_chevron_down);
+                    tvExpand.setCompoundDrawablesWithIntrinsicBounds(
+                            0, //left
+                            0, //top
+                            R.drawable.icon_chevron_down, //right
+                            0);//bottom
                 }
 
             }

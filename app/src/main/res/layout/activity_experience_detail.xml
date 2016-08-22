@@ -84,42 +84,16 @@
         <include layout="@layout/guests_detail"/>
 
 
-        <TextView
-                android:id="@+id/tvPopularity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:gravity="left"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                tools:text="33%" />
-
-            <TextView
-                android:id="@+id/tvHostedBy"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:gravity="left"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                tools:text="Hosted by: " />
-
-            <TextView
-                android:id="@+id/tvHostName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:gravity="left"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Sam Chu" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/tvSubtext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/view" />
 
             <include layout="@layout/layout_comment_section"/>
 

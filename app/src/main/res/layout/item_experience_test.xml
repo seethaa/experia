@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvExperiences"
+    card_view:cardBackgroundColor="@color/cardview_light_background"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="8dp"
+    card_view:contentPaddingLeft="-15dp"
+    card_view:contentPaddingRight="-15dp"
+    app:cardUseCompatPadding="true"
+    android:clickable="true">
+
+
+    <android.support.percent.PercentFrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/btnRSVP"
+            android:layout_alignStart="@+id/btnRSVP">
+
+            <ImageView
+                android:layout_width="match_parent"
+                app:layout_widthPercent="100%"
+                app:layout_aspectRatio="178%"
+                android:id="@+id/ivExperienceImage"
+                android:src="@drawable/im_cooking_class"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvSubtext"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                tools:text="#Thrill #Fun"
+                android:layout_below="@+id/tvTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_map"
+                    android:padding="8dp"
+                    android:text="Bookmark"
+                    android:id="@+id/btnBookmark"
+                    android:layout_above="@+id/tvTitle"
+                    android:layout_toLeftOf="@+id/btnRSVP"
+                    android:layout_toStartOf="@+id/btnRSVP" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_map"
+                    android:padding="8dp"
+                    android:id="@+id/btnRSVP"
+                    android:text="RSVP"
+                    android:layout_above="@+id/tvTitle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+
+            <TextView
+                android:id="@+id/tvExpand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/icon_chevron_up"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="MORE"
+                android:layout_gravity="center"
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:paddingRight="16dp"
+                    android:paddingLeft="16dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_height="wrap_content"
+                    tools:text="blahblahblah"
+                    android:layout_below="@+id/tvExpand"
+                    android:layout_alignLeft="@+id/tvSubtext"
+                    android:layout_alignStart="@+id/tvSubtext" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_marginLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"
+                    tools:text="Kayaking in Mendocino"
+                    android:layout_below="@+id/ivExperienceImage"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/tvSubtext"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/view" />
+
+        </RelativeLayout>
+
+
+
+    </android.support.percent.PercentFrameLayout>
+
+
+
+
+</android.support.v7.widget.CardView>

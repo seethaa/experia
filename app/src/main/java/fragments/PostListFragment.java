@@ -69,7 +69,7 @@ public abstract class PostListFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Experience, PostViewHolder>(Experience.class, R.layout.item_experience,
+        mAdapter = new FirebaseRecyclerAdapter<Experience, PostViewHolder>(Experience.class, R.layout.item_experience_test,
                 PostViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Experience model, final int position) {

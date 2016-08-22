@@ -105,7 +105,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 mAuthorView.setText(post.author);
-                mSpotsAvailable.setText(post.numGuests);
+                mSpotsAvailable.setText(post.numGuests + " spots left");
 
 
                 String img = post.imgURL;
