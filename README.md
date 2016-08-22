@@ -38,6 +38,10 @@ Here's a walkthrough of implemented user stories:
 
 Experience cards and card detail view: http://imgur.com/gkVFali.gif
 <img src='http://imgur.com/gkVFali.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+<br>
+
+Notifications view:
 <img src='http://imgur.com/uPVzIeu.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
