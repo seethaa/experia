@@ -37,7 +37,9 @@ public abstract class PostListFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
-    public PostListFragment() {}
+    public PostListFragment() {
+
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
@@ -92,8 +94,9 @@ public abstract class PostListFragment extends Fragment {
 //                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
 //                }
 
+//                Glide.with(getActivity()).load("ewlkf").centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
-                viewHolder.bindToPost(model, new View.OnClickListener() {
+                viewHolder.bindToPost(getActivity(), model, new View.OnClickListener() {
                     @Override
                     public void onClick(View starView) {
                         // Need to write to both places the post is stored

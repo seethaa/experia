@@ -4,15 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +47,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private TextView mTitleView;
     private TextView mBodyView;
     private TextView mSpotsAvailable;
+    private ImageView mImageViewExperience;
 
 
 
@@ -73,6 +77,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mTitleView = (TextView) findViewById(R.id.tvExperienceTitle);
         mBodyView = (TextView) findViewById(R.id.tvOverview);
         mSpotsAvailable = (TextView) findViewById(R.id.tvPopularity);
+        mImageViewExperience = (ImageView) findViewById(R.id.ivExperienceImage);
 
 
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
@@ -101,6 +106,16 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mBodyView.setText(post.description);
                 mAuthorView.setText(post.author);
                 mSpotsAvailable.setText(post.numGuests);
+
+
+                String img = post.imgURL;
+                if (!TextUtils.isEmpty(post.imgURL)) {
+                    Glide.with(getApplicationContext()).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
+                            .into(mImageViewExperience);
+//            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
+
+
+                }
                 // [END_EXCLUDE]
             }
 

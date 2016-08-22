@@ -29,36 +29,32 @@ public class BookmarksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_offer_new_experience, container, false);
+        View v =  inflater.inflate(R.layout.activity_new_post, container, false);
 
 
-        mButtonSend = (Button) v.findViewById(R.id.btnSubmit);
-        mEditTextName = (EditText) v.findViewById(R.id.editText);
-        mEditTextDescription = (EditText) v.findViewById(R.id.etDescription);
-
-        mButtonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                Firebase mRefChild = mRef.child("name");
-//                mRefChild.setValue("Sam");
-                String name = mEditTextName.getText().toString();
-                String desc = mEditTextDescription.getText().toString();
-
-//                Experience exp1 = new Experience("test 1", "test 1 blah blah");
-//                Experience exp2 = new Experience("test 2", "test 2 blah blah");
-
-//                Firebase childRef = mRootRef.child(("Title"));
-//                childRef.setValue(name);
+//        mButtonSend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //
-//                Firebase childRef2 = mRootRef.child(("Description"));
-//                childRef2.setValue(desc);
-//                mRootRef.push().setValue(exp1);
-//                mRootRef.push().setValue(exp2);
-
-
-            }
-        });
+////                Firebase mRefChild = mRef.child("name");
+////                mRefChild.setValue("Sam");
+//                String name = mEditTextName.getText().toString();
+//                String desc = mEditTextDescription.getText().toString();
+//
+////                Experience exp1 = new Experience("test 1", "test 1 blah blah");
+////                Experience exp2 = new Experience("test 2", "test 2 blah blah");
+//
+////                Firebase childRef = mRootRef.child(("Title"));
+////                childRef.setValue(name);
+////
+////                Firebase childRef2 = mRootRef.child(("Description"));
+////                childRef2.setValue(desc);
+////                mRootRef.push().setValue(exp1);
+////                mRootRef.push().setValue(exp2);
+//
+//
+//            }
+//        });
         return v;
     }
 

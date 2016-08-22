@@ -34,6 +34,7 @@ public class NewPostActivity extends BaseActivity {
     private EditText mNumberGuests;
     private EditText mDuration;
     private EditText mTags;
+    private EditText mImgURL;
 
 
     @Override
@@ -51,6 +52,7 @@ public class NewPostActivity extends BaseActivity {
         mNumberGuests = (EditText) findViewById(R.id.field_numGuests);
         mDuration = (EditText) findViewById(R.id.field_duration);
         mTags = (EditText) findViewById(R.id.field_tags);
+        mImgURL = (EditText) findViewById(R.id.field_imgURL);
 
 
         findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
@@ -67,6 +69,7 @@ public class NewPostActivity extends BaseActivity {
         final String numGuests = mNumberGuests.getText().toString();
         final String duration = mDuration.getText().toString();
         final String tags = mTags.getText().toString();
+        final String imgURL = mImgURL.getText().toString();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -111,7 +114,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body, numGuests, duration, tags);
+                            writeNewPost(userId, user.username, title, body, numGuests, duration, tags, imgURL);
                         }
 
                         // Finish this Activity, back to the stream
@@ -128,13 +131,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String duration, String tags ) {
+    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String duration, String tags, String imgURL ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, duration, tags);
+        Experience post = new Experience(userId, title, username, body, numGuests, duration, tags, imgURL);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         // Setup drawer view
         setupDrawerContent(mNavDrawer);
 
+//        mNavDrawer.getMenu().getItem(0).setChecked(true);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new RecentPostsFragment()).commit();
+        setTitle("Experiences around me");
 
         // Button launches NewPostActivity
         findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = MyPostsFragment.class;
                 break;
             default:
-                fragmentClass = MyPostsFragment.class;
+                fragmentClass = RecentPostsFragment.class;
         }
 
         try {

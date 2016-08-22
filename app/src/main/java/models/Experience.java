@@ -18,6 +18,7 @@ public class Experience {
     public String numGuests;
     public String duration;
     public String tags;
+    public String imgURL;
 
 
     public Experience(){
@@ -25,7 +26,7 @@ public class Experience {
 
     }
 
-    public Experience(String uid, String title, String author, String description, String numGuests, String duration, String tags) {
+    public Experience(String uid, String title, String author, String description, String numGuests, String duration, String tags, String imgURL) {
         this.uid = uid;
         this.title = title;
         this.author = author;
@@ -33,6 +34,7 @@ public class Experience {
         this.numGuests = numGuests;
         this.duration = duration;
         this.tags = tags;
+        this.imgURL = imgURL;
     }
 
     //for testing
@@ -64,6 +66,7 @@ public class Experience {
         result.put("numGuests", numGuests);
         result.put("duration", duration);
         result.put("tags", tags);
+        result.put("imgURL", imgURL);
         return result;
     }
 }

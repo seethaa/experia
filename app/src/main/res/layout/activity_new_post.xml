@@ -60,6 +60,16 @@
         android:layout_alignLeft="@+id/field_duration"
         android:layout_alignStart="@+id/field_duration" />
 
+    <EditText
+        android:id="@+id/field_imgURL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Image URL"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_tags"
+        android:layout_alignLeft="@+id/field_tags"
+        android:layout_alignStart="@+id/field_tags" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_submit_post"
         android:layout_width="wrap_content"
