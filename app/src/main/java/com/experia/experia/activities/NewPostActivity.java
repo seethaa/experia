@@ -32,9 +32,13 @@ public class NewPostActivity extends BaseActivity {
     private EditText mTitleField;
     private EditText mBodyField;
     private EditText mNumberGuests;
+    private EditText mDate;
     private EditText mDuration;
     private EditText mTags;
     private EditText mImgURL;
+    private EditText mAddress;
+    private EditText mLatitude;
+    private EditText mLongitude;
 
 
     @Override
@@ -50,9 +54,13 @@ public class NewPostActivity extends BaseActivity {
         mBodyField = (EditText) findViewById(R.id.field_body);
 
         mNumberGuests = (EditText) findViewById(R.id.field_numGuests);
+        mDate = (EditText) findViewById(R.id.field_date);
         mDuration = (EditText) findViewById(R.id.field_duration);
         mTags = (EditText) findViewById(R.id.field_tags);
         mImgURL = (EditText) findViewById(R.id.field_imgURL);
+        mAddress = (EditText) findViewById(R.id.field_address);
+        mLatitude = (EditText) findViewById(R.id.field_latitude);
+        mLongitude = (EditText) findViewById(R.id.field_longitude);
 
 
         findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
@@ -67,9 +75,13 @@ public class NewPostActivity extends BaseActivity {
         final String title = mTitleField.getText().toString();
         final String body = mBodyField.getText().toString();
         final String numGuests = mNumberGuests.getText().toString();
+        final String date = mDate.getText().toString();
         final String duration = mDuration.getText().toString();
         final String tags = mTags.getText().toString();
         final String imgURL = mImgURL.getText().toString();
+        final String address = mAddress.getText().toString();
+        final String latitude = mLatitude.getText().toString();
+        final String longitude = mLongitude.getText().toString();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -114,7 +126,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body, numGuests, duration, tags, imgURL);
+                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, latitude, longitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -131,13 +143,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String duration, String tags, String imgURL ) {
+    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, String latitude, String longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, duration, tags, imgURL);
+        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address, latitude, longitude);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

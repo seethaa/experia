@@ -41,14 +41,24 @@
         android:layout_alignStart="@+id/field_body" />
 
     <EditText
+        android:id="@+id/field_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_numGuests"
+        android:layout_alignLeft="@+id/field_numGuests"
+        android:layout_alignStart="@+id/field_numGuests" />
+
+    <EditText
         android:id="@+id/field_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Duration"
         android:scrollHorizontally="false"
-        android:layout_below="@+id/field_numGuests"
-        android:layout_alignLeft="@+id/field_numGuests"
-        android:layout_alignStart="@+id/field_numGuests" />
+        android:layout_below="@+id/field_date"
+        android:layout_alignLeft="@+id/field_date"
+        android:layout_alignStart="@+id/field_date" />
 
     <EditText
         android:id="@+id/field_tags"
@@ -69,6 +79,36 @@
         android:layout_below="@+id/field_tags"
         android:layout_alignLeft="@+id/field_tags"
         android:layout_alignStart="@+id/field_tags" />
+
+    <EditText
+        android:id="@+id/field_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_imgURL"
+        android:layout_alignLeft="@+id/field_imgURL"
+        android:layout_alignStart="@+id/field_imgURL" />
+
+    <EditText
+        android:id="@+id/field_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Latitude"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_address"
+        android:layout_alignLeft="@+id/field_address"
+        android:layout_alignStart="@+id/field_address" />
+
+    <EditText
+        android:id="@+id/field_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitude"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_latitude"
+        android:layout_alignLeft="@+id/field_latitude"
+        android:layout_alignStart="@+id/field_latitude" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_submit_post"

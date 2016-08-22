@@ -46,6 +46,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private TextView mAuthorView;
     private TextView mTitleView;
     private TextView mBodyView;
+    private TextView mAddress;
+    private TextView mDate;
+
     private TextView mSpotsAvailable;
     private ImageView mImageViewExperience;
 
@@ -76,6 +79,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mAuthorView = (TextView) findViewById(R.id.tvHostName);
         mTitleView = (TextView) findViewById(R.id.tvExperienceTitle);
         mBodyView = (TextView) findViewById(R.id.tvDescription);
+        mAddress = (TextView) findViewById(R.id.tvLocationAddress);
+        mDate = (TextView) findViewById(R.id.tvDate);
         mSpotsAvailable = (TextView) findViewById(R.id.tvSpotsLeft);
         mImageViewExperience = (ImageView) findViewById(R.id.ivExperienceImage);
 
@@ -105,7 +110,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 mAuthorView.setText(post.author);
+                mDate.setText(post.date);
                 mSpotsAvailable.setText(post.numGuests + " spots left");
+                mAddress.setText(post.address);
 
 
                 String img = post.imgURL;

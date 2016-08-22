@@ -16,9 +16,13 @@ public class Experience {
     public String author;
     public String description;
     public String numGuests;
+    public String date;
     public String duration;
     public String tags;
     public String imgURL;
+    public String address;
+    public String latitude;
+    public String longitude;
 
 
     public Experience(){
@@ -26,15 +30,19 @@ public class Experience {
 
     }
 
-    public Experience(String uid, String title, String author, String description, String numGuests, String duration, String tags, String imgURL) {
+    public Experience(String uid, String title, String author, String description, String numGuests, String date, String duration, String tags, String imgURL, String address, String latitude, String longitude) {
         this.uid = uid;
         this.title = title;
         this.author = author;
         this.description = description;
         this.numGuests = numGuests;
+        this.date = date;
         this.duration = duration;
         this.tags = tags;
         this.imgURL = imgURL;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     //for testing
@@ -64,9 +72,14 @@ public class Experience {
         result.put("author", author);
         result.put("description", description);
         result.put("numGuests", numGuests);
+        result.put("date", date);
         result.put("duration", duration);
         result.put("tags", tags);
         result.put("imgURL", imgURL);
+        result.put("address", address);
+        result.put("latitude", latitude);
+        result.put("longitude", longitude);
+
         return result;
     }
 }
