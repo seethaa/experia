@@ -13,7 +13,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            tools:src="@mipmap/ic_launcher" />
+            android:src="@drawable/im_cooking_class" />
 
 
         <LinearLayout
@@ -87,20 +87,19 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:gravity="left"
-                android:textColor="#CCC"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 tools:text="33%" />
 
             <TextView
                 android:id="@+id/tvHostedBy"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:gravity="left"
-                android:textColor="#CCC"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 tools:text="Hosted by: " />
@@ -113,7 +112,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:gravity="left"
-                android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="Sam Chu" />

@@ -31,6 +31,10 @@ public class NewPostActivity extends BaseActivity {
 
     private EditText mTitleField;
     private EditText mBodyField;
+    private EditText mNumberGuests;
+    private EditText mDuration;
+    private EditText mTags;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,11 @@ public class NewPostActivity extends BaseActivity {
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
 
+        mNumberGuests = (EditText) findViewById(R.id.field_numGuests);
+        mDuration = (EditText) findViewById(R.id.field_duration);
+        mTags = (EditText) findViewById(R.id.field_tags);
+
+
         findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +64,9 @@ public class NewPostActivity extends BaseActivity {
     private void submitPost() {
         final String title = mTitleField.getText().toString();
         final String body = mBodyField.getText().toString();
+        final String numGuests = mNumberGuests.getText().toString();
+        final String duration = mDuration.getText().toString();
+        final String tags = mTags.getText().toString();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -65,6 +77,19 @@ public class NewPostActivity extends BaseActivity {
         // Body is required
         if (TextUtils.isEmpty(body)) {
             mBodyField.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(numGuests)) {
+            mNumberGuests.setError(REQUIRED);
+            return;
+        }
+        if (TextUtils.isEmpty(duration)) {
+            mDuration.setError(REQUIRED);
+            return;
+        }
+        if (TextUtils.isEmpty(tags)) {
+            mTags.setError(REQUIRED);
             return;
         }
 
@@ -86,7 +111,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body);
+                            writeNewPost(userId, user.username, title, body, numGuests, duration, tags);
                         }
 
                         // Finish this Activity, back to the stream
@@ -103,13 +128,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body) {
+    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String duration, String tags ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
 
-        Experience post = new Experience(userId, title, username, body);
+        Experience post = new Experience(userId, title, username, body, numGuests, duration, tags);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

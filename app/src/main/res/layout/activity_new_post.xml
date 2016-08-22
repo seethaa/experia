@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.firebase.quickstart.database.NewPostActivity">
+    tools:context="activities.NewPostActivity">
 
     <EditText
         android:id="@+id/field_title"
@@ -25,10 +25,40 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
-        android:hint="Write your post..."
+        android:hint="Description"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:scrollHorizontally="false" />
+
+    <EditText
+        android:id="@+id/field_numGuests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Number of Guests"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_body"
+        android:layout_alignLeft="@+id/field_body"
+        android:layout_alignStart="@+id/field_body" />
+
+    <EditText
+        android:id="@+id/field_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Duration"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_numGuests"
+        android:layout_alignLeft="@+id/field_numGuests"
+        android:layout_alignStart="@+id/field_numGuests" />
+
+    <EditText
+        android:id="@+id/field_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tags"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_duration"
+        android:layout_alignLeft="@+id/field_duration"
+        android:layout_alignStart="@+id/field_duration" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_submit_post"

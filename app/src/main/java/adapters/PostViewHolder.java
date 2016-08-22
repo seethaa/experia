@@ -31,7 +31,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public void bindToPost(Experience post, View.OnClickListener starClickListener) {
         tvTitle.setText(post.title);
-        tvSubtext.setText(post.author);
+        tvSubtext.setText(post.tags);
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
 

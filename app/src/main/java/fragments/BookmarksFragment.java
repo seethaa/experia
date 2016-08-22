@@ -14,8 +14,6 @@ import com.firebase.client.Firebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import models.Experience;
-
 
 public class BookmarksFragment extends Fragment {
     private static final String TAG = "DATA_TAG";
@@ -47,16 +45,16 @@ public class BookmarksFragment extends Fragment {
                 String name = mEditTextName.getText().toString();
                 String desc = mEditTextDescription.getText().toString();
 
-                Experience exp1 = new Experience("test 1", "test 1 blah blah");
-                Experience exp2 = new Experience("test 2", "test 2 blah blah");
+//                Experience exp1 = new Experience("test 1", "test 1 blah blah");
+//                Experience exp2 = new Experience("test 2", "test 2 blah blah");
 
 //                Firebase childRef = mRootRef.child(("Title"));
 //                childRef.setValue(name);
 //
 //                Firebase childRef2 = mRootRef.child(("Description"));
 //                childRef2.setValue(desc);
-                mRootRef.push().setValue(exp1);
-                mRootRef.push().setValue(exp2);
+//                mRootRef.push().setValue(exp1);
+//                mRootRef.push().setValue(exp2);
 
 
             }

@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
         android:id="@+id/editText" />
 
@@ -17,7 +16,8 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etDescription"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:hint="Description" />
 
     <NumberPicker
         android:layout_width="wrap_content"
