@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -55,7 +56,10 @@ dependencies {
     compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'){
         transitive=true
     }
-
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.0.7'
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.7'
 }
 
 apply plugin: 'com.google.gms.google-services'
