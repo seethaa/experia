@@ -1,6 +1,5 @@
 package fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.experia.experia.R;
@@ -30,7 +28,7 @@ public class MediaControllerFragment extends Fragment  {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final VideoView mVideoView = (VideoView) getActivity().findViewById(R.id.surface_video_view);
+        final VideoView mVideoView = (VideoView) getActivity().findViewById(R.id.view_surface_media_controller);
         mVideoView.setVideoPath("http://techslides.com/demos/sample-videos/small.mp4");
         MediaController mediaController = new MediaController(getActivity());
         mediaController.setAnchorView(mVideoView);

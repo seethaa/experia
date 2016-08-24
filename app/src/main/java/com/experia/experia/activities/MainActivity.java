@@ -22,12 +22,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.experia.experia.R;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
 import fragments.MyPostsFragment;
 import fragments.RecentPostsFragment;
+import fragments.MediaControllerFragment;
+import fragments.YouTubeFragment;
 import util.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -115,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_profile_fragment:
                 fragmentClass = MyPostsFragment.class;
+                break;
+            case R.id.nav_video_fragment: //test video player
+                fragmentClass = MediaControllerFragment.class;
+                break;
+            case R.id.nav_youtube_fragment: //test video player
+                fragmentClass = YouTubeFragment.class;
                 break;
             default:
                 fragmentClass = RecentPostsFragment.class;

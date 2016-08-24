@@ -14,6 +14,15 @@
             android:id="@+id/nav_bookmarks_fragment"
             android:icon="@drawable/ic_location"
             android:title="Bookmarks" />
+        <!--TEST VIDEO PLAYERS-->
+        <item
+            android:id="@+id/nav_video_fragment"
+            android:icon="@drawable/ic_location"
+            android:title="Video" />
+        <item
+            android:id="@+id/nav_youtube_fragment"
+            android:icon="@drawable/ic_location"
+            android:title="YouTube" />
     </group>
 
 
