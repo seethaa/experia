@@ -23,6 +23,9 @@ import com.experia.experia.Manifest;
 import com.experia.experia.R;
 import com.experia.experia.activities.GeofenceTransitionsIntentService;
 import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +45,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -318,6 +322,35 @@ public class LocationSettingsFragment extends Fragment implements
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
+            // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
+            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(37.814208, -122.266708), 50);
+            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+                @Override
+                public void onKeyEntered(String key, GeoLocation location) {
+                    System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
+                    AddMarker(key, location);
+                }
+
+                @Override
+                public void onKeyExited(String key) {
+                    System.out.println(String.format("Key %s is no longer in the search area", key));
+                }
+
+                @Override
+                public void onKeyMoved(String key, GeoLocation location) {
+                    System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
+                }
+
+                @Override
+                public void onGeoQueryReady() {
+                    System.out.println("All initial data has been loaded and events have been fired!");
+                }
+
+                @Override
+                public void onGeoQueryError(DatabaseError error) {
+                    System.err.println("There was an error with this query: " + error);
+                }
+            });
         } else {
             Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
@@ -376,7 +409,7 @@ public class LocationSettingsFragment extends Fragment implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -439,6 +472,21 @@ public class LocationSettingsFragment extends Fragment implements
         LatLng listingPosition = new LatLng(g.latitude, g.longitude);
         // Create the marker on the fragment
         Log.d("DEBUG", map.toString());
+        Marker mapMarker = map.addMarker(new MarkerOptions()
+                .position(listingPosition)
+                .title("title1")
+                .snippet("desc1")
+                .icon(defaultMarker));
+    }
+    private void AddMarker(String key, GeoLocation location) {
+        // Set the color of the marker to green
+        BitmapDescriptor defaultMarker =
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+        // listingPosition is a LatLng point
+        LatLng listingPosition = new LatLng(location.latitude, location.longitude);
+        // Create the marker on the fragment
+        Log.d("DEBUG", map.toString());
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Marker mapMarker = map.addMarker(new MarkerOptions()
                 .position(listingPosition)
                 .title("title1")
