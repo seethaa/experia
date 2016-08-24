@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
 import com.experia.experia.activities.GeofenceTransitionsIntentService;
+import com.firebase.geofire.GeoFire;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,6 +42,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -65,6 +68,8 @@ public class LocationSettingsFragment extends Fragment implements
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private List<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
+    private DatabaseReference ref;
+    private GeoFire geoFire;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -76,6 +81,8 @@ public class LocationSettingsFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGeofenceList = new ArrayList<>();
+        ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
+        geoFire = new GeoFire(ref);
     }
 
     protected void loadMap(GoogleMap googleMap) {
