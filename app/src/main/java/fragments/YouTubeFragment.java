@@ -36,19 +36,17 @@ public class YouTubeFragment extends Fragment {
         *  the code below uses an empty framelayout for inflation then replaces it with
         *  a youtubesupportfragment */
         if (youTubePlayerSupportFragment == null) {
-            Toast.makeText(getContext(),"ytspf is null",Toast.LENGTH_LONG).show();
             youTubePlayerSupportFragment = YouTubePlayerSupportFragment.newInstance();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.youtubesupportfragment, youTubePlayerSupportFragment).commit();
 
         }
 
-        youTubePlayerSupportFragment.initialize("AIzaSyDAZFdIt6WG02cloYuSO-mlSevZVtR2sWg", new YouTubePlayer.OnInitializedListener() {
+        youTubePlayerSupportFragment.initialize(getString(R.string.google_data_api_key), new YouTubePlayer.OnInitializedListener() {
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean isRecovered) {
                 if (!isRecovered) {
-                    Toast.makeText(getContext(),"Inside Success",Toast.LENGTH_LONG).show();
                     youTubePlayer.cueVideo("dSajQAGo6x8");
                 }
             }
