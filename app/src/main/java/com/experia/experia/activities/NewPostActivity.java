@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.experia.experia.R;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,8 @@ public class NewPostActivity extends BaseActivity {
 
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
+    private DatabaseReference geoRef;
+    private GeoFire geoFire;
     // [END declare_database_ref]
 
     private EditText mTitleField;
@@ -69,6 +73,9 @@ public class NewPostActivity extends BaseActivity {
                 submitPost();
             }
         });
+
+        geoRef = FirebaseDatabase.getInstance().getReference("path/to/geofire");
+        geoFire = new GeoFire(geoRef);
     }
 
     private void submitPost() {
@@ -80,8 +87,18 @@ public class NewPostActivity extends BaseActivity {
         final String tags = mTags.getText().toString();
         final String imgURL = mImgURL.getText().toString();
         final String address = mAddress.getText().toString();
-        final String latitude = mLatitude.getText().toString();
-        final String longitude = mLongitude.getText().toString();
+        double latitude;
+        double longitude;
+        try{
+            latitude = Double.parseDouble(mLatitude.getText().toString());
+        } catch (final NumberFormatException e) {
+            latitude = 1.0;
+        }
+        try{
+            longitude = Double.parseDouble(mLongitude.getText().toString());
+        } catch (final NumberFormatException e) {
+            longitude = 1.0;
+        }
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -110,6 +127,8 @@ public class NewPostActivity extends BaseActivity {
 
         // [START single_value_read]
         final String userId = getUid();
+        final double finalLatitude = latitude;
+        final double finalLongitude = longitude;
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -126,7 +145,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, latitude, longitude);
+                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, finalLatitude, finalLongitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -143,18 +162,29 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, String latitude, String longitude ) {
+    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, double latitude, double longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address, latitude, longitude);
+        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        geoFire.setLocation(key, new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    System.err.println("There was an error saving the location to GeoFire: " + error);
+                } else {
+                    System.out.println("Location saved on server successfully!");
+                }
+            }
+        });
+
 
         mDatabase.updateChildren(childUpdates);
     }

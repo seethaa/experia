@@ -21,8 +21,6 @@ public class Experience {
     public String tags;
     public String imgURL;
     public String address;
-    public String latitude;
-    public String longitude;
 
 
     public Experience(){
@@ -30,7 +28,7 @@ public class Experience {
 
     }
 
-    public Experience(String uid, String title, String author, String description, String numGuests, String date, String duration, String tags, String imgURL, String address, String latitude, String longitude) {
+    public Experience(String uid, String title, String author, String description, String numGuests, String date, String duration, String tags, String imgURL, String address) {
         this.uid = uid;
         this.title = title;
         this.author = author;
@@ -41,8 +39,6 @@ public class Experience {
         this.tags = tags;
         this.imgURL = imgURL;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     //for testing
@@ -77,8 +73,6 @@ public class Experience {
         result.put("tags", tags);
         result.put("imgURL", imgURL);
         result.put("address", address);
-        result.put("latitude", latitude);
-        result.put("longitude", longitude);
 
         return result;
     }
