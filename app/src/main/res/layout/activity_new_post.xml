@@ -70,6 +70,16 @@
         android:layout_alignLeft="@+id/field_duration"
         android:layout_alignStart="@+id/field_duration" />
 
+
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Upload Image"
+    android:id="@+id/btnImageUpload"
+    android:layout_below="@+id/field_longitude"
+    android:layout_alignLeft="@+id/field_longitude"
+    android:layout_alignStart="@+id/field_longitude" />
+
     <EditText
         android:id="@+id/field_imgURL"
         android:layout_width="match_parent"
@@ -118,5 +128,23 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_navigation_check_24"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivPreview"
+        android:layout_below="@+id/btnImageUpload"
+        android:layout_toLeftOf="@+id/btnTakePicture"
+        android:layout_toStartOf="@+id/btnTakePicture" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Picture"
+        android:id="@+id/btnTakePicture"
+        android:layout_alignTop="@+id/btnImageUpload"
+        android:layout_toLeftOf="@+id/fab_submit_post"
+        android:layout_toStartOf="@+id/fab_submit_post" />
+
 
 </RelativeLayout>
