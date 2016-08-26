@@ -323,7 +323,7 @@ public class LocationSettingsFragment extends Fragment implements
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
             // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
-            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(37.814208, -122.266708), 50);
+            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 200);
             geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                 @Override
                 public void onKeyEntered(String key, GeoLocation location) {

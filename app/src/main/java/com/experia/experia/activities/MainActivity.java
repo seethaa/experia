@@ -22,14 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.experia.experia.R;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
 import fragments.LocationSettingsFragment;
-import fragments.MyPostsFragment;
-import fragments.RecentPostsFragment;
 import fragments.MediaControllerFragment;
+import fragments.ProfileFragment;
+import fragments.RecentPostsFragment;
 import fragments.YouTubeFragment;
 import util.Constants;
 
@@ -80,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
         // send notification to user
         createBigPictureStyleNoti(72,R.drawable.ic_logo_placeholder, "Oktoberfest!",
                 "Live Band playing at the Roxy");
-
-
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = RecentPostsFragment.class;
                 break;
             case R.id.nav_profile_fragment:
-                fragmentClass = MyPostsFragment.class;
+                fragmentClass = ProfileFragment.class;
                 break;
             case R.id.nav_video_fragment: //test video player
                 fragmentClass = MediaControllerFragment.class;
