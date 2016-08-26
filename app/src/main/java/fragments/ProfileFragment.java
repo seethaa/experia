@@ -1,5 +1,6 @@
 package fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,19 +12,28 @@ import android.widget.Toast;
 
 import com.experia.experia.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class ProfileFragment extends Fragment {
+    FirebaseAuth auth;
+    FirebaseUser user;
+    Uri profilePhotoUrl;
+    String displayName;
+    String email;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         Log.d("DEBUG", "profile");
         if(auth !=null)
         {
-            String url = auth.getCurrentUser().getPhotoUrl().toString();
-            Log.d("DEBUG", url);
-            Toast.makeText(getContext(), "Profile Url: " + url, Toast.LENGTH_LONG).show();
+            user = auth.getCurrentUser();
+            profilePhotoUrl = auth.getCurrentUser().getPhotoUrl();
+            Toast.makeText(getContext(), "Profile Url: " + profilePhotoUrl.toString(), Toast.LENGTH_LONG).show();
+            displayName = user.getDisplayName();
+            email = user.getEmail();
         }
     }
 
