@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
-import com.experia.experia.activities.GeofenceTransitionsIntentService;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -57,6 +56,7 @@ import java.util.List;
 
 import models.Experience;
 import permissions.dispatcher.NeedsPermission;
+import services.GeofenceTransitionsIntentService;
 import services.MapPermissionsDispatcher;
 
 

@@ -1,13 +1,8 @@
 package com.experia.experia.activities;
 
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,10 +13,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.experia.experia.R;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import fragments.BookmarksFragment;
 import fragments.CategoryFragment;
@@ -30,7 +28,7 @@ import fragments.MediaControllerFragment;
 import fragments.ProfileFragment;
 import fragments.RecentPostsFragment;
 import fragments.YouTubeFragment;
-import util.Constants;
+import models.NamedGeofence;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -76,9 +74,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // send notification to user
-        createBigPictureStyleNoti(72,R.drawable.ic_logo_placeholder, "Oktoberfest!",
-                "Live Band playing at the Roxy");
+        GeofenceController.getInstance().init(this);
+        //Hardcode for geofence example
+        NamedGeofence geofence = new NamedGeofence();
+        geofence.name = "Event1";
+        geofence.latitude = 37.41069;
+        geofence.longitude = -121.93855;
+        geofence.radius = 0.1f;
+
+        //TODO put geofence from Geofire
+        GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int googlePlayServicesCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        Log.i(MainActivity.class.getSimpleName(), "googlePlayServicesCode = " + googlePlayServicesCode);
+
+        if (googlePlayServicesCode == 1 || googlePlayServicesCode == 2 || googlePlayServicesCode == 3) {
+            GooglePlayServicesUtil.getErrorDialog(googlePlayServicesCode, this, 0).show();
+        }
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -176,56 +192,20 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    //BigPicture Style Layout
-    private void createBigPictureStyleNoti (int nId, int iconRes, String title, String body) {
-        // First let's define the intent to trigger when notification is selected
-        // Start out by creating a normal intent (in this case to open an activity)
-        Intent intent = new Intent(this, MainActivity.class);
-        // Next, let's turn this into a PendingIntent using
-        //   public static PendingIntent getActivity(Context context, int requestCode,
-        //       Intent intent, int flags)
-        int requestID = (int) System.currentTimeMillis(); //unique requestID to differentiate between various notification with same NotifId
-        int flags = PendingIntent.FLAG_CANCEL_CURRENT; // cancel old intent and create new one
-        PendingIntent pIntent = PendingIntent.getActivity(this, requestID, intent, flags);
+    // region GeofenceControllerListener
 
-        // .setLargeIcon expects a bitmap
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_bitmap_lg_crown);
+    private GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
+        @Override
+        public void onGeofencesUpdated() {
+            //TODO update the geoFire
+        }
 
-        // Big picture for style
-        final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.big_oktober_fest);
+        @Override
+        public void onError() {
+            Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+        }
+    };
 
-        //Items visible in Collapsed InboxView
-        String contentText = "Learn archery from the best instructors who'll take the time to get " +
-                "you up and running and see you hitting the target.";
-        String subText = "Located in SoMa";
+    // endregion
 
-        //Items visible in Expanded InboxView
-        String bigContentText = "Learn the archery of Robin Hood";
-        String summaryText = "Serious fun with bows & arrows";
-
-        // InboxStyle Notification
-        Notification bigPictStyleNotification = new NotificationCompat.Builder(this)
-                .setContentTitle(title)
-                .setContentText(contentText)
-                .addAction(R.drawable.ic_phone_call,"ACTION",pIntent)
-                .addAction(R.drawable.ic_calendar,"ACTION",pIntent)
-                .addAction(R.drawable.ic_invite_friends,"ACTION",pIntent)
-                .setSmallIcon(iconRes)  //miniature
-                .setLargeIcon(largeIcon)
-                .setSubText(subText)
-                .setAutoCancel(true) // Hides the notification after its been selected
-                .setPriority(Constants.NOTICE_PRIORITY_MAX)
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .setBigContentTitle(bigContentText)
-                        .setSummaryText(summaryText)
-                        .bigPicture(picture))
-                .build();
-
-        // Get the notification manager system service
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-        mNotificationManager.notify(nId, bigPictStyleNotification);
-    }
 }

@@ -42,7 +42,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/fb_app_id"/>
-        <service android:name=".activities.GeofenceTransitionsIntentService"/>
+        <service android:name="services.GeofenceTransitionsIntentService"/>
         <activity
             android:name=".activities.LoginActivity"
             android:label="Experia">
