@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.experia.experia.Manifest;
@@ -61,12 +62,14 @@ import services.MapPermissionsDispatcher;
 public class LocationSettingsFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, View.OnClickListener {
 
     private static final String TAG = "MapMarkerFragment";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     MapView mMapView;
+    private ImageButton mZoomInButton;
+    private ImageButton mZoomOutButton;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
@@ -128,6 +131,10 @@ public class LocationSettingsFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_location, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
+        mZoomInButton = (ImageButton) rootView.findViewById(R.id.btnZoomIn);
+        mZoomOutButton = (ImageButton) rootView.findViewById(R.id.btnZoomOut);
+        mZoomInButton.setOnClickListener(this);
+        mZoomOutButton.setOnClickListener(this);
 
         mMapView.onResume(); // needed to get the map to display immediately
 
@@ -270,6 +277,9 @@ public class LocationSettingsFragment extends Fragment implements
             return false;
         }
     }
+
+
+
     // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
 
@@ -313,8 +323,8 @@ public class LocationSettingsFragment extends Fragment implements
         if (location != null) {
             //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            map.moveCamera(cameraUpdate);
             // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
             GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 200
             );
@@ -477,6 +487,19 @@ public class LocationSettingsFragment extends Fragment implements
                 .title("title1")
                 .snippet("desc1")
                 .icon(defaultMarker));
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.btnZoomIn) {
+            map.moveCamera(CameraUpdateFactory.zoomIn());
+        }
+        else if (i == R.id.btnZoomOut){
+            map.moveCamera(CameraUpdateFactory.zoomOut());
+        }
+
 
     }
 }
