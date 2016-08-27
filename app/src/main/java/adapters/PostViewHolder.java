@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView tvTitle;
     public TextView tvSubtext;
     public ImageView ivExperience;
+    public ImageButton ivCategory;
     public TextView tvExpand;
     public TextView tvDescription;
     public Context mContext;
@@ -28,6 +30,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
         tvSubtext = (TextView) itemView.findViewById(R.id.tvSubtext);
         ivExperience = (ImageView) itemView.findViewById(R.id.ivExperienceImage);
+        ivCategory = (ImageButton) itemView.findViewById(R.id.ivCategory);
+
 //        starView = (ImageView) itemView.findViewById(R.id.star);
 //        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
         tvExpand = (TextView) itemView.findViewById(R.id.tvExpand);
@@ -79,6 +83,41 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
 
         }
+
+        int catType = post.type;
+        int resID=R.drawable.icon_unknown;
+        switch (catType) {
+            case 1: //athlete
+                resID = R.drawable.icon_athlete_a;
+                break;
+            case 2: //relax
+                resID = R.drawable.icon_relax;
+                break;
+            case 3: //impact
+                resID = R.drawable.icon_impact;
+                break;
+            case 4: //music
+                resID = R.drawable.icon_music;
+                break;
+            case 5: //art
+                resID = R.drawable.icon_arts;
+                break;
+            case 6: //outdoors
+                resID = R.drawable.icon_outdoors;
+                break;
+            case 7: //skill/learn
+                resID = R.drawable.icon_learn;
+                break;
+            default: //unknown
+                resID = R.drawable.icon_unknown;
+                break;
+        }
+//            Glide.with(mContext).load(resID).centerCrop().placeholder(R.drawable.icon_unknown)
+//                    .into(ivCategory);
+        ivCategory.setImageResource(resID);
+
+
+
 
 //        starView.setOnClickListener(starClickListener);
 

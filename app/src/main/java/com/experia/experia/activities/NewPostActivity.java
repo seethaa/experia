@@ -72,7 +72,6 @@ public class NewPostActivity extends BaseActivity {
 
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
-
         mNumberGuests = (EditText) findViewById(R.id.field_numGuests);
         mDate = (EditText) findViewById(R.id.field_date);
         mDuration = (EditText) findViewById(R.id.field_duration);

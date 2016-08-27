@@ -18,6 +18,7 @@ public class Experience {
     public String title;
     public String author;
     public String description;
+    public String category;
     public String numGuests;
     public String date;
     public String duration;
@@ -45,24 +46,6 @@ public class Experience {
         this.type = type;
     }
 
-    //for testing
-//    public Experience(String s, String s1) {
-//        this.title = s;
-//        this.description = s1;
-//    }
-//
-//    public Experience(String uid, String title, String author, String description) {
-//        this.uid = uid;
-//        this.title = title;
-//        this.author = author;
-//        this.description = description;
-//    }
-
-//    private void writeNewUser(String userId, String name, String email) {
-//        Experience user = new User(name, email);
-//
-//        mDatabase.child("users").child(userId).setValue(user);
-//    }
 
     @Exclude
     public Map<String, Object> toMap() {

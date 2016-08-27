@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#2c3e50</color>
     <color name="colorAccent">#34495e</color>
     <color name="blueGrey">#34495e</color>
+    <color name="transparent">#00000000</color>
+    <color name="darkGrey">#272727</color>
+    <color name="semiblack">#99ffffff</color>
 
 
     <color name="red">#e53e14</color>

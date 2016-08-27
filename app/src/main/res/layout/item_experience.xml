@@ -116,14 +116,17 @@
                 android:layout_above="@+id/tvTitle"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:gravity="right">
+                android:gravity="right"
+                android:layout_toEndOf="@+id/tvDescription"
+                android:layout_toRightOf="@+id/tvDescription"
+                android:id="@+id/linearLayout3">
 
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/btnBookmark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_bookmark"
+                    android:src="@drawable/icon_heart"
                     app:backgroundTint="@color/colorPrimary"
                     android:layout_marginRight="10dp"
                     app:elevation="4dp"
@@ -143,7 +146,7 @@
                     android:id="@+id/btnRSVP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_add"
+                    android:src="@drawable/icon_join"
                     app:backgroundTint="@color/colorPrimary"
                     android:layout_marginRight="10dp"
                     app:elevation="4dp"
@@ -157,6 +160,34 @@
                     <!--android:src="@drawable/icon_add" />-->
 
             </LinearLayout>
+
+
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/ivCategory"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/icon_impact_a"-->
+                <!--app:backgroundTint="@color/colorPrimary"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--app:elevation="4dp"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignLeft="@+id/tvTitle"-->
+                <!--android:layout_alignStart="@+id/tvTitle"-->
+                <!--android:layout_margin="5dp"-->
+                <!--/>-->
+
+            <ImageButton
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:text=""
+                android:id="@+id/ivCategory"
+                android:background="@color/semiblack"
+                android:clickable="false"
+                android:src="@drawable/icon_impact"
+                android:padding="5dp"
+                android:layout_alignBottom="@+id/ivExperienceImage"
+                android:layout_alignLeft="@+id/tvTitle"
+                android:layout_alignStart="@+id/tvTitle" />
 
 
         </RelativeLayout>
