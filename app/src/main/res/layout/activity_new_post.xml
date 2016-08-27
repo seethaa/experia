@@ -101,14 +101,24 @@
         android:layout_alignStart="@+id/field_imgURL" />
 
     <EditText
+        android:id="@+id/field_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type: 1 thrill; 2 social; 3 fun; 0 default"
+        android:scrollHorizontally="false"
+        android:layout_below="@+id/field_address"
+        android:layout_alignLeft="@+id/field_address"
+        android:layout_alignStart="@+id/field_address" />
+
+    <EditText
         android:id="@+id/field_latitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Latitude"
         android:scrollHorizontally="false"
-        android:layout_below="@+id/field_address"
-        android:layout_alignLeft="@+id/field_address"
-        android:layout_alignStart="@+id/field_address" />
+        android:layout_below="@+id/field_type"
+        android:layout_alignLeft="@+id/field_type"
+        android:layout_alignStart="@+id/field_type" />
 
     <EditText
         android:id="@+id/field_longitude"

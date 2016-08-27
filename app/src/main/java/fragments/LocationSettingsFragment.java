@@ -45,14 +45,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Experience;
 import permissions.dispatcher.NeedsPermission;
 import services.MapPermissionsDispatcher;
 
@@ -62,7 +65,7 @@ public class LocationSettingsFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-
+    private static final String TAG = "LocationSettingsFragment";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     MapView mMapView;
@@ -100,9 +103,9 @@ public class LocationSettingsFragment extends Fragment implements
                     "1",
                     37.3400693,
                     -121.9213346,
-                    60.0f);
+                    65.f);
             AddGeofence(g);
-            AddMarker(g);
+            addMarker(g);
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -323,12 +326,13 @@ public class LocationSettingsFragment extends Fragment implements
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
             // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
-            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 200);
+            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 200
+            );
             geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                 @Override
                 public void onKeyEntered(String key, GeoLocation location) {
                     System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                    AddMarker(key, location);
+                    addMarker(key, location);
                 }
 
                 @Override
@@ -464,7 +468,7 @@ public class LocationSettingsFragment extends Fragment implements
                 .build());
     }
 
-    private void AddMarker(SimpleGeofence g){
+    private void addMarker(SimpleGeofence g){
         // Set the color of the marker to green
         BitmapDescriptor defaultMarker =
                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
@@ -478,19 +482,67 @@ public class LocationSettingsFragment extends Fragment implements
                 .snippet("desc1")
                 .icon(defaultMarker));
     }
-    private void AddMarker(String key, GeoLocation location) {
+    private void addMarker(final String key, final GeoLocation location) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        Experience exp = dataSnapshot.getValue(Experience.class);
+                        Log.d("DEBUG", exp.toString());
+                        // [START_EXCLUDE]
+                        if (exp == null) {
+                            // User is null, error out
+                            Log.e(TAG, "Experience " + key + " is unexpectedly null");
+                        } else {
+                            int type = exp.type;
+                            System.out.println("DEBUG GOT HERE");
+                            Log.d(TAG, Integer.toString(type));
+                            setMarker(type, location);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
+    }
+
+    private void setMarker(int type, GeoLocation location) {
+        System.out.println("DEBUG SET Marker type = "+ type);
         // Set the color of the marker to green
-        BitmapDescriptor defaultMarker =
-                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+        BitmapDescriptor defaultMarker;
+        switch(type){
+            case 1:
+                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_favorite);
+                break;
+            case 2:
+                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_invite_friends);
+                break;
+            case 3:
+                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_calendar);
+                break;
+            default:
+                defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                break;
+        }
+
+        Log.d(TAG, defaultMarker.toString());
+
+
         // listingPosition is a LatLng point
         LatLng listingPosition = new LatLng(location.latitude, location.longitude);
         // Create the marker on the fragment
         Log.d("DEBUG", map.toString());
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Marker mapMarker = map.addMarker(new MarkerOptions()
                 .position(listingPosition)
                 .title("title1")
                 .snippet("desc1")
                 .icon(defaultMarker));
+
+
     }
 }

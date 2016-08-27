@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="type">
+        <item>thrill</item>
+        <item>social</item>
+        <item>fun</item>
+    </string-array>
+</resources>

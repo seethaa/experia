@@ -50,6 +50,7 @@ public class NewPostActivity extends BaseActivity {
     private EditText mTags;
     private EditText mImgURL;
     private EditText mAddress;
+    private EditText mType;
     private EditText mLatitude;
     private EditText mLongitude;
 
@@ -78,6 +79,7 @@ public class NewPostActivity extends BaseActivity {
         mTags = (EditText) findViewById(R.id.field_tags);
         mImgURL = (EditText) findViewById(R.id.field_imgURL);
         mAddress = (EditText) findViewById(R.id.field_address);
+        mType = (EditText) findViewById(R.id.field_type);
         mLatitude = (EditText) findViewById(R.id.field_latitude);
         mLongitude = (EditText) findViewById(R.id.field_longitude);
 
@@ -221,6 +223,7 @@ public class NewPostActivity extends BaseActivity {
         final String tags = mTags.getText().toString();
         final String imgURL = mImgURL.getText().toString();
         final String address = mAddress.getText().toString();
+        final int type = Integer.parseInt(String.valueOf(mType.getText()));
         double latitude;
         double longitude;
         try{
@@ -279,7 +282,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, finalLatitude, finalLongitude);
+                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, type, finalLatitude, finalLongitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -296,13 +299,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, double latitude, double longitude ) {
+    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address);
+        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address, type);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
