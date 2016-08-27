@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         geofence.name = "Event1";
         geofence.latitude = 37.41069;
         geofence.longitude = -121.93855;
-        geofence.radius = 0.1f;
+        geofence.radius = 20f;
 
         //TODO put geofence from Geofire
         GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);

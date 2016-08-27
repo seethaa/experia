@@ -2,7 +2,6 @@ package fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -56,7 +55,6 @@ import java.util.List;
 
 import models.Experience;
 import permissions.dispatcher.NeedsPermission;
-import services.GeofenceTransitionsIntentService;
 import services.MapPermissionsDispatcher;
 
 
@@ -74,7 +72,7 @@ public class LocationSettingsFragment extends Fragment implements
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private List<Geofence> mGeofenceList;
-    private PendingIntent mGeofencePendingIntent;
+    //private PendingIntent mGeofencePendingIntent;
     private DatabaseReference ref;
     private GeoFire geoFire;
 
@@ -98,14 +96,6 @@ public class LocationSettingsFragment extends Fragment implements
             // Map is ready
             Toast.makeText(getContext(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             MapPermissionsDispatcher.getMyLocationWithCheck(this);
-
-            SimpleGeofence g = new SimpleGeofence(
-                    "1",
-                    37.3400693,
-                    -121.9213346,
-                    65.f);
-            AddGeofence(g);
-            addMarker(g);
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -359,10 +349,6 @@ public class LocationSettingsFragment extends Fragment implements
             Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
         startLocationUpdates();
-        Log.d("DEBUG", mGoogleApiClient.toString());
-        mGeofencePendingIntent = getGeofencePendingIntent();
-        LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, mGeofenceList,
-                mGeofencePendingIntent);
     }
 
     protected void startLocationUpdates() {
@@ -386,17 +372,6 @@ public class LocationSettingsFragment extends Fragment implements
                 mLocationRequest, this);
     }
 
-    private PendingIntent getGeofencePendingIntent() {
-        // Reuse the PendingIntent if we already have it.
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(getContext(), GeofenceTransitionsIntentService.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        return PendingIntent.getService(getContext(), 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
-    }
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -442,46 +417,6 @@ public class LocationSettingsFragment extends Fragment implements
         }
     }
 
-    private class SimpleGeofence {
-        String id;
-        double latitude;
-        double longitude;
-        float radius;
-        SimpleGeofence(String id, double latitude, double longitude, float radius) {
-            this.id = id;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.radius = radius;
-        }
-    }
-
-    private void AddGeofence(SimpleGeofence g) {
-        mGeofenceList.add(new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId(g.id)
-
-                .setCircularRegion(g.latitude, g.longitude, g.radius)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-    }
-
-    private void addMarker(SimpleGeofence g){
-        // Set the color of the marker to green
-        BitmapDescriptor defaultMarker =
-                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-        // listingPosition is a LatLng point
-        LatLng listingPosition = new LatLng(g.latitude, g.longitude);
-        // Create the marker on the fragment
-        Log.d("DEBUG", map.toString());
-        Marker mapMarker = map.addMarker(new MarkerOptions()
-                .position(listingPosition)
-                .title("title1")
-                .snippet("desc1")
-                .icon(defaultMarker));
-    }
     private void addMarker(final String key, final GeoLocation location) {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
