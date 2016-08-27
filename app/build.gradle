@@ -27,7 +27,7 @@ android {
         // Build variant to include the Facebook Android SDk
         // The Facebook Android SDK has a min SDK version of 15
         facebook {
-            minSdkVersion 15
+            minSdkVersion 16
         }
     }
 }
