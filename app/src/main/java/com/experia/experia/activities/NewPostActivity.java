@@ -106,6 +106,8 @@ public class NewPostActivity extends BaseActivity {
 
         geoRef = FirebaseDatabase.getInstance().getReference("path/to/geofire");
         geoFire = new GeoFire(geoRef);
+
+
     }
 
     public void onLaunchCamera(View view) {

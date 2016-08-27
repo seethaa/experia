@@ -65,7 +65,7 @@ public class LocationSettingsFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private static final String TAG = "LocationSettingsFragment";
+    private static final String TAG = "MapMarkerFragment";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     MapView mMapView;
@@ -542,7 +542,6 @@ public class LocationSettingsFragment extends Fragment implements
                 .title("title1")
                 .snippet("desc1")
                 .icon(defaultMarker));
-
 
     }
 }

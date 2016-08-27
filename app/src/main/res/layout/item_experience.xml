@@ -16,120 +16,150 @@
     android:clickable="true">
 
 
-    <android.support.percent.PercentFrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignLeft="@+id/btnRSVP"
-            android:layout_alignStart="@+id/btnRSVP">
+          >
 
             <ImageView
                 android:layout_width="match_parent"
-                app:layout_widthPercent="100%"
-                app:layout_aspectRatio="178%"
                 android:id="@+id/ivExperienceImage"
-                android:src="@drawable/im_cooking_class"
+                android:src="@drawable/placeholderimg"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="16dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_marginLeft="8dp"
-                android:layout_width="wrap_content"
-                android:textSize="24sp"
-                android:textColor="@color/black"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ivExperience"
-                tools:text="Kayaking in Mendocino"
-                />
+                android:layout_height="250dp"
+                android:layout_marginBottom="25dp" />
 
             <TextView
                 android:id="@+id/tvSubtext"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@+id/ivExperience"
-                android:layout_marginBottom="16dp"
                 tools:text="#Thrill #Fun"
-
-                />
-
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
-                android:layout_marginLeft="8dp"
-                android:layout_width="375dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_favorite"
-                    android:background="#00000000"
-                    android:id="@+id/btnBookmark"
-                    android:layout_alignTop="@+id/ivExpand"
-                    android:layout_toRightOf="@+id/btnRSVP"
-                    android:layout_toEndOf="@+id/btnRSVP" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_map"
-                    android:padding="8dp"
-                    android:id="@+id/btnRSVP"
-                    android:text="RSVP" />
-
-                <ImageView
-                    android:id="@+id/ivExpand"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="right"
-                    android:src="@drawable/icon_chevron_up"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="32dp" />
+                android:layout_below="@+id/tvTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
 
-            </RelativeLayout>
+
+
+
+
+
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvExpand"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:paddingRight="16dp"
-                android:paddingLeft="16dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_height="wrap_content"
+                android:drawableRight="@drawable/icon_chevron_up"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="MORE"
+                android:layout_gravity="center"
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_marginBottom="24dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:paddingRight="16dp"
+                    android:paddingLeft="16dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_height="wrap_content"
+                    tools:text="blahblahblah"
+                    android:layout_below="@+id/tvExpand"
+                    android:layout_alignLeft="@+id/tvSubtext"
+                    android:layout_alignStart="@+id/tvSubtext" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"
+                    tools:text="Kayaking in Mendocino"
+                    android:layout_below="@+id/ivExperienceImage"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/tvSubtext"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/view" />
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_gravity="right"
+                android:layout_above="@+id/tvTitle"
                 android:layout_alignParentRight="true"
-                android:layout_alignBottom="@+id/ivExperience"
-                tools:text="blahblahblah"
+                android:layout_alignParentEnd="true"
+                android:gravity="right">
+
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnBookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_bookmark"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:layout_marginRight="10dp"
+                    app:elevation="4dp"
                 />
 
-        </LinearLayout>
+                <!--<ImageButton-->
+                    <!--android:id="@+id/btnBookmark"-->
+                    <!--android:background="@drawable/circle"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:layout_marginRight="8dp"-->
+                    <!--android:src="@drawable/icon_bookmark"-->
+                    <!--/>-->
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnRSVP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_add"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:layout_marginRight="10dp"
+                    app:elevation="4dp"
+                    />
+                <!--<ImageButton-->
+                    <!--android:id="@+id/btnRSVP"-->
+                    <!--android:background="@drawable/circle"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:src="@drawable/icon_add" />-->
+
+            </LinearLayout>
 
 
-
-    </android.support.percent.PercentFrameLayout>
+        </RelativeLayout>
 
 
 
