@@ -4,20 +4,20 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.experia.experia.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import models.CreateNewExperience;
 
 /**
  * Created by doc_dungeon on 8/27/16.
@@ -87,6 +87,23 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
+        etStreet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         return rootView;
     }
 
@@ -99,19 +116,23 @@ public class CreateExTimeLocationFragment extends Fragment {
         String exCity = etCity.getText().toString();
         String exState = etState.getText().toString();
 
-        CreateNewExperience createNewExperience = CreateNewExperience.last(CreateNewExperience.class);
-        createNewExperience.experience_time_date = exTimeDate; // modify the values
-        createNewExperience.experience_street_addr = exStreet;
-        createNewExperience.experience_city= exCity;
-        createNewExperience.experience_state = exState;
-        createNewExperience.save(); // updates the previous entry with new values.
+        /*Sugar ORM
+        Creation creation = Creation.last(Creation.class);
+
+        creation.experience_time_date = exTimeDate; // modify the values
+        creation.experience_street_addr = exStreet;
+        creation.experience_city= exCity;
+        creation.experience_state = exState;
+        creation.save(); // updates the previous entry with new values.
+                 */
     }
 
     public void checkDB(View view){
-        CreateNewExperience last = CreateNewExperience.last(CreateNewExperience.class);
-        String ex = last.experience_time_date + "-" + last.experience_street_addr  + "-"
-                + last.experience_city  + "-" + last.experience_state;
-        Toast.makeText(getContext(),ex,Toast.LENGTH_SHORT).show();
+        //Sugar ORM
+        //Creation last = Creation.last(Creation.class);
+        //String ex = last.experience_time_date + "-" + last.experience_street_addr  + "-"
+       //         + last.experience_city  + "-" + last.experience_state;
+        //Toast.makeText(getContext(),ex,Toast.LENGTH_SHORT).show();
     }
 
     public void showDatePickerDialog(View v) {

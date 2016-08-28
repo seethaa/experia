@@ -57,7 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etDescription"
         android:layout_centerHorizontal="true"
-        android:text="SAVE"/>
+        android:text="SAVE"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/query"

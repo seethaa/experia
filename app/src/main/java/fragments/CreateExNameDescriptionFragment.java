@@ -1,9 +1,12 @@
 package fragments;
 
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,11 @@ import com.experia.experia.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import models.CreateNewExperience;
+import models.Creation;
+import util.CupboardDBHelper;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+
 
 /**
  * Created by doc_dungeon on 8/27/16.
@@ -33,6 +40,7 @@ public class CreateExNameDescriptionFragment extends Fragment {
     @BindView(R.id.iv_icon)
     ImageView logoImageView;
     private Unbinder unbinder;
+    static SQLiteDatabase db;
 
     private static final String ARG_SECTION_NUMBER = "section-icon";
     private static final String ARG_SECTION_COLOR = "section-color";
@@ -54,7 +62,6 @@ public class CreateExNameDescriptionFragment extends Fragment {
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
-        deleteRecords(rootView);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,33 +77,47 @@ public class CreateExNameDescriptionFragment extends Fragment {
             }
         });
 
+        CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+        // Create a Bunny
+        Creation ex = new Creation("nothing","nothing","nothing","nothing","nothing","nothing","nothing","nothing","nothing","nothing",0);
+        long id = cupboard().withDatabase(db).put(ex);
+
+        experienceName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
         return rootView;
     }
 
-    public void deleteRecords(View view){
-        //empty records
-        //CreateNewExperience.deleteAll(CreateNewExperience.class);
-    }
 
     public void setNameDescription(View view){
 
-        String exName  = experienceName.getText().toString();
-        String exDescription = experienceDescription.getText().toString();
-        String exTimeDate = "";
-        String exStreet = "";
-        String exCity = "";
-        String exState = "";
 
-        //create record
-        CreateNewExperience createNewExperience = new CreateNewExperience(exName, exDescription, exTimeDate, exStreet,
-                exCity, exState);
-        createNewExperience.save();
+        //Sugar ORM
+        //Creation creation = new Creation(exName, exDescription, exTimeDate, exStreet, exCity, exState);
+        //creation.save();
     }
 
     public void checkDB(View view){
-        CreateNewExperience last = CreateNewExperience.last(CreateNewExperience.class);
-        String ex = last.experience_name + "-" + last.experience_description;
-        Toast.makeText(getContext(),ex,Toast.LENGTH_SHORT).show();
+        //Sugar ORM
+        //Creation last = Creation.last(Creation.class);
+        Creation creation = cupboard().withDatabase(db).query(Creation.class).get();
+        String entry = creation.title;
+        Toast.makeText(getContext(),entry,Toast.LENGTH_SHORT).show();
     }
 
     @Override

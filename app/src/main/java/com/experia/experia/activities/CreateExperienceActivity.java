@@ -1,5 +1,6 @@
 package com.experia.experia.activities;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import adapters.SimpleFragmentAdapter;
 import fragments.CreateExNameDescriptionFragment;
 import fragments.CreateExPhotoFragment;
 import fragments.CreateExTimeLocationFragment;
+import util.CupboardDBHelper;
 
 /**
  * Created by doc_dungeon on 8/27/16.
@@ -21,6 +23,8 @@ public class CreateExperienceActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ExtensiblePageIndicator extensiblePageIndicator;
     CreateExNameDescriptionFragment createExNameDescriptionFragment;
+
+    static SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,9 @@ public class CreateExperienceActivity extends AppCompatActivity {
         createExNameDescriptionFragment = (CreateExNameDescriptionFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentC);
 
+        // setup database
+        CupboardDBHelper dbHelper = new CupboardDBHelper(this);
+        db = dbHelper.getWritableDatabase();
     }
 
 
