@@ -92,11 +92,17 @@ public abstract class PostListFragment extends Fragment {
                 if (model.stars.containsKey(getUid())) {
                     viewHolder.starView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_full_heart));
 
-//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
                 } else {
                     viewHolder.starView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_heart));
+                }
 
-//                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
+                // Determine if the current user has alsready joined this experience and set UI accordingly
+                if (model.joins.containsKey(getUid())) {
+                    viewHolder.joinView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_joined));
+
+                } else {
+                    viewHolder.joinView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_join_a));
+
                 }
 
 //                Glide.with(getActivity()).load("ewlkf").centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
@@ -111,6 +117,17 @@ public abstract class PostListFragment extends Fragment {
                         // Run two transactions
                         onStarClicked(globalPostRef);
                         onStarClicked(userPostRef);
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View joinView) {
+                        // Need to write to both places the post is stored
+                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
+                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
+
+                        // Run two transactions
+                        onJoinClicked(globalPostRef);
+                        onJoinClicked(userPostRef);
                     }
                 });
 
@@ -153,6 +170,48 @@ public abstract class PostListFragment extends Fragment {
         });
     }
     // [END post_stars_transaction]
+
+
+    // [START post_joins_transaction]
+    private void onJoinClicked(DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Experience p = mutableData.getValue(Experience.class);
+                if (p == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (p.joins.containsKey(getUid())) { //already joined this experience
+                    // Unstar the post and remove self from stars
+                    p.joinCount = p.joinCount - 1;
+                    p.joins.remove(getUid());
+                    p.setSpotsLeft(p.totalSpots - p.joinCount);
+
+                } else {
+                    if (p.spotsLeft>=1) {
+                        // join the post and add self to number of joins
+                        p.joinCount = p.joinCount + 1;
+                        p.joins.put(getUid(), true);
+                        p.setSpotsLeft(p.totalSpots - p.joinCount);
+                    }
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(p);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+    // [END post_joins_transaction]
+
 
     @Override
     public void onDestroy() {

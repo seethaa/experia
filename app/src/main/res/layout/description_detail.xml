@@ -24,8 +24,6 @@
         android:maxEms="20"
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pharetra arcu mauris, commodo rutrum magna bibendum vitae. Quisque ac massa magna. Curabitur volutpat vitae tortor vitae molestie. Sed sit amet orci aliquam, consequat arcu eu, finibus velit. Etiam ut luctus nisl. In tincidunt nisi in aliquet scelerisque. Duis consectetur magna quis nunc consectetur, in condimentum libero efficitur. Vestibulum faucibus at lacus at consectetur."
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageButton"
-        android:layout_toEndOf="@+id/imageButton"
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp" />
 

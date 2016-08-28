@@ -29,6 +29,9 @@ public class Experience {
     public int type;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
+    public int joinCount = 0;
+    public Map<String, Boolean> joins = new HashMap<>();
+
 
     public Experience(){
         // Default constructor required for calls to DataSnapshot.getValue(Experience.class)
@@ -46,9 +49,13 @@ public class Experience {
         this.imgURL = imgURL;
         this.address = address;
         this.type = type;
-        this.spotsLeft = totalSpots;
+
     }
 
+    public int getSpotsLeft(){
+        spotsLeft = totalSpots - joinCount;
+        return spotsLeft;
+    }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -66,6 +73,12 @@ public class Experience {
         result.put("type", type);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("joinCount", joinCount);
+        result.put("joins", joins);
         return result;
+    }
+
+    public void setSpotsLeft(int spotsLeft) {
+        this.spotsLeft = spotsLeft;
     }
 }

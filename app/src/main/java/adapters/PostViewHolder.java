@@ -25,6 +25,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView tvDescription;
     public Context mContext;
     public FloatingActionButton starView;
+    public FloatingActionButton joinView;
+
 
     public PostViewHolder(View itemView) {
         super(itemView);
@@ -34,6 +36,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         tvSubtext = (TextView) itemView.findViewById(R.id.tvSubtext);
         tvSpotsLeft = (TextView) itemView.findViewById(R.id.tvSpotsLeft);
         starView = (FloatingActionButton) itemView.findViewById(R.id.btnBookmark);
+        joinView = (FloatingActionButton) itemView.findViewById(R.id.btnRSVP);
         ivExperience = (ImageView) itemView.findViewById(R.id.ivExperienceImage);
         ivCategory = (ImageButton) itemView.findViewById(R.id.ivCategory);
 
@@ -45,14 +48,14 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindToPost(Context applicationContext, Experience post, View.OnClickListener starClickListener) {
+    public void bindToPost(Context applicationContext, Experience post, View.OnClickListener starClickListener, View.OnClickListener joinClickListener) {
         mContext = applicationContext;
 
         tvTitle.setText(post.title);
         tvSubtext.setText(post.tags);
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
-        tvSpotsLeft.setText("3 Spots left");
+        tvSpotsLeft.setText(post.getSpotsLeft() + " spots left");
 
         tvExpand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,9 +126,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         ivCategory.setImageResource(resID);
 
 
-
-
         starView.setOnClickListener(starClickListener);
+        joinView.setOnClickListener(joinClickListener);
 
 
     }

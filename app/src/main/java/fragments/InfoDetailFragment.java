@@ -69,7 +69,7 @@ public class InfoDetailFragment extends Fragment {
         mBodyView.setText(mExperience.description);
         mAuthorView.setText(mExperience.author);
         mDate.setText(mExperience.date);
-        mSpotsAvailable.setText(mExperience.totalSpots + " spots left");
+        mSpotsAvailable.setText(mExperience.getSpotsLeft() + " spots left");
         mAddress.setText(mExperience.address);
 
 
