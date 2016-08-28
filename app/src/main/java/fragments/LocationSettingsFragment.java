@@ -2,9 +2,11 @@ package fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +15,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -62,7 +66,8 @@ import services.MapPermissionsDispatcher;
 public class LocationSettingsFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, View.OnClickListener {
+        LocationListener, View.OnClickListener ,
+        GoogleMap.OnCameraIdleListener{
 
     private static final String TAG = "MapMarkerFragment";
     private SupportMapFragment mapFragment;
@@ -78,6 +83,7 @@ public class LocationSettingsFragment extends Fragment implements
     //private PendingIntent mGeofencePendingIntent;
     private DatabaseReference ref;
     private GeoFire geoFire;
+    private int screenLength = 1080;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -102,6 +108,12 @@ public class LocationSettingsFragment extends Fragment implements
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
+        map.setOnCameraIdleListener(this);
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenLength = Math.min(size.x, size.y);
     }
 
     @Override
@@ -279,6 +291,66 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
 
+    @Override
+    public void onCameraIdle() {
+        float zoom = map.getCameraPosition().zoom;
+        double latitude = map.getCameraPosition().target.latitude;
+        double longitude = map.getCameraPosition().target.longitude;
+        Log.d(TAG, "zoom = " + Float.toString(zoom) + ", lat = " + Double.toString(latitude) + ", log = " + Double.toString(longitude));
+        double radius = calculateZoomLevel(zoom)/2000;
+        queryGeoFire(radius, latitude, longitude);
+    }
+
+    private void queryGeoFire(double radius, double latitude, double longitude) {
+        // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius
+        );
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
+                addMarker(key, location);
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+                System.out.println(String.format("Key %s is no longer in the search area", key));
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+                System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                System.out.println("All initial data has been loaded and events have been fired!");
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+                System.err.println("There was an error with this query: " + error);
+            }
+        });
+    }
+
+    private double calculateZoomLevel(float zoom) {
+        double equatorLength = 40075004; // in meters
+        double widthInPixels = screenLength;
+        double metersPerPixel = equatorLength / 2048;
+        double diameter = 0.0;
+        float zoomLevel = (float) 1.0;
+        while (zoomLevel < zoom) {
+            metersPerPixel /= 2;
+            zoomLevel = (float) (zoomLevel + 1.0);
+        }
+        diameter = metersPerPixel * widthInPixels;
+        Log.i(TAG, "diameter = "+diameter);
+        return diameter;
+    }
+
+
+
 
     // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
@@ -325,36 +397,7 @@ public class LocationSettingsFragment extends Fragment implements
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
             map.moveCamera(cameraUpdate);
-            // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
-            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 200
-            );
-            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-                @Override
-                public void onKeyEntered(String key, GeoLocation location) {
-                    System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                    addMarker(key, location);
-                }
 
-                @Override
-                public void onKeyExited(String key) {
-                    System.out.println(String.format("Key %s is no longer in the search area", key));
-                }
-
-                @Override
-                public void onKeyMoved(String key, GeoLocation location) {
-                    System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
-                }
-
-                @Override
-                public void onGeoQueryReady() {
-                    System.out.println("All initial data has been loaded and events have been fired!");
-                }
-
-                @Override
-                public void onGeoQueryError(DatabaseError error) {
-                    System.err.println("There was an error with this query: " + error);
-                }
-            });
         } else {
             Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
@@ -398,7 +441,8 @@ public class LocationSettingsFragment extends Fragment implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, msg);
+        //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
