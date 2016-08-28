@@ -26,7 +26,8 @@ public class Experience {
     public String imgURL;
     public String address;
     public int type;
-
+    public int starCount = 0;
+    public Map<String, Boolean> stars = new HashMap<>();
 
     public Experience(){
         // Default constructor required for calls to DataSnapshot.getValue(Experience.class)
@@ -61,7 +62,8 @@ public class Experience {
         result.put("imgURL", imgURL);
         result.put("address", address);
         result.put("type", type);
-
+        result.put("starCount", starCount);
+        result.put("stars", stars);
         return result;
     }
 }

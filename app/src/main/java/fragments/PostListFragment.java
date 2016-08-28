@@ -3,6 +3,7 @@ package fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -88,11 +89,15 @@ public abstract class PostListFragment extends Fragment {
                 });
 
                 // Determine if the current user has liked this post and set UI accordingly
-//                if (model.stars.containsKey(getUid())) {
+                if (model.stars.containsKey(getUid())) {
+                    viewHolder.starView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_full_heart));
+
 //                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
-//                } else {
+                } else {
+                    viewHolder.starView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_heart));
+
 //                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
-//                }
+                }
 
 //                Glide.with(getActivity()).load("ewlkf").centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
@@ -124,15 +129,15 @@ public abstract class PostListFragment extends Fragment {
                     return Transaction.success(mutableData);
                 }
 
-//                if (p.stars.containsKey(getUid())) {
-//                    // Unstar the post and remove self from stars
-//                    p.starCount = p.starCount - 1;
-//                    p.stars.remove(getUid());
-//                } else {
-//                    // Star the post and add self to stars
-//                    p.starCount = p.starCount + 1;
-//                    p.stars.put(getUid(), true);
-//                }
+                if (p.stars.containsKey(getUid())) {
+                    // Unstar the post and remove self from stars
+                    p.starCount = p.starCount - 1;
+                    p.stars.remove(getUid());
+                } else {
+                    // Star the post and add self to stars
+                    p.starCount = p.starCount + 1;
+                    p.stars.put(getUid(), true);
+                }
 
                 // Set value and report transaction success
                 mutableData.setValue(p);

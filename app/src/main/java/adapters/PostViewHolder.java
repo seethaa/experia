@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView tvExpand;
     public TextView tvDescription;
     public Context mContext;
+    public FloatingActionButton starView;
 
     public PostViewHolder(View itemView) {
         super(itemView);
@@ -29,6 +31,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
         tvSubtext = (TextView) itemView.findViewById(R.id.tvSubtext);
+        starView = (FloatingActionButton) itemView.findViewById(R.id.btnBookmark);
         ivExperience = (ImageView) itemView.findViewById(R.id.ivExperienceImage);
         ivCategory = (ImageButton) itemView.findViewById(R.id.ivCategory);
 
@@ -119,7 +122,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
 
 
-//        starView.setOnClickListener(starClickListener);
+        starView.setOnClickListener(starClickListener);
 
 
     }
