@@ -19,12 +19,13 @@ public class Experience {
     public String author;
     public String description;
     public String category;
-    public String numGuests;
+    public int totalSpots;
     public String date;
     public String duration;
     public String tags;
     public String imgURL;
     public String address;
+    public int spotsLeft;
     public int type;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
@@ -33,18 +34,19 @@ public class Experience {
         // Default constructor required for calls to DataSnapshot.getValue(Experience.class)
     }
 
-    public Experience(String uid, String title, String author, String description, String numGuests, String date, String duration, String tags, String imgURL, String address, int type) {
+    public Experience(String uid, String title, String author, String description, int numGuests, String date, String duration, String tags, String imgURL, String address, int type) {
         this.uid = uid;
         this.title = title;
         this.author = author;
         this.description = description;
-        this.numGuests = numGuests;
+        this.totalSpots = numGuests;
         this.date = date;
         this.duration = duration;
         this.tags = tags;
         this.imgURL = imgURL;
         this.address = address;
         this.type = type;
+        this.spotsLeft = totalSpots;
     }
 
 
@@ -55,7 +57,7 @@ public class Experience {
         result.put("title", title);
         result.put("author", author);
         result.put("description", description);
-        result.put("numGuests", numGuests);
+        result.put("totalSpots", totalSpots);
         result.put("date", date);
         result.put("duration", duration);
         result.put("tags", tags);

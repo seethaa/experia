@@ -218,7 +218,7 @@ public class NewPostActivity extends BaseActivity {
     private void submitPost() {
         final String title = mTitleField.getText().toString();
         final String body = mBodyField.getText().toString();
-        final String numGuests = mNumberGuests.getText().toString();
+        final int numGuests =  Integer.parseInt(String.valueOf(mNumberGuests.getText()));
         final String date = mDate.getText().toString();
         final String duration = mDuration.getText().toString();
         final String tags = mTags.getText().toString();
@@ -250,10 +250,6 @@ public class NewPostActivity extends BaseActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(numGuests)) {
-            mNumberGuests.setError(REQUIRED);
-            return;
-        }
         if (TextUtils.isEmpty(duration)) {
             mDuration.setError(REQUIRED);
             return;
@@ -300,11 +296,11 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, String numGuests, String date, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
+    private void writeNewPost(String userId, String username, String title, String body, int numGuests, String date, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        //    public Experience(String uid, String title, String author, String description, String numGuests, String duration) {
+        //    public Experience(String uid, String title, String author, String description, String totalSpots, String duration) {
 
         Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address, type);
         Map<String, Object> postValues = post.toMap();

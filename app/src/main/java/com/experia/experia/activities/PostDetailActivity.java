@@ -107,7 +107,7 @@ public class PostDetailActivity extends BaseActivity {
 //                mBodyView.setText(post.description);
 //                mAuthorView.setText(post.author);
 //                mDate.setText(post.date);
-//                mSpotsAvailable.setText(post.numGuests + " spots left");
+//                mSpotsAvailable.setText(post.totalSpots + " spots left");
 //                mAddress.setText(post.address);
 
 
