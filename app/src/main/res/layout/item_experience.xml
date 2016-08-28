@@ -118,8 +118,8 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="right"
                 android:layout_toEndOf="@+id/tvDescription"
-                android:layout_toRightOf="@+id/tvDescription"
-                android:id="@+id/linearLayout3">
+                android:id="@+id/linearLayout3"
+                android:layout_toRightOf="@+id/tvDescription">
 
 
                 <android.support.design.widget.FloatingActionButton
@@ -184,10 +184,23 @@
                 android:background="@color/semiblack"
                 android:clickable="false"
                 android:src="@drawable/icon_impact"
-                android:padding="5dp"
                 android:layout_alignBottom="@+id/ivExperienceImage"
                 android:layout_alignLeft="@+id/tvTitle"
                 android:layout_alignStart="@+id/tvTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="5 spots left"
+                android:id="@+id/tvSpotsLeft"
+                android:textColor="@color/red"
+                android:layout_below="@+id/ivExperienceImage"
+                android:layout_alignRight="@+id/tvSubtext"
+                android:layout_alignEnd="@+id/tvSubtext"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp" />
 
 
         </RelativeLayout>
