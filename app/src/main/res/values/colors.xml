@@ -29,4 +29,12 @@
     <color name="snackbar_action_color_done">#ffccccff</color>
 
     <color name="expandable_item_indicator_color">#42000000</color>
+
+    <!--create experience colors -->
+    <color name="frag1">#daeaf9</color>
+    <color name="frag2">#b6d6f5</color>
+    <color name="frag3">#9acaf9</color>
+    <color name="frag4">#4ba8fa</color>
+    <color name="frag5">#0783fa</color>
+    <color name="frag6">#055db3</color>
 </resources>

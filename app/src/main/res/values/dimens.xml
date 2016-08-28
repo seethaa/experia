@@ -10,4 +10,7 @@
 
     <dimen name="list_item_height">64dp</dimen>
 
+    <dimen name="on_board_top_margin">16dp</dimen>
+    <dimen name="create_frag_spacer">20dp</dimen>
+
 </resources>

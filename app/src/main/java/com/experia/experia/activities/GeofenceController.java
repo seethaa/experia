@@ -1,10 +1,14 @@
 package com.experia.experia.activities;
 
+import android.Manifest;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +43,7 @@ public class GeofenceController {
   private GeofenceControllerListener listener;
 
   private List<NamedGeofence> namedGeofences;
+
   public List<NamedGeofence> getNamedGeofences() {
     return namedGeofences;
   }
@@ -182,6 +187,16 @@ public class GeofenceController {
       Log.d("DEBUG", "onConnected");
       Intent intent = new Intent(context, GeofenceTransitionsIntentService.class);
       PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+      if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
+      }
       PendingResult<Status> result = LocationServices.GeofencingApi.addGeofences(googleApiClient, getAddGeofencingRequest(), pendingIntent);
       result.setResultCallback(new ResultCallback<Status>() {
         @Override
