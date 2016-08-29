@@ -22,16 +22,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import adapters.SimpleFragmentAdapter;
+import adapters.VerticalViewPager;
+import fragments.CreateExNameDescriptionFragment;
+import fragments.CreateExPhotoFragment;
+import fragments.CreateExTimeLocationFragment;
+import fragments.CreateExTotalTagsTypeFragment;
 import models.Experience;
 import models.User;
 
-public class NewPostActivity extends BaseActivity {
+public class NewPostActivity extends BaseActivity implements CreateExNameDescriptionFragment.OnNameAndDescriptionCompleteListener,
+        CreateExTimeLocationFragment.OnWhereAndWhenCompleteListener,
+        CreateExPhotoFragment.OnPhotoPickCompleteListener,
+        CreateExTotalTagsTypeFragment.OnTotaltagsTypeCompleteListener{
 
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
@@ -42,17 +52,31 @@ public class NewPostActivity extends BaseActivity {
     private GeoFire geoFire;
     // [END declare_database_ref]
 
-    private EditText mTitleField;
-    private EditText mBodyField;
-    private EditText mNumberGuests;
-    private EditText mDate;
-    private EditText mDuration;
-    private EditText mTags;
-    private EditText mImgURL;
-    private EditText mAddress;
-    private EditText mType;
-    private EditText mLatitude;
-    private EditText mLongitude;
+    private EditText etTitle;
+    private EditText etBody;
+    private EditText etNumGuests;
+    private EditText etDate;
+    private EditText etDuration;
+    private EditText etTags;
+    private EditText etImgURL;
+    private EditText etAddress;
+    private EditText etType;
+    private EditText etLatitude;
+    private EditText etLongitude;
+
+    String mTitle;
+
+    String mBody;
+    int mNumGuests;
+    String mDate;
+    String mTime;
+    String mDuration;
+    String mTags;
+    String mImgURL;
+    String mAddress;
+    int mType;
+    double mLatitude;
+    double mLongitude;
 
     // PICK_PHOTO_CODE is a constant integer
     public final static int PICK_PHOTO_CODE = 1046;
@@ -61,26 +85,60 @@ public class NewPostActivity extends BaseActivity {
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
 
+    private SimpleFragmentAdapter mSimpleFragmentAdapter;
+    private VerticalViewPager mViewPager;
+    private ExtensiblePageIndicator extensiblePageIndicator;
+    CreateExNameDescriptionFragment createExNameDescriptionFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_post);
+
+        setContentView(R.layout.activity_create_experience);
+
+        extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
+        mSimpleFragmentAdapter = new SimpleFragmentAdapter(getSupportFragmentManager());
+        mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionFragment.newInstance(R.color.frag1, R.drawable.char1));
+        mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
+        mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
+        mSimpleFragmentAdapter.addFragment(CreateExPhotoFragment.newInstance(R.color.frag3, R.drawable.char3));
+
+        mViewPager = (VerticalViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSimpleFragmentAdapter);
+        extensiblePageIndicator.initViewPager(mViewPager);
+
+        //GET ACCESS TO FRAGMENT
+        createExNameDescriptionFragment = (CreateExNameDescriptionFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragmentC);
+
+
+//        setupViews();
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        mTitleField = (EditText) findViewById(R.id.field_title);
-        mBodyField = (EditText) findViewById(R.id.field_body);
-        mNumberGuests = (EditText) findViewById(R.id.field_numGuests);
-        mDate = (EditText) findViewById(R.id.field_date);
-        mDuration = (EditText) findViewById(R.id.field_duration);
-        mTags = (EditText) findViewById(R.id.field_tags);
-        mImgURL = (EditText) findViewById(R.id.field_imgURL);
-        mAddress = (EditText) findViewById(R.id.field_address);
-        mType = (EditText) findViewById(R.id.field_type);
-        mLatitude = (EditText) findViewById(R.id.field_latitude);
-        mLongitude = (EditText) findViewById(R.id.field_longitude);
+
+        geoRef = FirebaseDatabase.getInstance().getReference("path/to/geofire");
+        geoFire = new GeoFire(geoRef);
+
+
+    }
+
+    private void setupViews() {
+        setContentView(R.layout.activity_new_post);
+
+        etTitle = (EditText) findViewById(R.id.field_title);
+        etBody = (EditText) findViewById(R.id.field_body);
+        etNumGuests = (EditText) findViewById(R.id.field_numGuests);
+        etDate = (EditText) findViewById(R.id.field_date);
+        etDuration = (EditText) findViewById(R.id.field_duration);
+        etTags = (EditText) findViewById(R.id.field_tags);
+        etImgURL = (EditText) findViewById(R.id.field_imgURL);
+        etAddress = (EditText) findViewById(R.id.field_address);
+        etType = (EditText) findViewById(R.id.field_type);
+        etLatitude = (EditText) findViewById(R.id.field_latitude);
+        etLongitude = (EditText) findViewById(R.id.field_longitude);
 
         findViewById(R.id.btnImageUpload).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,10 +160,6 @@ public class NewPostActivity extends BaseActivity {
                 submitPost();
             }
         });
-
-        geoRef = FirebaseDatabase.getInstance().getReference("path/to/geofire");
-        geoFire = new GeoFire(geoRef);
-
 
     }
 
@@ -214,55 +268,39 @@ public class NewPostActivity extends BaseActivity {
     }
 
 
+    private void submitPostTest() {
 
-    private void submitPost() {
-        final String title = mTitleField.getText().toString();
-        final String body = mBodyField.getText().toString();
-        final int numGuests =  Integer.parseInt(String.valueOf(mNumberGuests.getText()));
-        final String date = mDate.getText().toString();
-        final String duration = mDuration.getText().toString();
-        final String tags = mTags.getText().toString();
-        final String imgURL = mImgURL.getText().toString();
-        final String address = mAddress.getText().toString();
-        final int type = Integer.parseInt(String.valueOf(mType.getText()));
-        double latitude;
-        double longitude;
-        try{
-            latitude = Double.parseDouble(mLatitude.getText().toString());
-        } catch (final NumberFormatException e) {
-            latitude = 1.0;
-        }
-        try{
-            longitude = Double.parseDouble(mLongitude.getText().toString());
-        } catch (final NumberFormatException e) {
-            longitude = 1.0;
-        }
+        mDuration = "5 HOURS";
 
-        // Title is required
-        if (TextUtils.isEmpty(title)) {
-            mTitleField.setError(REQUIRED);
-            return;
-        }
+        mLatitude = 1.0;
+        mLongitude = 1.0;
 
-        // Body is required
-        if (TextUtils.isEmpty(body)) {
-            mBodyField.setError(REQUIRED);
-            return;
-        }
 
-        if (TextUtils.isEmpty(duration)) {
-            mDuration.setError(REQUIRED);
-            return;
-        }
-        if (TextUtils.isEmpty(tags)) {
-            mTags.setError(REQUIRED);
-            return;
-        }
+//        // Title is required
+//        if (TextUtils.isEmpty(mTitle)) {
+//            etTitle.setError(REQUIRED);
+//            return;
+//        }
+//
+//        // Body is required
+//        if (TextUtils.isEmpty(mBody)) {
+//            etBody.setError(REQUIRED);
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(mDuration)) {
+//            etDuration.setError(REQUIRED);
+//            return;
+//        }
+//        if (TextUtils.isEmpty(mTags)) {
+//            etTags.setError(REQUIRED);
+//            return;
+//        }
 
         // [START single_value_read]
         final String userId = getUid();
-        final double finalLatitude = latitude;
-        final double finalLongitude = longitude;
+        final double finalLatitude = mLatitude;
+        final double finalLongitude = mLongitude;
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -279,7 +317,88 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body, numGuests, date, duration, tags, imgURL, address, type, finalLatitude, finalLongitude);
+                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType, finalLatitude, finalLongitude);
+                        }
+
+                        // Finish this Activity, back to the stream
+                        finish();
+                        // [END_EXCLUDE]
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        // [END single_value_read]
+    }
+
+
+    private void submitPost() {
+        mTitle = etTitle.getText().toString();
+        mBody = etBody.getText().toString();
+        mNumGuests =  Integer.parseInt(String.valueOf(etNumGuests.getText()));
+        mDate = etDate.getText().toString();
+        mTime = "9:00";
+        mDuration = etDuration.getText().toString();
+        mTags = etTags.getText().toString();
+        mImgURL = etImgURL.getText().toString();
+        mAddress = etAddress.getText().toString();
+        mType = Integer.parseInt(String.valueOf(etType.getText()));
+
+        try{
+            mLatitude = Double.parseDouble(etLatitude.getText().toString());
+        } catch (final NumberFormatException e) {
+            mLatitude = 1.0;
+        }
+        try{
+            mLongitude = Double.parseDouble(etLongitude.getText().toString());
+        } catch (final NumberFormatException e) {
+            mLongitude = 1.0;
+        }
+
+        // Title is required
+        if (TextUtils.isEmpty(mTitle)) {
+            etTitle.setError(REQUIRED);
+            return;
+        }
+
+        // Body is required
+        if (TextUtils.isEmpty(mBody)) {
+            etBody.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(mDuration)) {
+            etDuration.setError(REQUIRED);
+            return;
+        }
+        if (TextUtils.isEmpty(mTags)) {
+            etTags.setError(REQUIRED);
+            return;
+        }
+
+        // [START single_value_read]
+        final String userId = getUid();
+        final double finalLatitude = mLatitude;
+        final double finalLongitude = mLongitude;
+        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        User user = dataSnapshot.getValue(User.class);
+
+                        // [START_EXCLUDE]
+                        if (user == null) {
+                            // User is null, error out
+                            Log.e(TAG, "User " + userId + " is unexpectedly null");
+                            Toast.makeText(NewPostActivity.this,
+                                    "Error: could not fetch user.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Write new post
+                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType, finalLatitude, finalLongitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -296,13 +415,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, int numGuests, String date, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
+    private void writeNewPost(String userId, String username, String title, String body, int numGuests, String date, String time, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String totalSpots, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, date, duration, tags, imgURL, address, type);
+        Experience post = new Experience(userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, type);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -322,5 +441,43 @@ public class NewPostActivity extends BaseActivity {
 
         mDatabase.updateChildren(childUpdates);
     }
-    // [END write_fan_out]
+
+    @Override
+    public void onNameDescriptionCompleted(String field_title, String field_body) {
+        mTitle = field_title;
+        mBody = field_body;
+        System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody);
+    }
+
+
+    @Override
+    public void onWhereAndWhenCompleted(String address, String date, String time) {
+        mAddress = address;
+        mDate = date;
+        mTime = time;
+        System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
+
+    }
+
+
+    @Override
+    public void onTotaltagsTypeCompleted(int total, String tags, int type) {
+        mNumGuests = total;
+        mTags = tags;
+        mType = type;
+
+        System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
+
+
+    }
+
+    @Override
+    public void onSavePhotosCompleted(String imgString) {
+        mImgURL = "http://peoplehouse.org/wp-content/uploads/2015/01/surfing-beach-wallpaper_90085-1920x1200.jpg";
+        System.out.println("DEBUGGY Experience page 4: " + mImgURL);
+
+        submitPostTest();
+
+    }
+
 }

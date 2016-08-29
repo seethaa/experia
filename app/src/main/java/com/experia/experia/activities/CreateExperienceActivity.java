@@ -1,29 +1,24 @@
 package com.experia.experia.activities;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.experia.experia.R;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
 import adapters.SimpleFragmentAdapter;
+import adapters.VerticalViewPager;
 import fragments.CreateExNameDescriptionFragment;
 import fragments.CreateExPhotoFragment;
 import fragments.CreateExTimeLocationFragment;
-import util.CupboardDBHelper;
 
-/**
- * Created by doc_dungeon on 8/27/16.
- */
-public class CreateExperienceActivity extends AppCompatActivity {
+
+public class CreateExperienceActivity extends AppCompatActivity implements CreateExNameDescriptionFragment.OnNameAndDescriptionCompleteListener {
 
     private SimpleFragmentAdapter mSimpleFragmentAdapter;
-    private ViewPager mViewPager;
+    private VerticalViewPager mViewPager;
     private ExtensiblePageIndicator extensiblePageIndicator;
     CreateExNameDescriptionFragment createExNameDescriptionFragment;
-
 
 
 
@@ -38,7 +33,7 @@ public class CreateExperienceActivity extends AppCompatActivity {
         mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
         mSimpleFragmentAdapter.addFragment(CreateExPhotoFragment.newInstance(R.color.frag3, R.drawable.char3));
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (VerticalViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSimpleFragmentAdapter);
         extensiblePageIndicator.initViewPager(mViewPager);
 
@@ -49,4 +44,8 @@ public class CreateExperienceActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onNameDescriptionCompleted(String field_title, String field_body) {
+
+    }
 }

@@ -1,6 +1,7 @@
 package fragments;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +27,6 @@ import util.CupboardDBHelper;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-/**
- * Created by doc_dungeon on 8/27/16.
- */
 public class CreateExTimeLocationFragment extends Fragment {
     @BindView(R.id.fire_event) Button saveBtn;
     @BindView(R.id.btnDate) Button dateBtn;
@@ -45,6 +42,40 @@ public class CreateExTimeLocationFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section-icon";
     private static final String ARG_SECTION_COLOR = "section-color";
+
+    String exDate;
+    String exTime;
+    String exAddress;
+
+    private OnWhereAndWhenCompleteListener listener;
+
+    // Define the events that the fragment will use to communicate
+    public interface OnWhereAndWhenCompleteListener {
+        public void onWhereAndWhenCompleted(String address, String date, String time);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnWhereAndWhenCompleteListener) {
+            listener = (OnWhereAndWhenCompleteListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
+        }
+    }
+
+    // Now we can fire the event when the user selects something in the fragment
+    public void onSaveWhereAndWhen(View v) {
+        exDate = tvDate.getText().toString();
+        exTime = tvTime.getText().toString();
+        exAddress = etStreet.getText().toString();
+
+
+        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress);
+        listener.onWhereAndWhenCompleted(exAddress, exDate, exTime);
+    }
 
     public static CreateExTimeLocationFragment newInstance(int color, int icon) {
         CreateExTimeLocationFragment fragment = new CreateExTimeLocationFragment();
@@ -67,7 +98,8 @@ public class CreateExTimeLocationFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTimeLocation(v);
+                onSaveWhereAndWhen(v);
+//                setTimeLocation(v);
             }
         });
 
@@ -153,16 +185,16 @@ public class CreateExTimeLocationFragment extends Fragment {
     }
 
     public void setTimeLocation(View view){
-        String exDate = tvDate.getText().toString();
-        String exTime = tvTime.getText().toString();
-        String exStreet = etStreet.getText().toString();
+         exDate = tvDate.getText().toString();
+         exTime = tvTime.getText().toString();
+         exAddress = etStreet.getText().toString();
 
 
         //set values obj
         ContentValues values = new ContentValues(1);
         values.put("date", exDate);
         //values.put("time", exTime);
-        values.put("address", exStreet);
+        values.put("address", exAddress);
 
 
         // update first record

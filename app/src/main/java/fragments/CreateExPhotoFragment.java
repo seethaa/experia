@@ -1,7 +1,7 @@
 package fragments;
 
-import android.content.ClipData;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -20,12 +20,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,15 +33,15 @@ import util.CupboardDBHelper;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-/**
- * Created by doc_dungeon on 8/27/16.
- */
+
 public class CreateExPhotoFragment extends Fragment {
 
     private Unbinder unbinder;
     @BindView(R.id.ivExperiencePhoto) ImageView experiencePhoto;
     @BindView(R.id.btPhoto)
     Button selectBtn;
+    @BindView(R.id.btnSubmitPhoto)
+    Button btnSubmit;
     static SQLiteDatabase db;
 
     // PHOTO related constants
@@ -55,6 +53,36 @@ public class CreateExPhotoFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section-icon";
     private static final String ARG_SECTION_COLOR = "section-color";
+
+    String mPhotoStringURL;
+
+    private OnPhotoPickCompleteListener listener;
+
+    // Define the events that the fragment will use to communicate
+    public interface OnPhotoPickCompleteListener {
+        public void onSavePhotosCompleted(String imgString);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnPhotoPickCompleteListener) {
+            listener = (OnPhotoPickCompleteListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
+        }
+    }
+
+    // Now we can fire the event when the user selects something in the fragment
+    public void onSavePhotos(View v) {
+
+
+        System.out.println("DEBUGGY Exp 4 old: " + mPhotoStringURL);
+        listener.onSavePhotosCompleted(mPhotoStringURL);
+    }
+
 
     public static CreateExPhotoFragment newInstance(int color, int icon) {
         CreateExPhotoFragment fragment = new CreateExPhotoFragment();
@@ -79,6 +107,13 @@ public class CreateExPhotoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onPickPhoto(v);
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSavePhotos(v);
             }
         });
 

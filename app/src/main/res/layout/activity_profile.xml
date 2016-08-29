@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bio goes here.."
+        tools:text="Bio goes here.."
         android:id="@+id/tvBio"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sam Chu"
+        tools:text="Sam Chu"
         android:id="@+id/tvName"
         android:textSize="24sp"
         android:textStyle="bold"

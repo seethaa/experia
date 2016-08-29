@@ -27,12 +27,14 @@ import util.CupboardDBHelper;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 
-public class CreateExNameDescriptionFragment extends Fragment {
+public class CreateExTotalTagsTypeFragment extends Fragment {
 
     @BindView(R.id.fire_event) Button saveBtn;
     @BindView(R.id.query) Button checkBtn;
-    @BindView(R.id.etName) EditText experienceName;
-    @BindView(R.id.etDescription) EditText experienceDescription;
+    @BindView(R.id.etTotal) EditText etTotal;
+    @BindView(R.id.etTags) EditText etTags;
+    @BindView(R.id.etType) EditText etType;
+
     //@BindView(R.id.iv_icon) ImageView logoImageView;
     private Unbinder unbinder;
     static SQLiteDatabase db;
@@ -40,22 +42,23 @@ public class CreateExNameDescriptionFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section-icon";
     private static final String ARG_SECTION_COLOR = "section-color";
 
-    String mTitle;
-    String mBody;
+    int mTotal;
+    String mTags;
+    int mType;
 
-    private OnNameAndDescriptionCompleteListener listener;
+    private OnTotaltagsTypeCompleteListener listener;
 
     // Define the events that the fragment will use to communicate
-    public interface OnNameAndDescriptionCompleteListener {
-        public void onNameDescriptionCompleted(String field_title, String field_body);
+    public interface OnTotaltagsTypeCompleteListener {
+        public void onTotaltagsTypeCompleted(int total, String tags, int type);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnNameAndDescriptionCompleteListener) {
-            listener = (OnNameAndDescriptionCompleteListener) context;
+        if (context instanceof OnTotaltagsTypeCompleteListener) {
+            listener = (OnTotaltagsTypeCompleteListener) context;
         } else {
             throw new ClassCastException(context.toString()
                     + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
@@ -63,16 +66,17 @@ public class CreateExNameDescriptionFragment extends Fragment {
     }
 
     // Now we can fire the event when the user selects something in the fragment
-    public void onSaveNameAndDescriptionClick(View v) {
-        mTitle = experienceName.getText().toString();
-        mBody = experienceDescription.getText().toString();
+    public void onSaveTotalTagsTypeClick(View v) {
+        mTotal = Integer.parseInt(etTotal.getText().toString());
+        mTags = etTags.getText().toString();
+        mType = Integer.parseInt(etType.getText().toString());
 
-        System.out.println("DEBUGGY Exp 1 old: " + mTitle + ", " + mBody);
-        listener.onNameDescriptionCompleted(mTitle, mBody);
+        System.out.println("DEBUGGY Exp 3 old: " + mTotal + ", " + mTags);
+        listener.onTotaltagsTypeCompleted(mTotal, mTags, mType);
     }
 
-    public static CreateExNameDescriptionFragment newInstance(int color, int icon) {
-        CreateExNameDescriptionFragment fragment = new CreateExNameDescriptionFragment();
+    public static CreateExTotalTagsTypeFragment newInstance(int color, int icon) {
+        CreateExTotalTagsTypeFragment fragment = new CreateExTotalTagsTypeFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, icon);
         args.putInt(ARG_SECTION_COLOR, color);
@@ -83,7 +87,7 @@ public class CreateExNameDescriptionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_name_description, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_total_tags_type, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
@@ -92,7 +96,7 @@ public class CreateExNameDescriptionFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSaveNameAndDescriptionClick(v);
+                onSaveTotalTagsTypeClick(v);
 //                saveNameDescription(v);
             }
         });
@@ -112,7 +116,7 @@ public class CreateExNameDescriptionFragment extends Fragment {
                 emptyStr,emptyStr,emptyStr,0);
         long id = cupboard().withDatabase(db).put(ex);
 
-        experienceName.addTextChangedListener(new TextWatcher() {
+        etTotal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -125,11 +129,31 @@ public class CreateExNameDescriptionFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                experienceDescription.setVisibility(View.VISIBLE);
+                etTags.setVisibility(View.VISIBLE);
             }
         });
 
-        experienceDescription.addTextChangedListener(new TextWatcher() {
+
+        etTags.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                etType.setVisibility(View.VISIBLE);
+
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        etType.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -145,7 +169,6 @@ public class CreateExNameDescriptionFragment extends Fragment {
                 saveBtn.setVisibility(View.VISIBLE);
             }
         });
-
         return rootView;
     }
 
@@ -158,15 +181,12 @@ public class CreateExNameDescriptionFragment extends Fragment {
 
     public void saveNameDescription(View view) {
 
-        mTitle = experienceName.getText().toString();
-        mBody = experienceDescription.getText().toString();
-
-        System.out.println("DEBUGGY Exp 1 old: " + mTitle + ", " + mBody);
+        System.out.println("DEBUGGY Exp 1 old: " + mTotal + ", " + mTags);
 
         //set values obj
         ContentValues values = new ContentValues(1);
-        values.put("title", mTitle);
-        values.put("description", mBody);
+        values.put("title", mTotal);
+        values.put("description", mTags);
 
         // update first record
         cupboard().withDatabase(db).update(Creation.class, values, "_id = ?", "1");

@@ -9,23 +9,34 @@
 
 
     <EditText
-        android:id="@+id/etName"
+        android:id="@+id/etTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/lg_creation_prompt"
-        android:hint="@string/createName"/>
+        android:hint="Total Number of people"/>
 
 
     <EditText
-        android:id="@+id/etDescription"
+        android:id="@+id/etTags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/lg_creation_prompt"
+        android:hint="Enter any tags"
+        android:visibility="invisible"
+        android:layout_below="@+id/fire_event"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp" />
+
+    <EditText
+        android:id="@+id/etType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/lg_creation_prompt"
+        android:hint="Type of experience"
+        android:visibility="invisible"
         android:layout_centerVertical="true"
-        android:hint="@string/createDescription"
-        android:visibility="invisible"/>
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/fire_event"

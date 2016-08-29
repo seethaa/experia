@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-                startActivity(new Intent(MainActivity.this, CreateExperienceActivity.class));
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
 

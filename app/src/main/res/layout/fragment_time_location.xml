@@ -62,7 +62,7 @@
         android:layout_below="@+id/tvTime"
         android:layout_marginTop="@dimen/spacer_time_date"
         android:visibility="invisible"
-        android:background="@drawable/ic_next_entry"/>
+        android:background="@drawable/icon_chevron_down"/>
 
     <Button
         android:id="@+id/query"
