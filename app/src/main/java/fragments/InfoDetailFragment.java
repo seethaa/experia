@@ -24,7 +24,9 @@ public class InfoDetailFragment extends Fragment {
     private TextView mDate;
 
     private TextView mSpotsAvailable;
-//    private ImageView mImageViewExperience;
+    private TextView mNumGoing;
+
+    //    private ImageView mImageViewExperience;
     public static Experience mExperience;
 
 
@@ -61,6 +63,8 @@ public class InfoDetailFragment extends Fragment {
         mAddress = (TextView) view.findViewById(R.id.tvLocationAddress);
         mDate = (TextView) view.findViewById(R.id.tvDate);
         mSpotsAvailable = (TextView) view.findViewById(R.id.tvSpotsLeft);
+        mNumGoing = (TextView) view.findViewById(R.id.tvNumGoing);
+
 //        mImageViewExperience = (ImageView) view.findViewById(R.id.ivExperienceImage);
 
 
@@ -70,6 +74,7 @@ public class InfoDetailFragment extends Fragment {
         mAuthorView.setText(mExperience.author);
         mDate.setText(mExperience.date);
         mSpotsAvailable.setText(mExperience.getSpotsLeft() + " spots left");
+        mNumGoing.setText(mExperience.joinCount + " going");
         mAddress.setText(mExperience.address);
 
 

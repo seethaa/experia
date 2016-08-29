@@ -55,7 +55,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         tvSubtext.setText(post.tags);
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
-        tvSpotsLeft.setText(post.getSpotsLeft() + " spots left");
+        if (post.getSpotsLeft()>=0) {
+            tvSpotsLeft.setText(post.getSpotsLeft() + " spots left");
+        }
+
+        if (post.getSpotsLeft()==0){
+            joinView.setClickable(false);
+        }
+
+
 
         tvExpand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +135,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
 
         starView.setOnClickListener(starClickListener);
+
         joinView.setOnClickListener(joinClickListener);
+
 
 
     }

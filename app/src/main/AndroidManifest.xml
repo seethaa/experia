@@ -43,22 +43,6 @@
         android:theme="@style/AppTheme">
 
 
-<<<<<<< Updated upstream
-    <application
-        android:name="com.orm.SugarApp"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">  <!--Use this attribute verbatim-->
-        <meta-data android:name="DATABASE" android:value="exp_abc.db" />
-        <meta-data android:name="VERSION" android:value="1.1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.experia.experia.models"/>
-=======
->>>>>>> Stashed changes
-
-
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/fb_app_id"/>
         <service android:name="services.GeofenceTransitionsIntentService"/>
         <activity
