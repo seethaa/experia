@@ -272,7 +272,7 @@ public class LoginActivity extends BaseActivity implements
         String username = usernameFromEmail(user.getEmail());
 
         // Write new user
-        writeNewUser(user.getUid(), username, user.getEmail());
+        writeNewUser(user.getDisplayName(), user.getUid(), username, user.getEmail(), user.getPhotoUrl().toString());
 
         // Go to MainActivity
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -288,8 +288,8 @@ public class LoginActivity extends BaseActivity implements
     }
 
     // [START basic_write]
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
+    private void writeNewUser(String displayName, String userId, String name, String email, String photoURL) {
+        User user = new User(displayName, name, email, photoURL );
 
         mDatabase.child("users").child(userId).setValue(user);
     }

@@ -2,6 +2,7 @@ package adapters;
 
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -55,11 +56,17 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         tvSubtext.setText(post.tags);
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
-        if (post.getSpotsLeft()>=0) {
+        if (post.getSpotsLeft()>1) {
             tvSpotsLeft.setText(post.getSpotsLeft() + " spots left");
+        }
+        if (post.getSpotsLeft()==1) {
+            tvSpotsLeft.setText(post.getSpotsLeft() + " spot left");
         }
 
         if (post.getSpotsLeft()==0){
+            tvSpotsLeft.setText("SOLD OUT!");
+            tvSpotsLeft.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
+
             joinView.setClickable(false);
         }
 

@@ -85,6 +85,7 @@ public class InfoDetailFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("userID", mExperience.uid);
                 startActivity(intent);
             }
         });

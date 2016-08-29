@@ -194,7 +194,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="5 spots left"
                 android:id="@+id/tvSpotsLeft"
-                android:textColor="@color/red"
+                android:textColor="@color/mp_lightblue"
                 android:layout_below="@+id/ivExperienceImage"
                 android:layout_alignRight="@+id/tvSubtext"
                 android:layout_alignEnd="@+id/tvSubtext"
