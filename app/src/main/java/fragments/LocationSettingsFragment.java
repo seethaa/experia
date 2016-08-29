@@ -46,12 +46,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,7 +76,6 @@ public class LocationSettingsFragment extends Fragment implements
         GoogleMap.OnCameraIdleListener{
 
     private static final String TAG = "MapMarkerFragment";
-    private SupportMapFragment mapFragment;
     private GoogleMap map;
     MapView mMapView;
     private ImageButton mZoomInButton;
@@ -86,7 +85,6 @@ public class LocationSettingsFragment extends Fragment implements
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private List<Geofence> mGeofenceList;
-    //private PendingIntent mGeofencePendingIntent;
     private DatabaseReference ref;
     private GeoFire geoFire;
     private int screenLength = 1080;
@@ -174,6 +172,9 @@ public class LocationSettingsFragment extends Fragment implements
                         startActivity(intent);
                     }
                 });
+
+                // Bind Post to ViewHolder
+                viewHolder.bindToPost(getActivity(), model);
             }
         };
         mRecycler.setAdapter(mAdapter);
@@ -595,9 +596,9 @@ public class LocationSettingsFragment extends Fragment implements
 
     }
 
-//    public String getUid() {
-//        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-//    }
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
 
     public Query getQuery(DatabaseReference databaseReference){
         Query recentPostsQuery = databaseReference.child("posts")

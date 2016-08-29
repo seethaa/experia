@@ -30,11 +30,13 @@ public class MapPostViewHolder extends RecyclerView.ViewHolder {
         mContext = applicationContext;
 
         tvTitle.setText(post.title);
-        tvSpotsLeft.setText("3 Spots left");
+        tvSpotsLeft.setText(Integer.toString(post.getSpotsLeft())+" spot(s) left");
 
         String img = post.imgURL;
         if (!TextUtils.isEmpty(post.imgURL)) {
-            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.placeholderimg)
+            Glide.with(mContext).load(img)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholderimg)
                     .into(ivExperience);
         }
     }
