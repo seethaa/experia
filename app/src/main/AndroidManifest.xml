@@ -57,6 +57,7 @@
         <!--<activity android:name=".ExperienceCardActivity">-->
         <!--</activity>-->
         <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.PostDetailActivity" />
         <activity android:name=".activities.NewPostActivity" />
         <activity android:name=".activities.EmailPasswordActivity" />

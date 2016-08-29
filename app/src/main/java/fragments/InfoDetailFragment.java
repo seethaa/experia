@@ -1,6 +1,7 @@
 package fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.experia.experia.R;
+import com.experia.experia.activities.ProfileActivity;
 
 import org.parceler.Parcels;
 
@@ -78,6 +80,15 @@ public class InfoDetailFragment extends Fragment {
         mAddress.setText(mExperience.address);
 
 
+        mAuthorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
 //        String img = mExperience.imgURL;
 //        if (!TextUtils.isEmpty(mExperience.imgURL)) {
 //            Glide.with(getActivity()).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
@@ -87,56 +98,4 @@ public class InfoDetailFragment extends Fragment {
             return view;
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // Add value event listener to the post
-//        // [START post_value_event_listener]
-//        ValueEventListener postListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // Get Post object and use the values to update the UI
-//                Experience post = dataSnapshot.getValue(Experience.class);
-//                // [START_EXCLUDE]
-////                mAuthorView.setText(post.author);
-//                mTitleView.setText(post.title);
-//                mBodyView.setText(post.description);
-//                mAuthorView.setText(post.author);
-//                mDate.setText(post.date);
-//                mSpotsAvailable.setText(post.totalSpots + " spots left");
-//                mAddress.setText(post.address);
-//
-//
-//                String img = post.imgURL;
-//                if (!TextUtils.isEmpty(post.imgURL)) {
-//                    Glide.with(getActivity()).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
-//                            .into(mImageViewExperience);
-////            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
-//
-//
-//                }
-//                // [END_EXCLUDE]
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-//                // [START_EXCLUDE]
-//                Toast.makeText(getActivity(), "Failed to load post.",
-//                        Toast.LENGTH_SHORT).show();
-//                // [END_EXCLUDE]
-//            }
-//        };
-////        mPostReference.addValueEventListener(postListener);
-////        // [END post_value_event_listener]
-////
-////        // Keep copy of post listener so we can remove it when app stops
-////        mPostListener = postListener;
-////
-////        // Listen for comments
-////        mAdapter = new CommentAdapter(this, mCommentsReference);
-////        mCommentsRecycler.setAdapter(mAdapter);
-//    }
 }
