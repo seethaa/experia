@@ -1,5 +1,7 @@
 package fragments;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -12,29 +14,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.experia.experia.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import models.Creation;
+import util.CupboardDBHelper;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by doc_dungeon on 8/27/16.
  */
 public class CreateExTimeLocationFragment extends Fragment {
-    @BindView(R.id.fire_event)
-    Button saveBtn;
-    @BindView(R.id.btnTimeDate) Button timeDateBtn;
+    @BindView(R.id.fire_event) Button saveBtn;
+    @BindView(R.id.btnDate) Button dateBtn;
     @BindView(R.id.btnTime) Button timeBtn;
     @BindView(R.id.query) Button checkBtn;
-    @BindView(R.id.iv_icon)
-    ImageView logoImageView;
-    @BindView(R.id.etTimeDate)
-    EditText etTimeDate;
+    //@BindView(R.id.iv_icon) ImageView logoImageView;
+    @BindView(R.id.tvDate) TextView tvDate;
+    @BindView(R.id.tvTime) TextView tvTime;
     @BindView(R.id.etStreet) EditText etStreet;
-    @BindView(R.id.etCity) EditText etCity;
-    @BindView(R.id.etState) EditText etState;
+    static SQLiteDatabase db;
 
     private Unbinder unbinder;
 
@@ -57,7 +62,7 @@ public class CreateExTimeLocationFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
 
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
-        logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
+        //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +78,7 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
-        timeDateBtn.setOnClickListener(new View.OnClickListener() {
+        dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(v);
@@ -95,6 +100,26 @@ public class CreateExTimeLocationFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                dateBtn.setVisibility(View.VISIBLE);
+                tvDate.setVisibility(View.VISIBLE);
+                timeBtn.setVisibility(View.VISIBLE);
+                tvTime.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        tvTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 saveBtn.setVisibility(View.VISIBLE);
             }
 
@@ -104,35 +129,53 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
+        tvDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+
         return rootView;
     }
 
     public void setTimeLocation(View view){
-
-
-
-        String exTimeDate = etTimeDate.getText().toString();
+        String exDate = tvDate.getText().toString();
+        String exTime = tvTime.getText().toString();
         String exStreet = etStreet.getText().toString();
-        String exCity = etCity.getText().toString();
-        String exState = etState.getText().toString();
 
-        /*Sugar ORM
-        Creation creation = Creation.last(Creation.class);
 
-        creation.experience_time_date = exTimeDate; // modify the values
-        creation.experience_street_addr = exStreet;
-        creation.experience_city= exCity;
-        creation.experience_state = exState;
-        creation.save(); // updates the previous entry with new values.
-                 */
+        //set values obj
+        ContentValues values = new ContentValues(1);
+        values.put("date", exDate);
+        //values.put("time", exTime);
+        values.put("address", exStreet);
+
+
+        // update first record
+        cupboard().withDatabase(db).update(Creation.class, values, "_id = ?", "1");
+
     }
 
     public void checkDB(View view){
-        //Sugar ORM
-        //Creation last = Creation.last(Creation.class);
-        //String ex = last.experience_time_date + "-" + last.experience_street_addr  + "-"
-       //         + last.experience_city  + "-" + last.experience_state;
-        //Toast.makeText(getContext(),ex,Toast.LENGTH_SHORT).show();
+        //Cupboard ORM
+        Creation creation = cupboard().withDatabase(db).query(Creation.class).get();
+        String entry = creation.title +"/" + creation.description+"/" + creation.date +"-"+ creation.address;
+        Toast.makeText(getContext(),entry,Toast.LENGTH_SHORT).show();
+
     }
 
     public void showDatePickerDialog(View v) {

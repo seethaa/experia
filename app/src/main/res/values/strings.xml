@@ -45,11 +45,11 @@
     <string name="dialog_message_item_pinned">Item pinned! (position = %1$d)</string>
 
     <!--create experience string-->
-    <string name="createName">What Experience do you offer?</string>
+    <string name="createName">Please enter a short title...</string>
     <string name="createHint">enter..</string>
-    <string name="createDescription">Provide a detailed description:</string>
+    <string name="createDescription">Provide a detailed description...</string>
     <string name="createTimeDate">Set Time &amp; Date:</string>
-    <string name="createStreet">Address:</string>
+    <string name="createStreet">Enter the location...</string>
     <string name="createCity">City:</string>
     <string name="createState">State:</string>
     <string name="createPhoto">Select Photo:</string>

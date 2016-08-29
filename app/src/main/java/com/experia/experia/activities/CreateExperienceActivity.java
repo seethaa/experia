@@ -24,7 +24,8 @@ public class CreateExperienceActivity extends AppCompatActivity {
     private ExtensiblePageIndicator extensiblePageIndicator;
     CreateExNameDescriptionFragment createExNameDescriptionFragment;
 
-    static SQLiteDatabase db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,6 @@ public class CreateExperienceActivity extends AppCompatActivity {
         createExNameDescriptionFragment = (CreateExNameDescriptionFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentC);
 
-        // setup database
-        CupboardDBHelper dbHelper = new CupboardDBHelper(this);
-        db = dbHelper.getWritableDatabase();
     }
 
 

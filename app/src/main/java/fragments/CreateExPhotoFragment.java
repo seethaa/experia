@@ -1,7 +1,9 @@
 package fragments;
 
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 
 import java.io.File;
@@ -27,6 +30,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import models.Creation;
+import util.CupboardDBHelper;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by doc_dungeon on 8/27/16.
@@ -34,10 +41,10 @@ import butterknife.Unbinder;
 public class CreateExPhotoFragment extends Fragment {
 
     private Unbinder unbinder;
-    @BindView(R.id.ivExperiencePhoto)
-    ImageView experiencePhoto;
+    @BindView(R.id.ivExperiencePhoto) ImageView experiencePhoto;
     @BindView(R.id.btPhoto)
     Button selectBtn;
+    static SQLiteDatabase db;
 
     // PHOTO related constants
     public final static int PICK_PHOTO_CODE = 1046;
@@ -66,7 +73,7 @@ public class CreateExPhotoFragment extends Fragment {
 
 
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
-        experiencePhoto.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
+        //experiencePhoto.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +81,9 @@ public class CreateExPhotoFragment extends Fragment {
                 onPickPhoto(v);
             }
         });
+
+        CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
+        db = dbHelper.getWritableDatabase();
 
         return rootView;
     }
@@ -140,7 +150,7 @@ public class CreateExPhotoFragment extends Fragment {
             }
         }
         else if (requestCode == PICK_PHOTO_CODE) {
-/*
+
             if (data != null) {
                 Uri photoUri = data.getData();
                 // Do something with the photo based on Uri
@@ -153,8 +163,11 @@ public class CreateExPhotoFragment extends Fragment {
                 // Load the selected image into a preview
                 ImageView ivPreview = (ImageView) getActivity().findViewById(R.id.ivExperiencePhoto);
                 ivPreview.setImageBitmap(selectedImage);
+
+                //Toast.makeText(getContext(),selectedImage.toString(),Toast.LENGTH_LONG).show();
+                saveSelectedPhoto(getView(),selectedImage.toString());
             }
-*/
+/*
             if (data.getClipData() != null) {
                 ClipData mClipData = data.getClipData();
                 ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
@@ -175,7 +188,23 @@ public class CreateExPhotoFragment extends Fragment {
                     ivPreview.setImageBitmap(bitmap);
                 }
             }
+*/
 
         }
+    }
+
+    public void saveSelectedPhoto(View view, String photoFileName) {
+
+        //set values obj
+        ContentValues values = new ContentValues(1);
+        values.put("imgURL", photoFileName);
+        // update first record
+        cupboard().withDatabase(db).update(Creation.class, values, "_id = ?", "1");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

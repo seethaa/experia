@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.experia.experia.R;
 
@@ -31,7 +32,7 @@ public class DatePickerDialogFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        EditText tvDate= (EditText) getActivity().findViewById(R.id.etTimeDate);
+        TextView tvDate = (TextView) getActivity().findViewById(R.id.tvDate);
         tvDate.setText(view.getMonth()+"/"+view.getDayOfMonth()+"/"+view.getYear());
     }
 }
