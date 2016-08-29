@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.experia.experia.R;
@@ -29,12 +28,12 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class CreateExTimeLocationFragment extends Fragment {
     @BindView(R.id.fire_event) Button saveBtn;
-    @BindView(R.id.btnDate) Button dateBtn;
-    @BindView(R.id.btnTime) Button timeBtn;
+    @BindView(R.id.etDate) EditText etDate;
+    @BindView(R.id.etTime) EditText etTime;
     @BindView(R.id.query) Button checkBtn;
     //@BindView(R.id.iv_icon) ImageView logoImageView;
-    @BindView(R.id.tvDate) TextView tvDate;
-    @BindView(R.id.tvTime) TextView tvTime;
+//    @BindView(R.id.tvDate) TextView tvDate;
+//    @BindView(R.id.tvTime) TextView tvTime;
     @BindView(R.id.etStreet) EditText etStreet;
     static SQLiteDatabase db;
 
@@ -68,8 +67,8 @@ public class CreateExTimeLocationFragment extends Fragment {
 
     // Now we can fire the event when the user selects something in the fragment
     public void onSaveWhereAndWhen(View v) {
-        exDate = tvDate.getText().toString();
-        exTime = tvTime.getText().toString();
+        exDate = etDate.getText().toString();
+        exTime = etTime.getText().toString();
         exAddress = etStreet.getText().toString();
 
 
@@ -110,14 +109,14 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
-        dateBtn.setOnClickListener(new View.OnClickListener() {
+        etDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(v);
             }
         });
 
-        timeBtn.setOnClickListener(new View.OnClickListener() {
+        etTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimePickerDialog(v);
@@ -132,27 +131,11 @@ public class CreateExTimeLocationFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                dateBtn.setVisibility(View.VISIBLE);
-                tvDate.setVisibility(View.VISIBLE);
-                timeBtn.setVisibility(View.VISIBLE);
-                tvTime.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        tvTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                etDate.setVisibility(View.VISIBLE);
+//                tvDate.setVisibility(View.VISIBLE);
+                etTime.setVisibility(View.VISIBLE);
                 saveBtn.setVisibility(View.VISIBLE);
+//                tvTime.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -161,22 +144,6 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
-        tvDate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                saveBtn.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
         db = dbHelper.getWritableDatabase();
@@ -185,8 +152,8 @@ public class CreateExTimeLocationFragment extends Fragment {
     }
 
     public void setTimeLocation(View view){
-         exDate = tvDate.getText().toString();
-         exTime = tvTime.getText().toString();
+         exDate = etDate.getText().toString();
+         exTime = etTime.getText().toString();
          exAddress = etStreet.getText().toString();
 
 

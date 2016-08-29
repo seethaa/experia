@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.experia.experia.R;
 
 import java.util.Calendar;
 
-/**
- * Created by doc_dungeon on 8/27/16.
- */
+
 public class DatePickerDialogFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
@@ -32,8 +29,8 @@ public class DatePickerDialogFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        TextView tvDate = (TextView) getActivity().findViewById(R.id.tvDate);
-        tvDate.setText(view.getMonth()+"/"+view.getDayOfMonth()+"/"+view.getYear());
+        EditText etDate = (EditText) getActivity().findViewById(R.id.etDate);
+        etDate.setText(view.getMonth()+"/"+view.getDayOfMonth()+"/"+view.getYear());
     }
 }
 

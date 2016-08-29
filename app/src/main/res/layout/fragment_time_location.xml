@@ -12,57 +12,69 @@
         android:textSize="@dimen/lg_creation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:hint="@string/createStreet"/>
+        android:hint="@string/createStreet"
+        android:layout_gravity="left" />
 
-    <Button
-        android:id="@+id/btnDate"
+    <!--<Button-->
+        <!--android:id="@+id/btnDate"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/etStreet"-->
+        <!--android:layout_marginTop="@dimen/spacer_time_date"-->
+        <!--android:drawableLeft="@drawable/ic_calendar"-->
+        <!--android:drawablePadding="0sp"-->
+        <!--android:text="Set date"-->
+        <!--android:visibility="invisible"/>-->
+
+    <EditText
+        android:id="@+id/etDate"
+        android:textSize="@dimen/lg_creation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/etStreet"
-        android:layout_marginTop="@dimen/spacer_time_date"
-        android:background="@drawable/ic_calendar"
-        android:visibility="invisible"/>
+        android:hint="Set date"
+        android:layout_gravity="left"
 
-    <TextView
-        android:id="@+id/tvDate"
+        android:visibility="invisible"
+        android:layout_below="@+id/etStreet"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:textSize="@dimen/lg_creation_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnDate"
-        android:layout_marginTop="@dimen/spacer_time_date"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"/>
+        android:hint="Set time"
+        android:layout_gravity="left"
+        android:visibility="invisible"
+        android:layout_below="@+id/etDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/btnTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tvDate"
-        android:layout_marginTop="@dimen/spacer_time_date"
-        android:background="@drawable/ic_time"
-        android:visibility="invisible"/>
 
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnTime"
-        android:layout_marginTop="@dimen/spacer_time_date"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"/>
+    <!--<Button-->
+        <!--android:id="@+id/btnTime"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:drawableLeft="@drawable/ic_time"-->
+        <!--android:drawablePadding="0sp"-->
+        <!--android:text="Set time"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_below="@+id/tvDate"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true" />-->
+
 
     <Button
         android:id="@+id/fire_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tvTime"
-        android:layout_marginTop="@dimen/spacer_time_date"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="94dp"
         android:visibility="invisible"
-        android:background="@drawable/icon_chevron_down"/>
+        android:background="@drawable/icon_chevron_down"
+        android:layout_below="@+id/etTime"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/query"

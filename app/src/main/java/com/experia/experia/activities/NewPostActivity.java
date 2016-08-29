@@ -106,6 +106,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mViewPager = (VerticalViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSimpleFragmentAdapter);
         extensiblePageIndicator.initViewPager(mViewPager);
+        mViewPager.setPagingEnabled(false);
 
         //GET ACCESS TO FRAGMENT
         createExNameDescriptionFragment = (CreateExNameDescriptionFragment) getSupportFragmentManager()
@@ -447,6 +448,8 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mTitle = field_title;
         mBody = field_body;
         System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody);
+
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
     }
 
 
@@ -456,6 +459,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mDate = date;
         mTime = time;
         System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 
     }
 
@@ -468,6 +472,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
         System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
 
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 
     }
 

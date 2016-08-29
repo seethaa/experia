@@ -12,7 +12,6 @@
         android:id="@+id/etTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:textSize="@dimen/lg_creation_prompt"
         android:hint="Total Number of people"/>
 
@@ -24,9 +23,9 @@
         android:textSize="@dimen/lg_creation_prompt"
         android:hint="Enter any tags"
         android:visibility="invisible"
-        android:layout_below="@+id/fire_event"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp" />
+        android:layout_below="@+id/etTotal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/etType"
@@ -35,18 +34,21 @@
         android:textSize="@dimen/lg_creation_prompt"
         android:hint="Type of experience"
         android:visibility="invisible"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/etTags"
+        android:layout_toRightOf="@+id/query"
+        android:layout_toEndOf="@+id/query" />
 
     <Button
         android:id="@+id/fire_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etDescription"
-        android:layout_marginTop="@dimen/margin_arrow_top"
-        android:layout_centerHorizontal="true"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@drawable/icon_chevron_down"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/etTotal"
+        android:layout_toEndOf="@+id/etTotal"
+        android:layout_marginBottom="134dp" />
 
     <Button
         android:id="@+id/query"

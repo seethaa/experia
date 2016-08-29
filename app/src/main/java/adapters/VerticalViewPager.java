@@ -19,6 +19,7 @@ import util.SwipeDirection;
 public class VerticalViewPager extends ViewPager {
     private float initialXValue;
     private SwipeDirection direction;
+    private boolean enabled;
 
     public VerticalViewPager(Context context) {
         super(context);
@@ -35,8 +36,26 @@ public class VerticalViewPager extends ViewPager {
         setPageTransformer(true, new VerticalPageTransformer());
         // The easiest way to get rid of the overscroll drawing that happens on the left and right
         setOverScrollMode(OVER_SCROLL_NEVER);
+        this.enabled = true;
     }
 
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (this.IsSwipeAllowed(event)) {
+//            return super.onTouchEvent(event);
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent event) {
+//        if (this.IsSwipeAllowed(event)) {
+//            return super.onInterceptTouchEvent(event);
+//        }
+//
+//        return false;
+//    }
 
     private boolean IsSwipeAllowed(MotionEvent event) {
         if(this.direction == SwipeDirection.all) return true;
@@ -110,14 +129,32 @@ public class VerticalViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev){
-        boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
-        swapXY(ev); // return touch coordinates to original reference frame for any child views
-        return intercepted;
+//        boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
+//        swapXY(ev); // return touch coordinates to original reference frame for any child views
+//        return intercepted;
+
+        if (this.enabled){
+            boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
+            swapXY(ev); // return touch coordinates to original reference frame for any child views
+            return intercepted;
+        }
+        return false;
+    }
+
+    public void setPagingEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return super.onTouchEvent(swapXY(ev));
+//        return super.onTouchEvent(swapXY(ev));
+
+        if (this.enabled){
+            boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
+            swapXY(ev); // return touch coordinates to original reference frame for any child views
+            return intercepted;
+        }
+        return false;
     }
 
 }

@@ -31,7 +31,10 @@ public class CreateExNameDescriptionFragment extends Fragment {
 
     @BindView(R.id.fire_event) Button saveBtn;
     @BindView(R.id.query) Button checkBtn;
+//    @BindView(R.id.tilDescription)
+//    TextInputLayout tilDescription;
     @BindView(R.id.etName) EditText experienceName;
+
     @BindView(R.id.etDescription) EditText experienceDescription;
     //@BindView(R.id.iv_icon) ImageView logoImageView;
     private Unbinder unbinder;

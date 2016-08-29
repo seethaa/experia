@@ -11,10 +11,16 @@ The following **required** functionality is completed:
 * [x] User can see navigation drawer with [Location, Category, Bookmarks, Settings, and Profile] fragments.
   * [ ] User can select current location or type in location in the Location fragment (similar to Groupon).
   * [ ] User can select Category filters and show filtered experiences. User can select experience based on three categories of experience: **thrill**, **social**, and **fun** (or all)
+* [x] User can switch to map view to browse experiences around him/her
+  * [x] Icons show type of experience nearby
+  * [x] User can tap on an experience to go to detail view
 * [x] User can browse list of activities around him/her 
-  * [ ] User can select and save activity to list (bookmarks)
+  * [x] User can select and save activity to list (bookmarks)
   * [x] When user clicks on a card, he/she can see detailed description, reviews, and related pictures.
   * [ ] User can use swipe gesture to swipe away an activity/experience that he/she is not interested in.
+* [x] User sees detailed view of an activity
+    * [x] User can view details about venue and location of experience
+    * [x] User can see existing reviews and type his/her own.
 * [x] User receives push notifications based on location for related experiences.
   * [ ] Use Firebase/Parse to set up push notificatons.
 * [x] User can share a new experience offer (maybe by clicking a Floating Action Button):
@@ -36,8 +42,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Experience cards and card detail view: http://imgur.com/gkVFali.gif
-<img src='http://imgur.com/gkVFali.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+Experience cards, map view, and card detail view: http://imgur.com/a/XhM0i
+<br>
+<img src='http://imgur.com/XhM0i.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <br>
 

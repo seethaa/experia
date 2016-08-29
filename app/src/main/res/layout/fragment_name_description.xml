@@ -12,9 +12,9 @@
         android:id="@+id/etName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:textSize="@dimen/lg_creation_prompt"
-        android:hint="@string/createName"/>
+        android:hint="@string/createName"
+        android:layout_gravity="left" />
 
 
     <EditText
@@ -22,15 +22,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/lg_creation_prompt"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:hint="@string/createDescription"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_gravity="left" />
 
     <Button
         android:id="@+id/fire_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_below="@+id/etDescription"
         android:layout_marginTop="@dimen/margin_arrow_top"
         android:layout_centerHorizontal="true"
