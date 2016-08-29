@@ -171,7 +171,6 @@ public abstract class PostListFragment extends Fragment {
     }
     // [END post_stars_transaction]
 
-
     // [START post_joins_transaction]
     private void onJoinClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {

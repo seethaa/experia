@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -25,10 +27,12 @@ import android.widget.Toast;
 
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
+import com.experia.experia.activities.PostDetailActivity;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,12 +56,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapters.MapPostViewHolder;
 import models.Experience;
 import permissions.dispatcher.NeedsPermission;
 import services.MapPermissionsDispatcher;
@@ -84,19 +90,130 @@ public class LocationSettingsFragment extends Fragment implements
     private DatabaseReference ref;
     private GeoFire geoFire;
     private int screenLength = 1080;
+    private FirebaseRecyclerAdapter<Experience, MapPostViewHolder> mAdapter;
+    private LinearLayoutManager mManager;
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private RecyclerView mRecycler;
+    private DatabaseReference mDatabase;
 
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
      */
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGeofenceList = new ArrayList<>();
         ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_location, container, false);
+        mMapView = (MapView) rootView.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        mZoomInButton = (ImageButton) rootView.findViewById(R.id.btnZoomIn);
+        mZoomOutButton = (ImageButton) rootView.findViewById(R.id.btnZoomOut);
+        mZoomInButton.setOnClickListener(this);
+        mZoomOutButton.setOnClickListener(this);
+        mRecycler = (RecyclerView) rootView.findViewById(R.id.map_experience_list);
+        mRecycler.setHasFixedSize(true);
+
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(mMapView != null) {
+            mMapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap map) {
+                    loadMap(map);
+                }
+            });
+        }
+        else{
+            Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
+        }
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Set up Layout Manager, reverse layout
+        mManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        mRecycler.setLayoutManager(mManager);
+        Query postsQuery = getQuery(mDatabase);
+        mAdapter = new FirebaseRecyclerAdapter<Experience, MapPostViewHolder>(Experience.class, R.layout.map_item_experience,
+        MapPostViewHolder.class, postsQuery) {
+            @Override
+            protected void populateViewHolder(final MapPostViewHolder viewHolder, final Experience model, final int position) {
+                final DatabaseReference postRef = getRef(position);
+
+                // Set click listener for the whole post view
+                final String postKey = postRef.getKey();
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Launch PostDetailActivity
+                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);
+                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+        mRecycler.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        connectClient();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        // Disconnecting the client invalidates it.
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+            Log.d("DEBUG", mGoogleApiClient.toString());
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+        if (mAdapter != null) {
+            mAdapter.cleanup();
+        }
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -137,39 +254,7 @@ public class LocationSettingsFragment extends Fragment implements
             connectClient();
         }
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_location, container, false);
-        mMapView = (MapView) rootView.findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
-        mZoomInButton = (ImageButton) rootView.findViewById(R.id.btnZoomIn);
-        mZoomOutButton = (ImageButton) rootView.findViewById(R.id.btnZoomOut);
-        mZoomInButton.setOnClickListener(this);
-        mZoomOutButton.setOnClickListener(this);
 
-        mMapView.onResume(); // needed to get the map to display immediately
-
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if(mMapView != null) {
-            mMapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    loadMap(map);
-                }
-            });
-        }
-        else{
-            Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-        }
-
-        return rootView;
-    }
     protected void connectClient() {
         // Connect the client.
         if (isGooglePlayServicesAvailable() && mGoogleApiClient != null) {
@@ -177,32 +262,6 @@ public class LocationSettingsFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    /*
-         * Called when the Activity becomes visible.
-        */
-    @Override
-    public void onStart() {
-        super.onStart();
-        connectClient();
-    }
-
-    /*
-     * Called when the Activity is no longer visible.
-     */
-    @Override
-    public void onStop() {
-        // Disconnecting the client invalidates it.
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-            Log.d("DEBUG", mGoogleApiClient.toString());
-        }
-        super.onStop();
-    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -219,23 +278,11 @@ public class LocationSettingsFragment extends Fragment implements
             throw new RuntimeException(e);
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
+
+
+
 
     @Override
     public void onLowMemory() {
@@ -298,7 +345,8 @@ public class LocationSettingsFragment extends Fragment implements
         double longitude = map.getCameraPosition().target.longitude;
         Log.d(TAG, "zoom = " + Float.toString(zoom) + ", lat = " + Double.toString(latitude) + ", log = " + Double.toString(longitude));
         double radius = calculateZoomLevel(zoom)/2000;
-        queryGeoFire(radius, latitude, longitude);
+        if(radius < 300)
+            queryGeoFire(radius, latitude, longitude);
     }
 
     private void queryGeoFire(double radius, double latitude, double longitude) {
@@ -337,7 +385,7 @@ public class LocationSettingsFragment extends Fragment implements
     private double calculateZoomLevel(float zoom) {
         double equatorLength = 40075004; // in meters
         double widthInPixels = screenLength;
-        double metersPerPixel = equatorLength / 2048;
+        double metersPerPixel = equatorLength / 1024;
         double diameter = 0.0;
         float zoomLevel = (float) 1.0;
         while (zoomLevel < zoom) {
@@ -545,5 +593,17 @@ public class LocationSettingsFragment extends Fragment implements
         }
 
 
+    }
+
+//    public String getUid() {
+//        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+//    }
+
+    public Query getQuery(DatabaseReference databaseReference){
+        Query recentPostsQuery = databaseReference.child("posts")
+                .limitToFirst(100);
+        // [END recent_posts_query]
+
+        return recentPostsQuery;
     }
 }
