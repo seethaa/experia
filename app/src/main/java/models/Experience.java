@@ -14,6 +14,7 @@ import java.util.Map;
 @IgnoreExtraProperties
 @Parcel
 public class Experience {
+    public String key;
     public String uid;
     public String title;
     public String author;
@@ -32,6 +33,7 @@ public class Experience {
     public Map<String, Boolean> stars = new HashMap<>();
     public int joinCount = 0;
     public Map<String, Boolean> joins = new HashMap<>();
+
 
 
     public Experience(){

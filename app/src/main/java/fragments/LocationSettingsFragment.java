@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
-import com.experia.experia.activities.PostDetailActivity;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -63,6 +62,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapters.MapFragmentAdapter;
 import adapters.MapPostViewHolder;
 import models.Experience;
 import permissions.dispatcher.NeedsPermission;
@@ -93,6 +93,7 @@ public class LocationSettingsFragment extends Fragment implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private RecyclerView mRecycler;
     private DatabaseReference mDatabase;
+    private ArrayList<Experience> experiences;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -107,6 +108,7 @@ public class LocationSettingsFragment extends Fragment implements
         ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
+        experiences = new ArrayList<Experience>();
     }
 
     @Override
@@ -154,30 +156,27 @@ public class LocationSettingsFragment extends Fragment implements
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
-        Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Experience, MapPostViewHolder>(Experience.class, R.layout.map_item_experience,
-        MapPostViewHolder.class, postsQuery) {
+
+        // Initialize experiences
+        mDatabase.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
-            protected void populateViewHolder(final MapPostViewHolder viewHolder, final Experience model, final int position) {
-                final DatabaseReference postRef = getRef(position);
-
-                // Set click listener for the whole post view
-                final String postKey = postRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Launch PostDetailActivity
-                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
-                    }
-                });
-
-                // Bind Post to ViewHolder
-                viewHolder.bindToPost(getActivity(), model);
+            public void onDataChange(DataSnapshot snapshot) {
+                experiences.clear();
+                for (DataSnapshot Snapshot: snapshot.getChildren()) {
+                    Experience exp = Snapshot.getValue(Experience.class);
+                    exp.key = Snapshot.getKey();
+                    experiences.add(exp);
+                    Log.i("exp ", exp.key);
+                }
+                MapFragmentAdapter mAdapter = new MapFragmentAdapter(getContext(), experiences);
+                mRecycler.setAdapter(mAdapter);
+                Log.d(TAG,"experience called onece");
             }
-        };
-        mRecycler.setAdapter(mAdapter);
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("exp ", "The read failed: " + firebaseError.toString());
+            }
+        });
     }
 
     @Override
@@ -521,7 +520,6 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
     private void addMarker(final String key, final GeoLocation location) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
