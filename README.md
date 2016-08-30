@@ -42,9 +42,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Experience cards, map view, and card detail view: http://imgur.com/a/XhM0i
+Experience cards, map view, and card detail view: 
 <br>
-<img src='http://imgur.com/XhM0i.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/rambled/experia/blob/master/experia_demo_sprint2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <br>
 
