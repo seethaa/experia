@@ -31,7 +31,6 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -60,10 +59,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import adapters.MapFragmentAdapter;
-import adapters.MapPostViewHolder;
 import models.Experience;
 import permissions.dispatcher.NeedsPermission;
 import services.MapPermissionsDispatcher;
@@ -88,12 +87,14 @@ public class LocationSettingsFragment extends Fragment implements
     private DatabaseReference ref;
     private GeoFire geoFire;
     private int screenLength = 1080;
-    private FirebaseRecyclerAdapter<Experience, MapPostViewHolder> mAdapter;
     private LinearLayoutManager mManager;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private RecyclerView mRecycler;
+    private MapFragmentAdapter mAdapter;
     private DatabaseReference mDatabase;
     private ArrayList<Experience> experiences;
+    private HashSet<String> geoKeySet;
+    private ValueEventListener valueEventListener;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -109,6 +110,8 @@ public class LocationSettingsFragment extends Fragment implements
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
         experiences = new ArrayList<Experience>();
+        geoKeySet = new HashSet<String>();
+        mAdapter = new MapFragmentAdapter(getContext(), experiences);
     }
 
     @Override
@@ -156,19 +159,24 @@ public class LocationSettingsFragment extends Fragment implements
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
-
-        // Initialize experiences
-        mDatabase.child("posts").addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 experiences.clear();
                 for (DataSnapshot Snapshot: snapshot.getChildren()) {
-                    Experience exp = Snapshot.getValue(Experience.class);
-                    exp.key = Snapshot.getKey();
-                    experiences.add(exp);
-                    Log.i("exp ", exp.key);
+                    String key = Snapshot.getKey();
+                    if(geoKeySet.contains(key)) {
+                        Experience exp = Snapshot.getValue(Experience.class);
+                        exp.key = key;
+                        experiences.add(exp);
+                        Log.d(TAG,"key in geoKeySet: " + key);
+                    }
+                    else
+                        Log.d(TAG, "key not in geoKeySet: " + key);
+
                 }
-                MapFragmentAdapter mAdapter = new MapFragmentAdapter(getContext(), experiences);
+                //TODO clean mAdapter
+                mAdapter = new MapFragmentAdapter(getContext(), experiences);
                 mRecycler.setAdapter(mAdapter);
                 Log.d(TAG,"experience called onece");
             }
@@ -176,7 +184,8 @@ public class LocationSettingsFragment extends Fragment implements
             public void onCancelled(DatabaseError firebaseError) {
                 Log.e("exp ", "The read failed: " + firebaseError.toString());
             }
-        });
+        };
+        mDatabase.child("posts").addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -211,8 +220,9 @@ public class LocationSettingsFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if (mAdapter != null) {
-            mAdapter.cleanup();
+        if(experiences != null){
+            experiences.clear();
+            experiences = null;
         }
     }
 
@@ -351,13 +361,14 @@ public class LocationSettingsFragment extends Fragment implements
 
     private void queryGeoFire(double radius, double latitude, double longitude) {
         // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius
-        );
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius);
+        geoKeySet.clear();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
                 addMarker(key, location);
+                geoKeySet.add(key);
             }
 
             @Override
@@ -373,6 +384,7 @@ public class LocationSettingsFragment extends Fragment implements
             @Override
             public void onGeoQueryReady() {
                 System.out.println("All initial data has been loaded and events have been fired!");
+                resetFirebaseValueEventListener();
             }
 
             @Override
@@ -380,6 +392,39 @@ public class LocationSettingsFragment extends Fragment implements
                 System.err.println("There was an error with this query: " + error);
             }
         });
+    }
+
+    private void resetFirebaseValueEventListener() {
+        Log.d(TAG, "resetFirebaseValueEventListener");
+        mDatabase.child("posts").removeEventListener(valueEventListener);
+        //TODO clean valueEventListener
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                experiences.clear();
+                for (DataSnapshot Snapshot: snapshot.getChildren()) {
+                    String key = Snapshot.getKey();
+                    if(geoKeySet.contains(key)) {
+                        Experience exp = Snapshot.getValue(Experience.class);
+                        exp.key = key;
+                        experiences.add(exp);
+                        Log.d(TAG,"key in geoKeySet: " + key);
+                    }
+                    else
+                        Log.d(TAG, "key not in geoKeySet: " + key);
+
+                }
+                //TODO clean mAdapter
+                mAdapter = new MapFragmentAdapter(getContext(), experiences);
+                mRecycler.setAdapter(mAdapter);
+                Log.d(TAG,"experience called onece");
+            }
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("exp ", "The read failed: " + firebaseError.toString());
+            }
+        };
+        mDatabase.child("posts").addValueEventListener(valueEventListener);
     }
 
     private double calculateZoomLevel(float zoom) {
