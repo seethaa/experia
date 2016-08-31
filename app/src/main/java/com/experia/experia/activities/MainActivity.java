@@ -26,26 +26,36 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import fragments.BookmarksFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.LocationSettingsFragment;
 import fragments.PostListFragment;
 import fragments.ProfileFragment;
+import models.Experience;
 import models.NamedGeofence;
 
 public class MainActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener,
                 GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener,
+LocationSettingsFragment.OnMapCameraChangeListener{
 
+    public ArrayList<Experience> experiences;
     public GoogleApiClient mGoogleApiClient;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationSettingsFragment fmMap;
+    private String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabs);
+        experiences = new ArrayList<Experience>();
 
         //Set up tabs
 
@@ -184,6 +194,25 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
         }
     }
 
+    @Override
+    public void onMapCameraChange(DataSnapshot snapshot, HashSet<String> geoKeySet) {
+        experiences.clear();
+        for (DataSnapshot Snapshot: snapshot.getChildren()) {
+            String key = Snapshot.getKey();
+            if(geoKeySet.contains(key)) {
+                Experience exp = Snapshot.getValue(Experience.class);
+                exp.key = key;
+                experiences.add(exp);
+                Log.d(TAG,"key in geoKeySet: " + key);
+            }
+            else
+                Log.d(TAG, "key not in geoKeySet: " + key);
+
+        }
+        //TODO clean mAdapter
+        fmMap.updateAdapter(experiences);
+    }
+
     // endregion
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -237,4 +266,6 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
             return tabTitles[position];
         }
     }
+
+
 }

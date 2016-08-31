@@ -60,8 +60,6 @@ import services.MapPermissionsDispatcher;
 
 
 public class LocationSettingsFragment extends Fragment implements
-//        GoogleApiClient.ConnectionCallbacks,
-//        GoogleApiClient.OnConnectionFailedListener,
         LocationListener, View.OnClickListener ,
         GoogleMap.OnCameraIdleListener{
 
@@ -78,13 +76,12 @@ public class LocationSettingsFragment extends Fragment implements
     private GeoFire geoFire;
     private int screenLength = 1080;
     private LinearLayoutManager mManager;
-//    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private RecyclerView mRecycler;
     private MapFragmentAdapter mAdapter;
     private DatabaseReference mDatabase;
-    private ArrayList<Experience> experiences;
     private HashSet<String> geoKeySet;
     private ValueEventListener valueEventListener;
+    private OnMapCameraChangeListener listener;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -106,9 +103,7 @@ public class LocationSettingsFragment extends Fragment implements
         ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        experiences = new ArrayList<Experience>();
         geoKeySet = new HashSet<String>();
-        mAdapter = new MapFragmentAdapter(getContext(), experiences);
         mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
         Log.d(TAG, mGoogleApiClient.toString());
     }
@@ -161,23 +156,7 @@ public class LocationSettingsFragment extends Fragment implements
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                experiences.clear();
-                for (DataSnapshot Snapshot: snapshot.getChildren()) {
-                    String key = Snapshot.getKey();
-                    if(geoKeySet.contains(key)) {
-                        Experience exp = Snapshot.getValue(Experience.class);
-                        exp.key = key;
-                        experiences.add(exp);
-                        Log.d(TAG,"key in geoKeySet: " + key);
-                    }
-                    else
-                        Log.d(TAG, "key not in geoKeySet: " + key);
-
-                }
-                //TODO clean mAdapter
-                mAdapter = new MapFragmentAdapter(getContext(), experiences);
-                mRecycler.setAdapter(mAdapter);
-                Log.d(TAG,"experience called onece");
+                listener.onMapCameraChange(snapshot, geoKeySet);
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
@@ -214,9 +193,6 @@ public class LocationSettingsFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if(experiences != null){
-            experiences.clear();
-        }
         Log.d("DEBUG", "onDestroy");
     }
 
@@ -333,23 +309,7 @@ public class LocationSettingsFragment extends Fragment implements
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                experiences.clear();
-                for (DataSnapshot Snapshot: snapshot.getChildren()) {
-                    String key = Snapshot.getKey();
-                    if(geoKeySet.contains(key)) {
-                        Experience exp = Snapshot.getValue(Experience.class);
-                        exp.key = key;
-                        experiences.add(exp);
-                        Log.d(TAG,"key in geoKeySet: " + key);
-                    }
-                    else
-                        Log.d(TAG, "key not in geoKeySet: " + key);
-
-                }
-                //TODO clean mAdapter
-                mAdapter = new MapFragmentAdapter(getContext(), experiences);
-                mRecycler.setAdapter(mAdapter);
-                Log.d(TAG,"experience called onece");
+                listener.onMapCameraChange(snapshot, geoKeySet);
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
@@ -481,5 +441,29 @@ public class LocationSettingsFragment extends Fragment implements
         }
 
 
+    }
+
+    // Define the events that the fragment will use to communicate
+    public interface OnMapCameraChangeListener {
+        // This can be any number of events to be sent to the activity
+        public void onMapCameraChange(DataSnapshot snapshot, HashSet<String> geoKeySet);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMapCameraChangeListener) {
+            listener = (OnMapCameraChangeListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
+
+    public void updateAdapter(ArrayList<Experience> experiences){
+        mAdapter = new MapFragmentAdapter(getContext(), experiences);
+        mRecycler.setAdapter(mAdapter);
+        Log.d(TAG,"experience called onece");
     }
 }
