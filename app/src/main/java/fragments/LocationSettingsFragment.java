@@ -57,6 +57,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.parceler.Parcels;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -64,6 +66,7 @@ import java.util.List;
 
 import adapters.MapFragmentAdapter;
 import models.Experience;
+import models.User;
 import permissions.dispatcher.NeedsPermission;
 import services.MapPermissionsDispatcher;
 
@@ -101,6 +104,14 @@ public class LocationSettingsFragment extends Fragment implements
      * returned in Activity.onActivityResult
      */
 
+
+    public static LocationSettingsFragment newInstance(User currUser) {
+        LocationSettingsFragment fg = new LocationSettingsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("currUser", Parcels.wrap(currUser));
+        fg.setArguments(args);
+        return fg;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

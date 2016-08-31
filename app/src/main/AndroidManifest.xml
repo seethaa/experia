@@ -20,7 +20,6 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -55,6 +54,7 @@
         <!--<activity android:name=".ExperienceCardActivity">-->
         <!--</activity>-->
         <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.UploadPhotoActivity" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.PostDetailActivity" />
         <activity android:name=".activities.NewPostActivity" />
@@ -66,12 +66,6 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-        <activity
-            android:name=".activities.CreateExperienceActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="stateVisible">
-        </activity>
 
         <uses-library android:required="true" android:name="com.google.android.maps" />
 
@@ -82,6 +76,27 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name="services.MyDownloadService"
+            android:exported="false"/>
+
+        <!--
+      Android N SDK has new restrictions around sharing file:// URIs
+      https://developer.android.com/reference/android/support/v4/content/FileProvider.html#ProviderDefinition
+    -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.experia.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
+
+
 
 </manifest>

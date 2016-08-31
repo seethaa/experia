@@ -71,7 +71,7 @@ public class CreateExPhotoFragment extends Fragment {
             listener = (OnPhotoPickCompleteListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
+                    + " must implement MyListFragment.OnNameDescriptionPhotoCompleteListener");
         }
     }
 

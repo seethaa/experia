@@ -14,6 +14,10 @@ import com.firebase.client.Firebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.parceler.Parcels;
+
+import models.User;
+
 
 public class BookmarksFragment extends Fragment {
     private static final String TAG = "DATA_TAG";
@@ -25,6 +29,13 @@ public class BookmarksFragment extends Fragment {
 
     private static final String FIREBASE_URL = "https://experia-45c85.firebaseio.com/";
 
+    public static BookmarksFragment newInstance(User currUser) {
+        BookmarksFragment fg = new BookmarksFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("currUser", Parcels.wrap(currUser));
+        fg.setArguments(args);
+        return fg;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

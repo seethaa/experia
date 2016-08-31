@@ -13,6 +13,10 @@ import com.experia.experia.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.parceler.Parcels;
+
+import models.User;
+
 
 public class ProfileFragment extends Fragment {
     FirebaseAuth auth;
@@ -21,6 +25,14 @@ public class ProfileFragment extends Fragment {
     String displayName;
     String email;
 
+
+    public static ProfileFragment newInstance(User currUser) {
+        ProfileFragment fg = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("currUser", Parcels.wrap(currUser));
+        fg.setArguments(args);
+        return fg;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -61,7 +61,7 @@ public class CreateExTotalTagsTypeFragment extends Fragment {
             listener = (OnTotaltagsTypeCompleteListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
+                    + " must implement MyListFragment.OnNameDescriptionPhotoCompleteListener");
         }
     }
 

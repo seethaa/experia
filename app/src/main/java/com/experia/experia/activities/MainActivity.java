@@ -1,18 +1,18 @@
 package com.experia.experia.activities;
 
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -21,19 +21,14 @@ import com.experia.experia.R;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import fragments.BookmarksFragment;
-import fragments.CategoryFragment;
+import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.LocationSettingsFragment;
-import fragments.MediaControllerFragment;
+import fragments.PostListFragment;
 import fragments.ProfileFragment;
 import fragments.RecentPostsFragment;
-import fragments.YouTubeFragment;
 import models.NamedGeofence;
 
-public class MainActivity extends BaseActivity {
-    private DrawerLayout mDrawer;
-    private Toolbar mToolbar;
-    private NavigationView mNavDrawer;
-    private ActionBarDrawerToggle mDrawerToggle;
+public class MainActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener {
 
     //custom notification
     private NotificationManager mNotificationManager;
@@ -43,27 +38,26 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_tabs);
 
-        // Set a Toolbar to replace the ActionBar.
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = setupDrawerToggle();
 
-        // Tie DrawerLayout events to the ActionBarToggle
-        mDrawer.addDrawerListener(mDrawerToggle);
+        //Set up tabs
 
-        mNavDrawer = (NavigationView) findViewById(R.id.nvView);
-        // Setup drawer view
-        setupDrawerContent(mNavDrawer);
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                MainActivity.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
 
 //        mNavDrawer.getMenu().getItem(0).setChecked(true);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new RecentPostsFragment()).commit();
-        setTitle("Experiences around me");
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.flContent, new RecentPostsFragment()).commit();
+//        setTitle("Experiences around me");
 
         // Button launches NewPostActivity
         findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
@@ -97,100 +91,28 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.drawer_open,  R.string.drawer_close);
-    }
-
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
-    }
-
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch(menuItem.getItemId()) {
-            case R.id.nav_location_fragment:
-                fragmentClass = LocationSettingsFragment.class;
-                break;
-            case R.id.nav_category_fragment:
-                fragmentClass = CategoryFragment.class;
-                break;
-            case R.id.nav_bookmarks_fragment:
-                fragmentClass = BookmarksFragment.class;
-                break;
-            case R.id.nav_account_fragment:
-                fragmentClass = RecentPostsFragment.class;
-                break;
-            case R.id.nav_profile_fragment:
-                fragmentClass = ProfileFragment.class;
-                break;
-            case R.id.nav_video_fragment: //test video player
-                fragmentClass = MediaControllerFragment.class;
-                break;
-            case R.id.nav_youtube_fragment: //test video player
-                fragmentClass = YouTubeFragment.class;
-                break;
-            default:
-                fragmentClass = RecentPostsFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
-    }
 
 
 
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+    public void onMapClick(MenuItem mi) {
+
+        //change this to maps
+//        startActivity(new Intent(Ma.this, NewPostActivity.class));
+
+        // handle click here
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
+
+
 
     // region GeofenceControllerListener
 
@@ -206,6 +128,64 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    @Override
+    public void onNameDescriptionPhotoCompleted(String title, String description, Uri imgUri) {
+        //do nothing for now
+    }
+
     // endregion
+
+    public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+        final int PAGE_COUNT = 5;
+        private String tabTitles[] = new String[] { "Nearby", "Search", "Create", "Favorites", "Profile" };
+        private Context context;
+
+        public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+                if (position ==0){//Nearby
+//                    RecentPostsFragment rpf = PostListFragment.newInstance(null);
+//                    return rpf;
+                    PostListFragment cndpf = RecentPostsFragment.newInstance(null);
+                    return cndpf;
+                }
+                else if (position ==1){//Search
+                    LocationSettingsFragment cndpf = LocationSettingsFragment.newInstance(null);
+                    return cndpf;
+                }
+                else if (position ==2){//Search
+                    LocationSettingsFragment cndpf = LocationSettingsFragment.newInstance(null);
+                    return cndpf;
+                }
+                else if (position ==3){//Search
+                    BookmarksFragment bmf = BookmarksFragment.newInstance(null);
+                    return bmf;
+                }
+                else if (position ==4){//Search
+                    ProfileFragment pf = ProfileFragment.newInstance(null);
+                    return pf;
+                }
+                else{
+                    return null;
+                }
+            }
+
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return tabTitles[position];
+        }
+    }
 
 }

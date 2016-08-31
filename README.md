@@ -2,7 +2,7 @@
 
 How long have you been stuck in routine work and losing passion in your life? It is time to make a change! New learning experiences, discovering new cities more deeply, and enjoying in the moment are great ways to save us from boredom. **Experia** helps make that possible! **Experia** is an Android app that makes experience matches based on your location in real-time. It can be your local friend to introduce new stuff to do around your area, or your smart guide when you are traveling in a new city and looking for something unique, or even a great tool to make new friends! **Experia** can make you realize *there are so many possibilities in life!*
 
-Time spent: **40** hours spent in total
+Time spent: **80** hours spent in total
 
 ## User Stories
 

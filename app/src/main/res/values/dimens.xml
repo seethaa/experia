@@ -17,4 +17,8 @@
     <dimen name="margin_arrow_top">30sp</dimen>
     <dimen name="spacer_time_date">30sp</dimen>
 
+    <dimen name="standard_field_width">160dp</dimen>
+    <dimen name="margin_1">8dp</dimen>
+    <dimen name="margin_2">16dp</dimen>
+
 </resources>

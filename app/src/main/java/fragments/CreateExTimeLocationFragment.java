@@ -61,7 +61,7 @@ public class CreateExTimeLocationFragment extends Fragment {
             listener = (OnWhereAndWhenCompleteListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement MyListFragment.OnNameAndDescriptionCompleteListener");
+                    + " must implement MyListFragment.OnNameDescriptionPhotoCompleteListener");
         }
     }
 
