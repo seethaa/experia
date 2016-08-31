@@ -2,7 +2,6 @@ package com.experia.experia.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -13,8 +12,6 @@ import android.widget.Toast;
 import com.experia.experia.R;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +22,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,16 +126,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 
 
-        // Create a storage reference from our app
-//        StorageReference storageRef = storage.getReferenceFromUrl("gs://<your-bucket-name>");
-
-// Create a reference to "mountains.jpg"
-//        StorageReference mountainsRef = mStorageRef.child("mountains.jpg");
-//
-//// Create a reference to 'images/mountains.jpg'
-//        StorageReference mountainImagesRef = mStorageRef.child("images/mountains.jpg");
-//
-
     }
 
     private void setupViews() {
@@ -157,19 +143,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         etLatitude = (EditText) findViewById(R.id.field_latitude);
         etLongitude = (EditText) findViewById(R.id.field_longitude);
 
-//        findViewById(R.id.btnImageUpload).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onPickPhoto(v);
-//            }
-//        });
-//
-//        findViewById(R.id.btnTakePicture).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onLaunchCamera(v);
-//            }
-//        });
 
         findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,192 +153,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
     }
 
-//    public void onLaunchCamera(View view) {
-//        // create Intent to take a picture and return control to the calling application
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName)); // set the image file name
-//
-//        System.out.println();
-//        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-//        // So as long as the result is not null, it's safe to use the intent.
-//        if (intent.resolveActivity(getPackageManager()) != null) {
-//            // Start the image capture intent to take photo
-//            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-//        }
-//    }
-//
-////    @Override
-////    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-////
-////
-////        if (data != null) {
-////            Uri photoUri = data.getData();
-////            // Do something with the photo based on Uri
-////            Bitmap selectedImage = null;
-////            try {
-////                selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-////            // Load the selected image into a preview
-////            ImageView ivPreview = (ImageView) findViewById(R.id.ivPreview);
-////            ivPreview.setImageBitmap(selectedImage);
-////        }
-////    }
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                Uri takenPhotoUri = getPhotoFileUri(photoFileName);
-//                // by this point we have the camera photo on disk
-//                Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
-//                // RESIZE BITMAP, see section below
-//                // Load the taken image into a preview
-//                ImageView ivPreview = (ImageView) findViewById(R.id.ivPreview);
-//                ivPreview.setImageBitmap(takenImage);
-//            } else { // Result was a failure
-//                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        else if (requestCode == PICK_PHOTO_CODE) {
-//            if (data != null) {
-//                Uri photoUri = data.getData();
-//                // Do something with the photo based on Uri
-//                Bitmap selectedImage = null;
-//                try {
-//                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                // Load the selected image into a preview
-//                ImageView ivPreview = (ImageView) findViewById(R.id.ivPreview);
-//                ivPreview.setImageBitmap(selectedImage);
-//            }
-//        }
-//    }
-//
-//    // Returns the Uri for a photo stored on disk given the fileName
-//    public Uri getPhotoFileUri(String fileName) {
-//        // Only continue if the SD Card is mounted
-//        if (isExternalStorageAvailable()) {
-//            // Get safe storage directory for photos
-//            // Use `getExternalFilesDir` on Context to access package-specific directories.
-//            // This way, we don't need to request external read/write runtime permissions.
-//            File mediaStorageDir = new File(
-//                    getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
-//
-//            // Create the storage directory if it does not exist
-//            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-//                Log.d(APP_TAG, "failed to create directory");
-//            }
-//
-//            // Return the file target for the photo based on filename
-//            return Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
-//        }
-//        return null;
-//    }
-//
-//    // Returns true if external storage for photos is available
-//    private boolean isExternalStorageAvailable() {
-//        String state = Environment.getExternalStorageState();
-//        return state.equals(Environment.MEDIA_MOUNTED);
-//    }
-//
-//    // Trigger gallery selection for a photo
-//    public void onPickPhoto(View view) {
-//        // Create intent for picking a photo from the gallery
-//        Intent intent = new Intent(Intent.ACTION_PICK,
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-//        // So as long as the result is not null, it's safe to use the intent.
-//        if (intent.resolveActivity(getPackageManager()) != null) {
-//            // Bring up gallery to select a photo
-//            startActivityForResult(intent, PICK_PHOTO_CODE);
-//        }
-//    }
-
-//    public void uploadImage() {
-//        {
-//            final StorageReference imageRef = imagesRef.child("image-" + count);
-//            final Uri uri = Uri.parse(imageUrl);
-//            try {
-//                final Base64.InputStream imageStream = getActivity().getContentResolver().openInputStream(uri);
-//                final UploadTask uploadTask = imageRef.putStream(imageStream);
-//                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        final Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                        imageViewWithProgressBar.getProgressBar().setVisibility(View.INVISIBLE);
-//                        imageViewWithProgressBar.getImageView().setBorderWidth(50);
-//                        imageViewWithProgressBar.getImageView().setBorderColor(ContextCompat.getColor(getContext(),
-//                                R.color.green));
-//                        addImageUrlToProduct(downloadUrl.toString());
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        //TODO: handle image upload failure.
-//                    }
-//                });
-//
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-    // [START upload_from_uri]
-//    private void uploadFromUri(Uri fileUri) {
-//        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
-//
-//        // [START get_child_ref]
-//        // Get a reference to store file at photos/<FILENAME>.jpg
-//        final StorageReference photoRef = mStorageRef.child("photos")
-//                .child(fileUri.getLastPathSegment());
-//        // [END get_child_ref]
-//
-//        // Upload file to Firebase Storage
-//        // [START_EXCLUDE]
-//        showProgressDialog();
-//        // [END_EXCLUDE]
-//        Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
-//        photoRef.putFile(fileUri)
-//                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        // Upload succeeded
-//                        Log.d(TAG, "uploadFromUri:onSuccess");
-//
-//                        // Get the public download URL
-//                        mDownloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-//
-//                        // [START_EXCLUDE]
-//                        hideProgressDialog();
-//                        updateUI(mAuth.getCurrentUser());
-//                        // [END_EXCLUDE]
-//                    }
-//                })
-//                .addOnFailureListener(this, new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Upload failed
-//                        Log.w(TAG, "uploadFromUri:onFailure", exception);
-//
-//                        mDownloadUrl = null;
-//
-//                        // [START_EXCLUDE]
-//                        hideProgressDialog();
-//                        Toast.makeText(MainActivity.this, "Error: upload failed",
-//                                Toast.LENGTH_SHORT).show();
-//                        updateUI(mAuth.getCurrentUser());
-//                        // [END_EXCLUDE]
-//                    }
-//                });
-//    }
-    // [END upload_from_uri]
-
-
     private void submitPostTest() {
 
 //        uploadFromUri(mphotoImgUri);
@@ -375,71 +162,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mLatitude = 1.0;
         mLongitude = 1.0;
 
-        final StorageReference photoRef = mStorageRef.child("photos")
-                .child(mphotoImgUri.getLastPathSegment());
-
-        Uri file = Uri.fromFile(new File(mphotoImgUri.getPath()));//"path/to/images/rivers.jpg"
-//        StorageReference riversRef = mStorageRef.child("photos");
-        uploadTask = photoRef.putFile(file);
-
-// Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                System.out.println("DEBUGGY printing downloadurl: " + downloadUrl.toString());
-            }
-        });
-
-//        Base64.InputStream stream = null;
-//        try {
-//            stream = new FileInputStream(new File("path/to/images/rivers.jpg"));
-//
-//            uploadTask = mountainsRef.putStream(stream);
-//            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception exception) {
-//                    // Handle unsuccessful uploads
-//                }
-//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-//                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                }
-//            });
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-
-
-//        // Title is required
-//        if (TextUtils.isEmpty(mTitle)) {
-//            etTitle.setError(REQUIRED);
-//            return;
-//        }
-//
-//        // Body is required
-//        if (TextUtils.isEmpty(mBody)) {
-//            etBody.setError(REQUIRED);
-//            return;
-//        }
-//
-//        if (TextUtils.isEmpty(mDuration)) {
-//            etDuration.setError(REQUIRED);
-//            return;
-//        }
-//        if (TextUtils.isEmpty(mTags)) {
-//            etTags.setError(REQUIRED);
-//            return;
-//        }
 
         // [START single_value_read]
         final String userId = getUid();
@@ -607,27 +329,18 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
         System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
 
-//        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 
         submitPostTest();
 
     }
 
-//    @Override
-//    public void onSavePhotosCompleted(String imgString) {
-//        mImgURL = "http://peoplehouse.org/wp-content/uploads/2015/01/surfing-beach-wallpaper_90085-1920x1200.jpg";
-//        System.out.println("DEBUGGY Experience page 4: " + mImgURL);
-//
-//        submitPostTest();
-//
-//    }
 
     @Override
-    public void onNameDescriptionPhotoCompleted(String title, String description, Uri imgUri) {
+    public void onNameDescriptionPhotoCompleted(String title, String description, String imgUrl) {
         mTitle = title;
         mBody = description;
-        mphotoImgUri = imgUri;
-        System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody + " ," + mphotoImgUri);
+        mImgURL = imgUrl;
+        System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody + " ," + imgUrl);
 
         mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 

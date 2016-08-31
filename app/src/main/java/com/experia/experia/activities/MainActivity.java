@@ -1,7 +1,7 @@
 package com.experia.experia.activities;
 
 import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -98,9 +98,10 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
         }
     };
 
+
     @Override
-    public void onNameDescriptionPhotoCompleted(String title, String description, Uri imgUri) {
-        //do nothing for now
+    public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL) {
+        //do nothing for now..
     }
 
     // endregion

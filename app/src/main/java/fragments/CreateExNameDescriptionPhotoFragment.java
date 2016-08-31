@@ -76,8 +76,8 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
     @BindView(R.id.ivSelectedPhoto)
     ImageView experiencePhoto;
-    @BindView(R.id.btPhoto)
-    Button selectBtn;
+//    @BindView(R.id.btPhoto)
+//    Button selectBtn;
 
 
     @BindView(R.id.etDescription) EditText experienceDescription;
@@ -154,7 +154,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
     // Define the events that the fragment will use to communicate
     public interface OnNameDescriptionPhotoCompleteListener {
-        public void onNameDescriptionPhotoCompleted(String title, String description, Uri imgUri);
+        public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -176,7 +176,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
 
         System.out.println("DEBUGGY Exp 1 old: " + mTitle + ", " + mBody + ", " + mImageUri);
-        listener.onNameDescriptionPhotoCompleted(mTitle, mBody, mImageUri);
+        listener.onNameDescriptionPhotoCompleted(mTitle, mBody, mPhotoStringURL);
     }
 
     public static CreateExNameDescriptionPhotoFragment newInstance(int color, int icon) {
@@ -196,13 +196,6 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
-
-        selectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPickPhoto(v);
-            }
-        });
 
         nextBtn.setOnClickListener(new View.OnClickListener() { //go to next fragment
             @Override
@@ -531,6 +524,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
         // Download URL and Download button
         if (mDownloadUrl != null) {
             tvPictureDownload.setText(mDownloadUrl.toString());
+            mPhotoStringURL = mDownloadUrl.toString();
             llDownload.setVisibility(View.VISIBLE);
         } else {
             tvPictureDownload.setText(null);
@@ -563,20 +557,6 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     }
 
 
-
-//    @Override
-//    public void onClick(View v) {
-//        int i = v.getId();
-//        if (i == R.id.button_camera) {
-//            launchCamera();
-//        } else if (i == R.id.button_sign_in) {
-//            signInAnonymously();
-//        } else if (i == R.id.button_pick) {
-//            onPickPhoto(v);
-//        } else if (i == R.id.button_download) {
-//            beginDownload();
-//        }
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
