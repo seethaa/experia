@@ -45,16 +45,16 @@
     <string name="dialog_message_item_pinned">Item pinned! (position = %1$d)</string>
 
     <!--create experience string-->
-    <string name="createName">Please enter a short title...</string>
+    <string name="createName">Title</string>
     <string name="createHint">enter..</string>
-    <string name="createDescription">Provide a detailed description...</string>
+    <string name="createDescription">Description</string>
     <string name="createTimeDate">Set Time &amp; Date:</string>
-    <string name="createStreet">Enter the location...</string>
+    <string name="createStreet">Address</string>
     <string name="createCity">City:</string>
     <string name="createState">State:</string>
     <string name="createPhoto">Select Photo:</string>
 
-    <string name="camera_button_text">Upload</string>
+    <string name="camera_button_text">Take Picture</string>
     <string name="sign_in_prompt">Sign In to begin</string>
     <string name="take_photo_prompt">Upload a Photo</string>
     <string name="download">Download</string>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.experia.experia.R;
@@ -81,6 +83,16 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
         mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
         Log.d("DDB", mGoogleApiClient.toString());
+
+        //USing for testing right now...
+        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+            }
+        });
+
     }
 
     @Override
@@ -108,8 +120,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
         // handle click here
     }
-
-
 
 
     // region GeofenceControllerListener
@@ -217,7 +227,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 4;
-        private String tabTitles[] = new String[] { "Nearby", "Search", "Favorites", "Profile" };
+        private String tabTitles[] = new String[] { "Nearby", "Search", "Favorites", "Profile"};
         private Context context;
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -240,10 +250,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 fmMap = LocationSettingsFragment.newInstance(null);
                 return fmMap;
             }
-//            else if (position ==2){//Create
-//                Fragment cndpf = .newInstance(null);
-//                return cndpf;
-//            }
+
             else if (position ==2){//Favorite
                 BookmarksFragment bmf = BookmarksFragment.newInstance(null);
                 return bmf;
@@ -252,6 +259,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 ProfileFragment pf = ProfileFragment.newInstance(null);
                 return pf;
             }
+//            else if (position ==4){//Create
+//                Fragment cndpf = CreateExNameDescriptionPhotoFragment.newInstance(null);
+//                return cndpf;
+//            }
             else{
                 Fragment cndpf = PostListFragment.newInstance(null);
                 return cndpf;

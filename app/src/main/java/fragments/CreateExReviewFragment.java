@@ -24,7 +24,7 @@ import util.CupboardDBHelper;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class CreateExTimeLocationFragment extends Fragment {
+public class CreateExReviewFragment extends Fragment {
     @BindView(R.id.fire_event) Button saveBtn;
 //    @BindView(R.id.etDate) EditText etDate;
     @BindView(R.id.etTime) EditText etTime;
@@ -76,8 +76,8 @@ public class CreateExTimeLocationFragment extends Fragment {
         listener.onWhereAndWhenCompleted(exAddress, exDate, exTime);
     }
 
-    public static CreateExTimeLocationFragment newInstance(int color, int icon) {
-        CreateExTimeLocationFragment fragment = new CreateExTimeLocationFragment();
+    public static CreateExReviewFragment newInstance(int color, int icon) {
+        CreateExReviewFragment fragment = new CreateExReviewFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, icon);
         args.putInt(ARG_SECTION_COLOR, color);

@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/etName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/lg_creation_prompt"
         android:hint="@string/createName"
@@ -20,33 +20,18 @@
 
     <EditText
         android:id="@+id/etDescription"
-        android:layout_width="wrap_content"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/lg_creation_prompt"
         android:hint="@string/createDescription"
-        android:visibility="invisible"
         android:layout_gravity="left"
         android:layout_below="@+id/etName"
-        android:layout_alignRight="@+id/etName"
-        android:layout_alignEnd="@+id/etName" />
+        android:layout_alignRight="@+id/linearLayout4"
+        android:layout_alignEnd="@+id/linearLayout4" />
 
 
-    <ImageView
-        android:id="@+id/ivSelectedPhoto"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
-
-    <Button
-        android:id="@+id/fire_event"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/icon_chevron_down"
-        android:visibility="invisible"
-        android:layout_alignBottom="@+id/btPhoto"
-        android:layout_centerHorizontal="true" />
 
 
     <Button
@@ -66,16 +51,19 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical"
+        android:id="@+id/linearLayout4"
         android:layout_below="@+id/etDescription"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:weightSum="1">
 
         <LinearLayout
             android:id="@+id/layout_signin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            tools:visibility="gone">
+            tools:visibility="gone"
+            android:layout_weight="0.20">
 
             <TextView
                 android:id="@+id/status_sign_in"
@@ -96,70 +84,57 @@
         <LinearLayout
             android:id="@+id/layout_storage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_1"
-                android:text="@string/take_photo_prompt" />
-
-            <Button
-                android:id="@+id/button_camera"
-                android:layout_width="@dimen/standard_field_width"
-                android:layout_height="wrap_content"
-                android:text="@string/camera_button_text" />
-
-            <Button
-                android:id="@+id/button_pick"
-                android:layout_width="@dimen/standard_field_width"
-                android:layout_height="wrap_content"
-                android:text="Choose picture" />
+            tools:visibility="visible"
+            android:layout_weight="0.20">
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
+        <ImageView
+            android:id="@+id/ivSelectedPhoto"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_take_photo" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_1"
-                android:layout_marginTop="@dimen/margin_2"
-                android:text="@string/label_link" />
 
-            <TextView
-                android:id="@+id/picture_download_uri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                tools:text="http://www.example.com/?id=UAOJNVKBMQUGPYZKCQZRZKJEXRCRXMRSMFBZBMBODWUSVTDXJCPJMYOKQQBODSGPYHPZUR" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_1"
-                android:layout_marginTop="@dimen/margin_2"
-                android:text="@string/label_download" />
-
-            <Button
-                android:id="@+id/button_download"
-                android:layout_width="@dimen/standard_field_width"
-                android:layout_height="wrap_content"
-                android:text="@string/download" />
-        </LinearLayout>
 
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/fire_event"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/icon_right_arrow"
+        android:visibility="invisible"
+        android:layout_below="@+id/button_camera"
+        android:layout_centerHorizontal="true"
+         />
+
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/camera_button_text"
+        android:layout_gravity="left"
+        android:layout_alignTop="@+id/button_pick"
+        android:layout_toRightOf="@+id/fire_event"
+        android:layout_toEndOf="@+id/fire_event" />
+
+    <Button
+        android:id="@+id/button_pick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose picture"
+        android:layout_gravity="right"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_alignRight="@+id/fire_event"
+        android:layout_alignEnd="@+id/fire_event" />
 
 </RelativeLayout>

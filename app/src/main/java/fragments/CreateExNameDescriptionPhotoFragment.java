@@ -30,9 +30,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -86,13 +86,13 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     @BindView(R.id.button_camera) Button btnCamera;
     @BindView(R.id.button_pick) Button btnPick;
     @BindView(R.id.button_sign_in) Button btnSignIn;
-    @BindView(R.id.button_download) Button btnDownload;
+//    @BindView(R.id.button_download) Button btnDownload;
 
     @BindView(R.id.layout_signin)
     LinearLayout llSignin;
     @BindView(R.id.layout_storage) LinearLayout llStorage;
-    @BindView(R.id.picture_download_uri) TextView tvPictureDownload;
-    @BindView(R.id.layout_download) LinearLayout llDownload;
+//    @BindView(R.id.picture_download_uri) TextView tvPictureDownload;
+//    @BindView(R.id.layout_download) LinearLayout llDownload;
 
 
 
@@ -375,7 +375,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
                 try {
                     selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mImageUri);
                     // Load the selected image into a preview
-                    experiencePhoto.setImageBitmap(selectedImage);
+//                    experiencePhoto.setImageBitmap(selectedImage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -495,7 +495,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
                 });
     }
 
-    @OnClick(R.id.button_download)
+    /*@OnClick(R.id.button_download)
     public void beginDownload() {
         // Get path
         String path = "photos/" + mFileUri.getLastPathSegment();
@@ -508,7 +508,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
         // Show loading spinner
         showProgressDialog();
-    }
+    }*/
 
 
     private void updateUI(FirebaseUser user) {
@@ -523,12 +523,15 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
         // Download URL and Download button
         if (mDownloadUrl != null) {
-            tvPictureDownload.setText(mDownloadUrl.toString());
+//            tvPictureDownload.setText(mDownloadUrl.toString());
             mPhotoStringURL = mDownloadUrl.toString();
-            llDownload.setVisibility(View.VISIBLE);
+            Glide.with(getActivity()).load(mPhotoStringURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+                    .into(experiencePhoto);
+
+            //llDownload.setVisibility(View.VISIBLE);
         } else {
-            tvPictureDownload.setText(null);
-            llDownload.setVisibility(View.GONE);
+//            tvPictureDownload.setText(null);
+//            llDownload.setVisibility(View.GONE);
         }
     }
 

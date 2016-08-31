@@ -29,13 +29,11 @@ import adapters.LockableViewPager;
 import adapters.SimpleFragmentAdapter;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.CreateExTimeLocationFragment;
-import fragments.CreateExTotalTagsTypeFragment;
 import models.Experience;
 import models.User;
 
 public class NewPostActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener,
-        CreateExTimeLocationFragment.OnWhereAndWhenCompleteListener,
-        CreateExTotalTagsTypeFragment.OnTotaltagsTypeCompleteListener{
+        CreateExTimeLocationFragment.OnWhereAndWhenCompleteListener{
 
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
@@ -101,7 +99,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mSimpleFragmentAdapter = new SimpleFragmentAdapter(getSupportFragmentManager());
         mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1));
         mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
-        mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
+       // mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
 //        mSimpleFragmentAdapter.addFragment(CreateExPhotoFragment.newInstance(R.color.frag3, R.drawable.char3));
 
         mViewPager = (LockableViewPager) findViewById(R.id.container);
@@ -162,6 +160,9 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mLatitude = 1.0;
         mLongitude = 1.0;
 
+        mNumGuests = 100;
+
+        mDate = "Today";
 
         // [START single_value_read]
         final String userId = getUid();
@@ -316,23 +317,24 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mDate = date;
         mTime = time;
         System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
-
-    }
-
-
-    @Override
-    public void onTotaltagsTypeCompleted(int total, String tags, int type) {
-        mNumGuests = total;
-        mTags = tags;
-        mType = type;
-
-        System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
-
+//        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 
         submitPostTest();
-
     }
+
+
+//    @Override
+//    public void onTotaltagsTypeCompleted(int total, String tags, int type) {
+//        mNumGuests = total;
+//        mTags = tags;
+//        mType = type;
+//
+//        System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
+//
+//
+//        submitPostTest();
+//
+//    }
 
 
     @Override
