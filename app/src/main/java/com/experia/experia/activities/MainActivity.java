@@ -1,20 +1,16 @@
 package com.experia.experia.activities;
 
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.experia.experia.R;
@@ -23,24 +19,17 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import fragments.BookmarksFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.LocationSettingsFragment;
-import fragments.PostListFragment;
 import fragments.ProfileFragment;
 import fragments.RecentPostsFragment;
 import models.NamedGeofence;
 
 public class MainActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener {
 
-    //custom notification
-    private NotificationManager mNotificationManager;
-    private int notificationID = 100;
-    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabs);
-
-
 
         //Set up tabs
 
@@ -53,20 +42,6 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-
-//        mNavDrawer.getMenu().getItem(0).setChecked(true);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContent, new RecentPostsFragment()).commit();
-//        setTitle("Experiences around me");
-
-        // Button launches NewPostActivity
-        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-            }
-        });
 
         GeofenceController.getInstance().init(this);
         //Hardcode for geofence example
@@ -90,11 +65,6 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
             GooglePlayServicesUtil.getErrorDialog(googlePlayServicesCode, this, 0).show();
         }
     }
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,8 +106,8 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
     // endregion
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        final int PAGE_COUNT = 5;
-        private String tabTitles[] = new String[] { "Nearby", "Search", "Create", "Favorites", "Profile" };
+        final int PAGE_COUNT = 4;
+        private String tabTitles[] = new String[] { "Nearby", "Search", "Favorites", "Profile" };
         private Context context;
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -152,32 +122,32 @@ public class MainActivity extends BaseActivity implements CreateExNameDescriptio
 
         @Override
         public Fragment getItem(int position) {
-                if (position ==0){//Nearby
+            if (position ==0){//Nearby
 //                    RecentPostsFragment rpf = PostListFragment.newInstance(null);
 //                    return rpf;
-                    PostListFragment cndpf = RecentPostsFragment.newInstance(null);
-                    return cndpf;
-                }
-                else if (position ==1){//Search
-                    LocationSettingsFragment cndpf = LocationSettingsFragment.newInstance(null);
-                    return cndpf;
-                }
-                else if (position ==2){//Search
-                    LocationSettingsFragment cndpf = LocationSettingsFragment.newInstance(null);
-                    return cndpf;
-                }
-                else if (position ==3){//Search
-                    BookmarksFragment bmf = BookmarksFragment.newInstance(null);
-                    return bmf;
-                }
-                else if (position ==4){//Search
-                    ProfileFragment pf = ProfileFragment.newInstance(null);
-                    return pf;
-                }
-                else{
-                    return null;
-                }
+                Fragment cndpf = RecentPostsFragment.newInstance(null);
+                return cndpf;
             }
+            else if (position ==1){//Search
+                Fragment cndpf = LocationSettingsFragment.newInstance(null);
+                return cndpf;
+            }
+//            else if (position ==2){//Create
+//                Fragment cndpf = .newInstance(null);
+//                return cndpf;
+//            }
+            else if (position ==2){//Favorite
+                BookmarksFragment bmf = BookmarksFragment.newInstance(null);
+                return bmf;
+            }
+            else if (position ==3){//Profile
+                ProfileFragment pf = ProfileFragment.newInstance(null);
+                return pf;
+            }
+            else{
+                return RecentPostsFragment.newInstance(null);
+            }
+        }
 
 
 

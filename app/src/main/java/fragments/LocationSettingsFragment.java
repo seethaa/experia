@@ -34,7 +34,6 @@ import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -62,7 +61,6 @@ import org.parceler.Parcels;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import adapters.MapFragmentAdapter;
 import models.Experience;
@@ -79,14 +77,13 @@ public class LocationSettingsFragment extends Fragment implements
 
     private static final String TAG = "MapMarkerFragment";
     private GoogleMap map;
-    MapView mMapView;
+    private MapView mMapView;
     private ImageButton mZoomInButton;
     private ImageButton mZoomOutButton;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private List<Geofence> mGeofenceList;
     private DatabaseReference ref;
     private GeoFire geoFire;
     private int screenLength = 1080;
@@ -116,7 +113,6 @@ public class LocationSettingsFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGeofenceList = new ArrayList<>();
         ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
@@ -215,14 +211,16 @@ public class LocationSettingsFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        Log.d("DEBUG", "onPause");
     }
 
     @Override
     public void onStop() {
         // Disconnecting the client invalidates it.
         if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
+            //mGoogleApiClient.disconnect();
             Log.d("DEBUG", mGoogleApiClient.toString());
+            Log.d("DEBUG", "onStop");
         }
         super.onStop();
     }
@@ -233,8 +231,8 @@ public class LocationSettingsFragment extends Fragment implements
         mMapView.onDestroy();
         if(experiences != null){
             experiences.clear();
-            experiences = null;
         }
+        Log.d("DEBUG", "onDestroy");
     }
 
     protected void loadMap(GoogleMap googleMap) {
