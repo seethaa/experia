@@ -1,18 +1,12 @@
 package fragments;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,17 +21,15 @@ import android.widget.Toast;
 
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
+import com.experia.experia.activities.GeofenceController;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -48,12 +40,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
@@ -70,13 +60,13 @@ import services.MapPermissionsDispatcher;
 
 
 public class LocationSettingsFragment extends Fragment implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
+//        GoogleApiClient.ConnectionCallbacks,
+//        GoogleApiClient.OnConnectionFailedListener,
         LocationListener, View.OnClickListener ,
         GoogleMap.OnCameraIdleListener{
 
     private static final String TAG = "MapMarkerFragment";
-    private GoogleMap map;
+    public GoogleMap map;
     private MapView mMapView;
     private ImageButton mZoomInButton;
     private ImageButton mZoomOutButton;
@@ -88,7 +78,7 @@ public class LocationSettingsFragment extends Fragment implements
     private GeoFire geoFire;
     private int screenLength = 1080;
     private LinearLayoutManager mManager;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+//    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private RecyclerView mRecycler;
     private MapFragmentAdapter mAdapter;
     private DatabaseReference mDatabase;
@@ -119,6 +109,8 @@ public class LocationSettingsFragment extends Fragment implements
         experiences = new ArrayList<Experience>();
         geoKeySet = new HashSet<String>();
         mAdapter = new MapFragmentAdapter(getContext(), experiences);
+        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
+        Log.d(TAG, mGoogleApiClient.toString());
     }
 
     @Override
@@ -198,7 +190,6 @@ public class LocationSettingsFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        connectClient();
     }
 
     @Override
@@ -216,12 +207,6 @@ public class LocationSettingsFragment extends Fragment implements
 
     @Override
     public void onStop() {
-        // Disconnecting the client invalidates it.
-        if (mGoogleApiClient != null) {
-            //mGoogleApiClient.disconnect();
-            Log.d("DEBUG", mGoogleApiClient.toString());
-            Log.d("DEBUG", "onStop");
-        }
         super.onStop();
     }
 
@@ -264,22 +249,9 @@ public class LocationSettingsFragment extends Fragment implements
         if (map != null) {
             // Now that map has loaded, let's get our location!
             map.setMyLocationEnabled(true);
-
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-            connectClient();
         }
     }
 
-    protected void connectClient() {
-        // Connect the client.
-        if (isGooglePlayServicesAvailable() && mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
-    }
 
     @Override
     public void onDetach() {
@@ -299,62 +271,13 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
 
-
-
-
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
 
-    /*
-     * Handle results returned to the FragmentActivity by Google Play services
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Decide what to do based on the original request code
-        switch (requestCode) {
 
-            case CONNECTION_FAILURE_RESOLUTION_REQUEST:
-			/*
-			 * If the result code is Activity.RESULT_OK, try to connect again
-			 */
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        mGoogleApiClient.connect();
-                        Log.d("DEBUG", mGoogleApiClient.toString());
-                        break;
-                }
-
-        }
-    }
-
-    private boolean isGooglePlayServicesAvailable() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            return true;
-        } else {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                ErrorDialogFragment errorFragment = new ErrorDialogFragment();
-                errorFragment.setDialog(errorDialog);
-                errorFragment.show(getActivity().getSupportFragmentManager(), "Location Updates");
-            }
-
-            return false;
-        }
-    }
 
 
     @Override
@@ -451,62 +374,7 @@ public class LocationSettingsFragment extends Fragment implements
         return diameter;
     }
 
-
-
-
-    // Define a DialogFragment that displays the error dialog
-    public static class ErrorDialogFragment extends DialogFragment {
-
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public ErrorDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return mDialog;
-        }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        // Display the connection status
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location != null) {
-            //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-            map.moveCamera(cameraUpdate);
-
-        } else {
-            Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
-        }
-        startLocationUpdates();
-    }
-
-    protected void startLocationUpdates() {
+    public void startLocationUpdates() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
@@ -529,15 +397,6 @@ public class LocationSettingsFragment extends Fragment implements
 
 
     @Override
-    public void onConnectionSuspended(int i) {
-        if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(getContext(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-        } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(getContext(), "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         // Report to the UI that the location was updated
         String msg = "Updated Location: " +
@@ -547,31 +406,7 @@ public class LocationSettingsFragment extends Fragment implements
         //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-/*
-		 * Google Play services can resolve some errors it detects. If the error
-		 * has a resolution, try sending an Intent to start a Google Play
-		 * services activity that can resolve error.
-		 */
-        if (connectionResult.hasResolution()) {
-            try {
-                // Start an Activity that tries to resolve the error
-                connectionResult.startResolutionForResult(getActivity(),
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
-				/*
-				 * Thrown if Google Play services canceled the original
-				 * PendingIntent
-				 */
-            } catch (IntentSender.SendIntentException e) {
-                // Log the error
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(getContext(),
-                    "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
-        }
-    }
+
 
     private void addMarker(final String key, final GeoLocation location) {
         mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
@@ -646,17 +481,5 @@ public class LocationSettingsFragment extends Fragment implements
         }
 
 
-    }
-
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
-    public Query getQuery(DatabaseReference databaseReference){
-        Query recentPostsQuery = databaseReference.child("posts")
-                .limitToFirst(100);
-        // [END recent_posts_query]
-
-        return recentPostsQuery;
     }
 }

@@ -1,7 +1,6 @@
 package com.experia.experia.activities;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +36,7 @@ public class GeofenceController {
   private final String TAG = GeofenceController.class.getName();
 
   private Context context;
-  private GoogleApiClient googleApiClient;
+  public GoogleApiClient googleApiClient;
   private Gson gson;
   private SharedPreferences prefs;
   private GeofenceControllerListener listener;
