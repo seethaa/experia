@@ -64,6 +64,11 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         setContentView(R.layout.activity_main_tabs);
         experiences = new ArrayList<Experience>();
 
+        //set up actionbar TODO
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+//        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         //Set up tabs
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items

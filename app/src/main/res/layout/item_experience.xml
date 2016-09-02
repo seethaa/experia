@@ -109,7 +109,7 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:layout_gravity="right"
@@ -117,9 +117,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="right"
-                android:layout_toEndOf="@+id/tvDescription"
+                android:layout_toRightOf="@+id/tvSpotsLeft"
+                android:layout_toEndOf="@+id/tvSpotsLeft"
                 android:id="@+id/linearLayout3"
-                android:layout_toRightOf="@+id/tvDescription">
+                android:measureWithLargestChild="false">
 
 
                 <android.support.design.widget.FloatingActionButton
@@ -185,8 +186,8 @@
                 android:clickable="false"
                 android:src="@drawable/icon_impact"
                 android:layout_alignBottom="@+id/ivExperienceImage"
-                android:layout_alignLeft="@+id/tvTitle"
-                android:layout_alignStart="@+id/tvTitle" />
+                android:layout_alignLeft="@+id/ivExperienceImage"
+                android:layout_alignStart="@+id/ivExperienceImage" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -196,11 +197,12 @@
                 android:id="@+id/tvSpotsLeft"
                 android:textColor="@color/mp_lightblue"
                 android:layout_below="@+id/ivExperienceImage"
-                android:layout_alignRight="@+id/tvSubtext"
-                android:layout_alignEnd="@+id/tvSubtext"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignRight="@+id/tvDescription"
+                android:layout_alignEnd="@+id/tvDescription" />
 
 
         </RelativeLayout>
