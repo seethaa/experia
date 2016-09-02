@@ -29,6 +29,7 @@ import java.util.Map;
 
 import adapters.LockableViewPager;
 import adapters.SmartFragmentStatePagerAdapter;
+import fragments.CreateExCardFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.CreateExReviewFragment;
 import fragments.CreateExTimeLocationFragment;
@@ -393,7 +394,9 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1);
+                    return CreateExCardFragment.newInstance(R.color.frag1, R.drawable.char1);
+
+//                    return CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
                     return CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2);
                 case 2: // Fragment # 1 - This will show SecondFragment

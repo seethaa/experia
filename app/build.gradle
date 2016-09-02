@@ -82,6 +82,8 @@ dependencies {
     compile 'nl.qbusict:cupboard:2.1.4'
 
     compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
+
 
 }
 

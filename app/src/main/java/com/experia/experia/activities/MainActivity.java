@@ -1,10 +1,11 @@
 package com.experia.experia.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +14,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +74,8 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
 
 
@@ -238,6 +245,16 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         private String tabTitles[] = new String[] { "Nearby", "Search", "Favorites", "Profile"};
         private Context context;
 
+        private int[] imageResId = {
+                R.drawable.ic_nearme,
+                R.drawable.ic_search,
+                R.drawable.ic_favorites,
+                R.drawable.ic_profile_neutral
+        };
+
+
+
+
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
             super(fm);
             this.context = context;
@@ -259,31 +276,49 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 return fmMap;
             }
 
-            else if (position ==2){//Favorite
+            else if (position ==2){//Create
+               BookmarksFragment bmf = BookmarksFragment.newInstance(null);
+                return bmf;
+            }
+            else if (position ==3){//Favorite
                 BookmarksFragment bmf = BookmarksFragment.newInstance(null);
                 return bmf;
             }
-            else if (position ==3){//Profile
+            else if (position ==4){//Profile
                 ProfileFragment pf = ProfileFragment.newInstance(null);
                 return pf;
             }
-//            else if (position ==4){//Create
-//                Fragment cndpf = CreateExNameDescriptionPhotoFragment.newInstance(null);
-//                return cndpf;
-//            }
+//
             else{
                 Fragment cndpf = PostListFragment.newInstance(null);
                 return cndpf;
             }
         }
-
-
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            // Generate title based on item position
+//            return tabTitles[position];
+//        }
 
         @Override
         public CharSequence getPageTitle(int position) {
             // Generate title based on item position
-            return tabTitles[position];
+            // return tabTitles[position];
+
+            // getDrawable(int i) is deprecated, use getDrawable(int i, Theme theme) for min SDK >=21
+            // or ContextCompat.getDrawable(Context context, int id) if you want support for older versions.
+            // Drawable image = context.getResources().getDrawable(iconIds[position], context.getTheme());
+            // Drawable image = context.getResources().getDrawable(imageResId[position]);
+
+            Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
         }
+
+
     }
 
 
