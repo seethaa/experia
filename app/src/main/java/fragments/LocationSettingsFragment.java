@@ -1,6 +1,7 @@
 package fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Location;
@@ -27,9 +28,13 @@ import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -82,6 +87,7 @@ public class LocationSettingsFragment extends Fragment implements
     private HashSet<String> geoKeySet;
     private ValueEventListener valueEventListener;
     private OnMapCameraChangeListener listener;
+    PlaceAutocompleteFragment autocompleteFragment;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -141,7 +147,25 @@ public class LocationSettingsFragment extends Fragment implements
         else{
             Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
+        if(autocompleteFragment == null) {
 
+            autocompleteFragment = (PlaceAutocompleteFragment)
+                    getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    // TODO: Get info about the selected place.
+                    Log.i(TAG, "Place: " + place.getName());
+                }
+
+                @Override
+                public void onError(Status status) {
+                    // TODO: Handle the error.
+                    Log.i(TAG, "An error occurred: " + status);
+                }
+            });
+        }
         return rootView;
     }
 
@@ -167,6 +191,13 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        autocompleteFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
     }
@@ -189,12 +220,16 @@ public class LocationSettingsFragment extends Fragment implements
         super.onStop();
     }
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
         Log.d("DEBUG", "onDestroy");
     }
+
+
 
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;

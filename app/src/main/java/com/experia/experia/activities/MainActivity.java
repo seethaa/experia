@@ -65,6 +65,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
                 MainActivity.this));
+        viewPager.setOffscreenPageLimit(5);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -111,6 +112,13 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        fmMap.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onMapClick(MenuItem mi) {
