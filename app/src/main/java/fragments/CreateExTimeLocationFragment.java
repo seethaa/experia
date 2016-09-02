@@ -25,11 +25,11 @@ import util.CupboardDBHelper;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class CreateExTimeLocationFragment extends Fragment {
-    @BindView(R.id.fire_event) Button saveBtn;
+    @BindView(R.id.btnGoToReview) Button gotoReviewBtn;
 //    @BindView(R.id.etDate) EditText etDate;
     @BindView(R.id.etTime) EditText etTime;
     @BindView(R.id.query) Button checkBtn;
-    @BindView(R.id.btnAdvanced) Button moreDetailsBtn;
+//    @BindView(R.id.btnAdvanced) Button moreDetailsBtn;
 
     //@BindView(R.id.iv_icon) ImageView logoImageView;
 //    @BindView(R.id.tvDate) TextView tvDate;
@@ -45,6 +45,16 @@ public class CreateExTimeLocationFragment extends Fragment {
     String exDate;
     String exTime;
     String exAddress;
+
+
+    public static CreateExTimeLocationFragment newInstance(int color, int icon) {
+        CreateExTimeLocationFragment fragment = new CreateExTimeLocationFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, icon);
+        args.putInt(ARG_SECTION_COLOR, color);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private OnWhereAndWhenCompleteListener listener;
 
@@ -76,14 +86,6 @@ public class CreateExTimeLocationFragment extends Fragment {
         listener.onWhereAndWhenCompleted(exAddress, exDate, exTime);
     }
 
-    public static CreateExTimeLocationFragment newInstance(int color, int icon) {
-        CreateExTimeLocationFragment fragment = new CreateExTimeLocationFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, icon);
-        args.putInt(ARG_SECTION_COLOR, color);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class CreateExTimeLocationFragment extends Fragment {
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        gotoReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSaveWhereAndWhen(v);
@@ -117,6 +119,8 @@ public class CreateExTimeLocationFragment extends Fragment {
                 showTimePickerDialog(v);
             }
         });
+
+
 
 
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());

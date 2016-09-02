@@ -1,6 +1,6 @@
 package fragments;
 
-import android.content.ContentValues;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,30 +11,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.experia.experia.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import models.Creation;
-import util.CupboardDBHelper;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class CreateExReviewFragment extends Fragment {
-    @BindView(R.id.fire_event) Button saveBtn;
+    @BindView(R.id.btnSubmit) Button saveBtn;
 //    @BindView(R.id.etDate) EditText etDate;
-    @BindView(R.id.etTime) EditText etTime;
-    @BindView(R.id.query) Button checkBtn;
-    @BindView(R.id.btnAdvanced) Button moreDetailsBtn;
+    @BindView(R.id.ivExperienceImage) ImageView ivImage;
 
-    //@BindView(R.id.iv_icon) ImageView logoImageView;
-//    @BindView(R.id.tvDate) TextView tvDate;
-//    @BindView(R.id.tvTime) TextView tvTime;
-    @BindView(R.id.etStreet) EditText etStreet;
+    @BindView(R.id.tvDayAtTime) EditText etTime;
+    @BindView(R.id.tvDate) EditText etDate;
+
+    @BindView(R.id.tvExperienceTitle) EditText etTitle;
+
+    @BindView(R.id.tvDescription) EditText etDescription;
+    @BindView(R.id.tvLocationName) EditText etAddress;
+    @BindView(R.id.tvSpotsLeft) EditText etNumGuests;
+    boolean populated = false;
+
+    private Calendar mCalendar;
+    private DatePickerDialog.OnDateSetListener mDateListener;
+
     static SQLiteDatabase db;
 
     private Unbinder unbinder;
@@ -42,23 +50,70 @@ public class CreateExReviewFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section-icon";
     private static final String ARG_SECTION_COLOR = "section-color";
 
-    String exDate;
-    String exTime;
-    String exAddress;
 
-    private OnWhereAndWhenCompleteListener listener;
+    String mUserDisplayName;
+    String mTitle;
+    String mBody;
+    int mNumGuests;
+    String mDate;
+    String mTime;
+    String mDuration;
+    String mTags;
+    String mImgURL;
+    String mAddress;
+    int mType;
+
+
+    // newInstance constructor for creating fragment with arguments
+    public static CreateExReviewFragment newInstance(int color, int icon) {
+        CreateExReviewFragment fragment = new CreateExReviewFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, icon);
+        args.putInt(ARG_SECTION_COLOR, color);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    private OnReviewCompleteListener listener;
+
+    public void populatePreviewFields(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
+
+        System.out.println("DEBUGGY GOT TO POP");
+        this.mUserDisplayName = mUserDisplayName;
+        this.mTitle = mTitle;
+        this.mBody = mBody;
+        this.mNumGuests = mNumGuests;
+        this.mDate = mDate;
+        this.mTime = mTime;
+        this.mImgURL = mImgURL;
+        this.mAddress = mAddress;
+        this.mType = mType;
+        populated = true;
+
+
+        etTime.setText(mTime);
+
+        etTitle.setText(mTitle);
+
+        etDescription.setText(mBody);
+        etAddress.setText(mAddress);
+        etNumGuests.setText(mNumGuests+"");
+
+
+    }
 
     // Define the events that the fragment will use to communicate
-    public interface OnWhereAndWhenCompleteListener {
-        public void onWhereAndWhenCompleted(String address, String date, String time);
+    public interface OnReviewCompleteListener {
+       public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnWhereAndWhenCompleteListener) {
-            listener = (OnWhereAndWhenCompleteListener) context;
+        if (context instanceof OnReviewCompleteListener) {
+            listener = (OnReviewCompleteListener) context;
         } else {
             throw new ClassCastException(context.toString()
                     + " must implement MyListFragment.OnNameDescriptionPhotoCompleteListener");
@@ -66,51 +121,42 @@ public class CreateExReviewFragment extends Fragment {
     }
 
     // Now we can fire the event when the user selects something in the fragment
-    public void onSaveWhereAndWhen(View v) {
-//        exDate = etDate.getText().toString();
-        exTime = etTime.getText().toString();
-        exAddress = etStreet.getText().toString();
+    public void onSaveReview(View v) {
 
+        mTitle = etTitle.getText().toString();
+        mBody = etDescription.getText().toString();
+        mNumGuests = Integer.parseInt(etNumGuests.getText().toString());
+//        mDate = ;
+        mTime = etTime.getText().toString();;
+//        mImgURL = mImgURL;
+        mAddress = etAddress.getText().toString();
+//        mType = mType;
 
-        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress);
-        listener.onWhereAndWhenCompleted(exAddress, exDate, exTime);
-    }
-
-    public static CreateExReviewFragment newInstance(int color, int icon) {
-        CreateExReviewFragment fragment = new CreateExReviewFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, icon);
-        args.putInt(ARG_SECTION_COLOR, color);
-        fragment.setArguments(args);
-        return fragment;
+//        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress);
+        listener.OnReviewCompleted(mUserDisplayName, mTitle, mBody,mNumGuests,mDate,mTime, mDuration,mTags, mImgURL, mAddress,mType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_create_page2, container, false);
+        System.out.println("DEBUGGY GOT TO CREATE VIEW");
+
+        View rootView = inflater.inflate(R.layout.fragment_create_edit, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
         rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSaveWhereAndWhen(v);
-//                setTimeLocation(v);
-            }
-        });
-
-        checkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkDB(v);
+                onSaveReview(v);
             }
         });
 
 
-
+        //time on click listener
         etTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,36 +164,54 @@ public class CreateExReviewFragment extends Fragment {
             }
         });
 
+        //date on click listener
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
-        db = dbHelper.getWritableDatabase();
+                mCalendar = Calendar.getInstance();
+
+                mDateListener = new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        mCalendar.set(Calendar.YEAR, year);
+                        mCalendar.set(Calendar.MONTH, monthOfYear);
+                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        //update date in edittext
+                        String myFormat = "MM-dd-yy";
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                        mDate = sdf.format(mCalendar.getTime());
+                        etDate.setText(mDate);
+
+
+
+                    }
+
+                };
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), mDateListener, mCalendar
+                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                //disable all past dates
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+
+
+            }
+        });
 
         return rootView;
     }
 
-    public void setTimeLocation(View view){
-//         exDate = etDate.getText().toString();
-         exTime = etTime.getText().toString();
-         exAddress = etStreet.getText().toString();
+    @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println("DEBUGGY GOT TO onstart");
 
-
-        //set values obj
-        ContentValues values = new ContentValues(1);
-        values.put("date", exDate);
-        //values.put("time", exTime);
-        values.put("address", exAddress);
-
-
-        // update first record
-        cupboard().withDatabase(db).update(Creation.class, values, "_id = ?", "1");
-
-    }
-
-    public void checkDB(View view){
-        //Cupboard ORM
-        Creation creation = cupboard().withDatabase(db).query(Creation.class).get();
-        String entry = creation.title +"/" + creation.description+"/" + creation.date +"-"+ creation.address;
-        Toast.makeText(getContext(),entry,Toast.LENGTH_SHORT).show();
 
     }
 
@@ -166,4 +230,6 @@ public class CreateExReviewFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

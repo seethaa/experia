@@ -43,8 +43,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.parceler.Parcels;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -56,7 +54,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import models.Creation;
-import models.User;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import services.MyDownloadService;
@@ -142,13 +139,32 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     private StorageReference mStorageRef;
     // [END declare_ref]
 
-    public static CreateExNameDescriptionPhotoFragment newInstance(User currUser) {
-        CreateExNameDescriptionPhotoFragment fg = new CreateExNameDescriptionPhotoFragment();
+    // newInstance constructor for creating fragment with arguments
+//    public static CreateExNameDescriptionPhotoFragment newInstance(int page, String title) {
+//        CreateExNameDescriptionPhotoFragment fragmentFirst = new CreateExNameDescriptionPhotoFragment();
+//        Bundle args = new Bundle();
+//        args.putInt("someInt", page);
+//        args.putString("someTitle", title);
+//        fragmentFirst.setArguments(args);
+//        return fragmentFirst;
+//    }
+
+    public static CreateExNameDescriptionPhotoFragment newInstance(int color, int icon) {
+        CreateExNameDescriptionPhotoFragment fragment = new CreateExNameDescriptionPhotoFragment();
         Bundle args = new Bundle();
-        args.putParcelable("currUser", Parcels.wrap(currUser));
-        fg.setArguments(args);
-        return fg;
+        args.putInt(ARG_SECTION_NUMBER, icon);
+        args.putInt(ARG_SECTION_COLOR, color);
+        fragment.setArguments(args);
+
+        return fragment;
     }
+//    public static CreateExNameDescriptionPhotoFragment newInstance(User currUser) {
+//        CreateExNameDescriptionPhotoFragment fg = new CreateExNameDescriptionPhotoFragment();
+//        Bundle args = new Bundle();
+//        args.putParcelable("currUser", Parcels.wrap(currUser));
+//        fg.setArguments(args);
+//        return fg;
+//    }
 
     private OnNameDescriptionPhotoCompleteListener listener;
 
@@ -179,15 +195,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
         listener.onNameDescriptionPhotoCompleted(mTitle, mBody, mPhotoStringURL);
     }
 
-    public static CreateExNameDescriptionPhotoFragment newInstance(int color, int icon) {
-        CreateExNameDescriptionPhotoFragment fragment = new CreateExNameDescriptionPhotoFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, icon);
-        args.putInt(ARG_SECTION_COLOR, color);
-        fragment.setArguments(args);
 
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

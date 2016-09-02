@@ -2,6 +2,8 @@ package com.experia.experia.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -26,14 +28,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import adapters.LockableViewPager;
-import adapters.SimpleFragmentAdapter;
+import adapters.SmartFragmentStatePagerAdapter;
 import fragments.CreateExNameDescriptionPhotoFragment;
+import fragments.CreateExReviewFragment;
 import fragments.CreateExTimeLocationFragment;
 import models.Experience;
 import models.User;
 
 public class NewPostActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener,
-        CreateExTimeLocationFragment.OnWhereAndWhenCompleteListener{
+        CreateExTimeLocationFragment.OnWhereAndWhenCompleteListener,
+        CreateExReviewFragment.OnReviewCompleteListener{
 
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
@@ -56,8 +60,8 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     private EditText etLatitude;
     private EditText etLongitude;
 
+    String mUserDisplayName;
     String mTitle;
-
     String mBody;
     int mNumGuests;
     String mDate;
@@ -79,7 +83,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
 
-    private SimpleFragmentAdapter mSimpleFragmentAdapter;
+    private MyPagerAdapter mSimpleFragmentAdapter;
     private LockableViewPager mViewPager;
     private ExtensiblePageIndicator extensiblePageIndicator;
     CreateExNameDescriptionPhotoFragment createExNameDescriptionFragment;
@@ -96,10 +100,12 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
-        mSimpleFragmentAdapter = new SimpleFragmentAdapter(getSupportFragmentManager());
-        mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1));
-        mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
-       // mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
+        mSimpleFragmentAdapter = new MyPagerAdapter(getSupportFragmentManager());
+//        mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1));
+//        mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
+//        mSimpleFragmentAdapter.addFragment(CreateExReviewFragment.newInstance(R.color.frag3, R.drawable.char3));
+
+        // mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
 //        mSimpleFragmentAdapter.addFragment(CreateExPhotoFragment.newInstance(R.color.frag3, R.drawable.char3));
 
         mViewPager = (LockableViewPager) findViewById(R.id.container);
@@ -107,11 +113,8 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         extensiblePageIndicator.initViewPager(mViewPager);
         mViewPager.setSwipeable(false);
 
-        //GET ACCESS TO FRAGMENT
-        createExNameDescriptionFragment = (CreateExNameDescriptionPhotoFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragmentC);
 
-
+        mViewPager.setCurrentItem(0);
 //        setupViews();
 
         // [START initialize_database_ref]
@@ -160,9 +163,9 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mLatitude = 1.0;
         mLongitude = 1.0;
 
-        mNumGuests = 100;
-
-        mDate = "Today";
+//        mNumGuests = 100;
+//
+//        mDate = "Today";
 
         // [START single_value_read]
         final String userId = getUid();
@@ -311,31 +314,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 
 
-    @Override
-    public void onWhereAndWhenCompleted(String address, String date, String time) {
-        mAddress = address;
-        mDate = date;
-        mTime = time;
-        System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
-//        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
-
-        submitPostTest();
-    }
-
-
-//    @Override
-//    public void onTotaltagsTypeCompleted(int total, String tags, int type) {
-//        mNumGuests = total;
-//        mTags = tags;
-//        mType = type;
-//
-//        System.out.println("DEBUGGY Experience page 3: " + mNumGuests + ", " + mTags + ", " + mType);
-//
-//
-//        submitPostTest();
-//
-//    }
-
 
     @Override
     public void onNameDescriptionPhotoCompleted(String title, String description, String imgUrl) {
@@ -344,14 +322,95 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mImgURL = imgUrl;
         System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody + " ," + imgUrl);
 
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
+        mViewPager.setCurrentItem(1);
 
     }
+
+    @Override
+    public void onWhereAndWhenCompleted(String address, String date, String time) {
+        mAddress = address;
+        mDate = date;
+        mTime = time;
+        System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
+//        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
+
+//        int s = mViewPager.getCurrentItem()+1;
+//
+//        mViewPager.setCurrentItem(2);
+
+        mViewPager.setCurrentItem(2);
+
+        CreateExReviewFragment fragment = (CreateExReviewFragment) mSimpleFragmentAdapter.getRegisteredFragment(2);
+        fragment.populatePreviewFields(mUserDisplayName, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType);
+//        ((TextView) fragment.getView().findViewById(R.id.tvTitle)).setText("TESTING");
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    @Override
+    public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
+
+         this.mUserDisplayName = mUserDisplayName;
+         this.mTitle = mTitle;
+         this.mBody  = mBody;
+         this.mNumGuests = mNumGuests;
+         this.mDate = mDate;
+         this.mTime = mTime;
+//        String mTags;
+         this.mImgURL = mImgURL;
+         this.mAddress = mAddress;
+//        int mType;
+//        double mLatitude;
+//        double mLongitude;
+        submitPostTest();
+        System.out.println("DEBUGGY: " + mTime);
+
+    }
+
+
+    // Extend from SmartFragmentStatePagerAdapter now instead for more dynamic ViewPager items
+    public static class MyPagerAdapter extends SmartFragmentStatePagerAdapter {
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2);
+                case 2: // Fragment # 1 - This will show SecondFragment
+                    return CreateExReviewFragment.newInstance(R.color.frag3, R.drawable.char3);
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
+    }
+
+
 
 }
