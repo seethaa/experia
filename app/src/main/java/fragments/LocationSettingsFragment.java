@@ -35,6 +35,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -156,7 +157,23 @@ public class LocationSettingsFragment extends Fragment implements
                 @Override
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
-                    Log.i(TAG, "Place: " + place.getName());
+                    Log.i(TAG, "Place: " + place.getAddress());
+                    Log.i(TAG, "location: " + place.getLatLng().toString());
+                    if (place.getLatLng() != null) {
+                        //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+                        LatLng latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                        map.animateCamera(cameraUpdate);
+
+                        BitmapDescriptor defaultMarker =
+                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                        Marker mapMarker = map.addMarker(new MarkerOptions()
+                                .position(place.getLatLng())
+                                .title(place.getName().toString())
+                                .snippet(place.getAddress().toString())
+                                .icon(defaultMarker));
+
+                    }
                 }
 
                 @Override
