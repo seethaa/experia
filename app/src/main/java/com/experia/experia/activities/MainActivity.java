@@ -258,9 +258,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 R.drawable.ic_profile_neutral
         };
 
-
-
-
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
             super(fm);
             this.context = context;

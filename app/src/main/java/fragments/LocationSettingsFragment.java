@@ -67,7 +67,8 @@ import services.MapPermissionsDispatcher;
 
 public class LocationSettingsFragment extends Fragment implements
         LocationListener, View.OnClickListener ,
-        GoogleMap.OnCameraIdleListener{
+        GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "MapMarkerFragment";
     public GoogleMap map;
@@ -88,6 +89,7 @@ public class LocationSettingsFragment extends Fragment implements
     private HashMap<String, GeoLocation> geoKeyMap;
     private ValueEventListener valueEventListener;
     private OnMapCameraChangeListener listener;
+    private ArrayList<Marker> markerList;
     PlaceAutocompleteFragment autocompleteFragment;
 
     /*
@@ -111,6 +113,7 @@ public class LocationSettingsFragment extends Fragment implements
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
         geoKeyMap = new HashMap<String, GeoLocation>();
+        markerList = new ArrayList<Marker>();
         mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
         Log.d(TAG, mGoogleApiClient.toString());
     }
@@ -137,18 +140,17 @@ public class LocationSettingsFragment extends Fragment implements
             e.printStackTrace();
         }
 
-        if(mMapView != null) {
+        if (mMapView != null) {
             mMapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
                 }
             });
-        }
-        else{
+        } else {
             Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
-        if(autocompleteFragment == null) {
+        if (autocompleteFragment == null) {
 
             autocompleteFragment = (PlaceAutocompleteFragment)
                     getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -167,7 +169,7 @@ public class LocationSettingsFragment extends Fragment implements
 
                         BitmapDescriptor defaultMarker =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                        Marker mapMarker = map.addMarker(new MarkerOptions()
+                        map.addMarker(new MarkerOptions()
                                 .position(place.getLatLng())
                                 .title(place.getName().toString())
                                 .snippet(place.getAddress().toString())
@@ -190,7 +192,7 @@ public class LocationSettingsFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Set up Layout Manager, reverse layout
-        mManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        mManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
@@ -199,6 +201,7 @@ public class LocationSettingsFragment extends Fragment implements
             public void onDataChange(DataSnapshot snapshot) {
                 listener.onMapCameraChange(snapshot, geoKeyMap);
             }
+
             @Override
             public void onCancelled(DatabaseError firebaseError) {
                 Log.e("exp ", "The read failed: " + firebaseError.toString());
@@ -208,8 +211,7 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         autocompleteFragment.onActivityResult(requestCode, resultCode, data);
     }
@@ -238,14 +240,12 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
         Log.d("DEBUG", "onDestroy");
     }
-
 
 
     protected void loadMap(GoogleMap googleMap) {
@@ -308,17 +308,6 @@ public class LocationSettingsFragment extends Fragment implements
 
 
 
-    @Override
-    public void onCameraIdle() {
-        float zoom = map.getCameraPosition().zoom;
-        double latitude = map.getCameraPosition().target.latitude;
-        double longitude = map.getCameraPosition().target.longitude;
-        Log.d(TAG, "zoom = " + Float.toString(zoom) + ", lat = " + Double.toString(latitude) + ", log = " + Double.toString(longitude));
-        double radius = calculateZoomLevel(zoom)/2000;
-        if(radius < 300)
-            queryGeoFire(radius, latitude, longitude);
-    }
-
     private void queryGeoFire(double radius, double latitude, double longitude) {
         // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius);
@@ -343,7 +332,7 @@ public class LocationSettingsFragment extends Fragment implements
             @Override
             public void onGeoQueryReady() {
                 System.out.println("All initial data has been loaded and events have been fired!");
-                resetFirebaseValueEventListener();
+                resetFirebaseValueEvent();
             }
 
             @Override
@@ -353,27 +342,12 @@ public class LocationSettingsFragment extends Fragment implements
         });
     }
 
-    private void resetFirebaseValueEventListener() {
-        Log.d(TAG, "resetFirebaseValueEventListener");
-        mDatabase.child("posts").removeEventListener(valueEventListener);
-        //TODO clean valueEventListener
-        valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                listener.onMapCameraChange(snapshot, geoKeyMap);
-            }
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                Log.e("exp ", "The read failed: " + firebaseError.toString());
-            }
-        };
-        mDatabase.child("posts").addValueEventListener(valueEventListener);
-    }
+
 
     private double calculateZoomLevel(float zoom) {
         double equatorLength = 40075004; // in meters
         double widthInPixels = screenLength;
-        double metersPerPixel = equatorLength / 1024;
+        double metersPerPixel = equatorLength / 2048;
         double diameter = 0.0;
         float zoomLevel = (float) 1.0;
         while (zoomLevel < zoom) {
@@ -381,7 +355,7 @@ public class LocationSettingsFragment extends Fragment implements
             zoomLevel = (float) (zoomLevel + 1.0);
         }
         diameter = metersPerPixel * widthInPixels;
-        Log.i(TAG, "diameter = "+diameter);
+        Log.i(TAG, "diameter = " + diameter);
         return diameter;
     }
 
@@ -407,6 +381,34 @@ public class LocationSettingsFragment extends Fragment implements
     }
 
 
+
+    private void resetFirebaseValueEvent() {
+        Log.d(TAG, "resetFirebaseValueEvent");
+        mDatabase.child("posts").removeEventListener(valueEventListener);
+        //TODO clean valueEventListener
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                listener.onMapCameraChange(snapshot, geoKeyMap);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("exp ", "The read failed: " + firebaseError.toString());
+            }
+        };
+        mDatabase.child("posts").addValueEventListener(valueEventListener);
+    }
+
+    public void updateAdapter(ArrayList<Experience> experiences) {
+        mAdapter = new MapFragmentAdapter(getContext(), experiences);
+        mRecycler.setAdapter(mAdapter);
+        setMarker(experiences);
+        Log.d(TAG, "experience called onece");
+    }
+
+    // Listener start //
+
     @Override
     public void onLocationChanged(Location location) {
         // Report to the UI that the location was updated
@@ -414,19 +416,66 @@ public class LocationSettingsFragment extends Fragment implements
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Log.d(TAG, msg);
-        //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.btnZoomIn) {
+            map.moveCamera(CameraUpdateFactory.zoomIn());
+        } else if (i == R.id.btnZoomOut) {
+            map.moveCamera(CameraUpdateFactory.zoomOut());
+        }
+    }
+
+    @Override
+    public void onCameraIdle() {
+        float zoom = map.getCameraPosition().zoom;
+        double latitude = map.getCameraPosition().target.latitude;
+        double longitude = map.getCameraPosition().target.longitude;
+        Log.d(TAG, "zoom = " + Float.toString(zoom) + ", lat = " + Double.toString(latitude) + ", log = " + Double.toString(longitude));
+        double radius = calculateZoomLevel(zoom) / 2000;
+        if (radius < 300)
+            queryGeoFire(radius, latitude, longitude);
+    }
+
+    // Listener end //
+
+
+    // Interface start //
+
+    // Define the events that the fragment will use to communicate
+    public interface OnMapCameraChangeListener {
+        // This can be any number of events to be sent to the activity
+        void onMapCameraChange(DataSnapshot snapshot, HashMap<String, GeoLocation> geoKeyMap);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMapCameraChangeListener) {
+            listener = (OnMapCameraChangeListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
+
+    // Interface end //
 
 
 
+
+    // Marker functions start //
     private void setMarker(ArrayList<Experience> experiences) {
-        for(Experience exp:experiences){
-            System.out.println("DEBUG SET Marker type = "+ exp.type);
+        markerList.clear();
+        for (Experience exp : experiences) {
+            System.out.println("DEBUG SET Marker type = " + exp.type);
             // Set the color of the marker to green
             BitmapDescriptor defaultMarker;
-            switch(exp.type){
+            switch (exp.type) {
                 case 1:
                     defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_favorite);
                     break;
@@ -451,49 +500,25 @@ public class LocationSettingsFragment extends Fragment implements
 
             Marker mapMarker = map.addMarker(new MarkerOptions()
                     .position(listingPosition)
-                    .title("title1")
-                    .snippet("desc1")
+                    .title(exp.title)
+                    .snippet(exp.address)
                     .icon(defaultMarker));
+            markerList.add(mapMarker);
         }
-
-
+        map.setOnMarkerClickListener(this);
     }
 
     @Override
-    public void onClick(View view) {
-        int i = view.getId();
-        if (i == R.id.btnZoomIn) {
-            map.moveCamera(CameraUpdateFactory.zoomIn());
+    public boolean onMarkerClick(Marker marker) {
+        for (int i = 0; i < markerList.size(); ++i) {
+            Marker m = markerList.get(i);
+            if (m.equals(marker))
+                mRecycler.smoothScrollToPosition(i);
         }
-        else if (i == R.id.btnZoomOut){
-            map.moveCamera(CameraUpdateFactory.zoomOut());
-        }
-
-
+        marker.showInfoWindow();
+        return true;
     }
+    // Marker function end
 
-    // Define the events that the fragment will use to communicate
-    public interface OnMapCameraChangeListener {
-        // This can be any number of events to be sent to the activity
-        public void onMapCameraChange(DataSnapshot snapshot, HashMap<String, GeoLocation> geoKeyMap);
-    }
 
-    // Store the listener (activity) that will have events fired once the fragment is attached
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnMapCameraChangeListener) {
-            listener = (OnMapCameraChangeListener) context;
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement MyListFragment.OnItemSelectedListener");
-        }
-    }
-
-    public void updateAdapter(ArrayList<Experience> experiences){
-        mAdapter = new MapFragmentAdapter(getContext(), experiences);
-        mRecycler.setAdapter(mAdapter);
-        setMarker(experiences);
-        Log.d(TAG,"experience called onece");
-    }
 }
