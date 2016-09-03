@@ -1,88 +1,177 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_create_top_margin"
-    android:nestedScrollingEnabled="true">
-
-    <EditText
-        android:id="@+id/etStreet"
-        android:textSize="@dimen/lg_creation_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:hint="@string/createStreet"
-        android:layout_gravity="left" />
-
-    <!--<Button-->
-        <!--android:id="@+id/btnDate"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/etStreet"-->
-        <!--android:layout_marginTop="@dimen/spacer_time_date"-->
-        <!--android:drawableLeft="@drawable/ic_calendar"-->
-        <!--android:drawablePadding="0sp"-->
-        <!--android:text="Set date"-->
-        <!--android:visibility="invisible"/>-->
-
-    <EditText
-        android:id="@+id/etDate"
-        android:textSize="@dimen/lg_creation_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Set date"
-        android:layout_gravity="left"
-
-        android:visibility="invisible"
-        android:layout_below="@+id/etStreet"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:id="@+id/etTime"
-        android:textSize="@dimen/lg_creation_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Set time"
-        android:layout_gravity="left"
-        android:visibility="invisible"
-        android:layout_below="@+id/etDate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvExperiences"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:clipChildren="false"
+    app:cardUseCompatPadding="true"
+    card_view:cardBackgroundColor="@color/cardview_light_background"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="8dp"
+    card_view:contentPaddingLeft="-15dp"
+    card_view:contentPaddingRight="-15dp">
 
 
-    <!--<Button-->
-        <!--android:id="@+id/btnTime"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:drawableLeft="@drawable/ic_time"-->
-        <!--android:drawablePadding="0sp"-->
-        <!--android:text="Set time"-->
-        <!--android:visibility="invisible"-->
-        <!--android:layout_below="@+id/tvDate"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:elevation="30dp"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/query"
+                android:layout_alignStart="@+id/query"
+                android:layout_below="@+id/query"
+                android:text="Address"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/etStreet"
+                android:layout_width="368dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvTime"
+                android:layout_gravity="left"
+                android:hint="@string/createStreet"
+                android:textSize="@dimen/lg_creation_prompt" />
+
+            <!--<Button-->
+            <!--android:id="@+id/btnDate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/etStreet"-->
+            <!--android:layout_marginTop="@dimen/spacer_time_date"-->
+            <!--android:drawableLeft="@drawable/ic_calendar"-->
+            <!--android:drawablePadding="0sp"-->
+            <!--android:text="Set date"-->
+            <!--android:visibility="invisible"/>-->
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/query"
+                android:layout_alignStart="@+id/query"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:text="Date"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/etDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvDate"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/etStreet"
+                android:layout_toRightOf="@+id/etStreet"
+                android:hint="Set date"
+                android:textSize="@dimen/lg_creation_prompt"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvDate"
+                android:layout_marginTop="20dp"
+                android:text="Time"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/etTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:hint="Set time"
+                android:textSize="@dimen/lg_creation_prompt" />
 
 
-    <Button
-        android:id="@+id/fire_event"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="94dp"
-        android:visibility="invisible"
-        android:background="@drawable/icon_chevron_down"
-        android:layout_below="@+id/etTime"
-        android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/tvNumGoing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/query"
+                android:layout_alignStart="@+id/query"
+                android:layout_below="@+id/query"
+                android:layout_marginTop="20dp"
+                android:text="# of Spots"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/query"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentLeft="true"
-        android:text="QUERY"
-        android:visibility="gone"/>
 
-</RelativeLayout>
+            <!--<Button-->
+            <!--android:id="@+id/btnTime"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableLeft="@drawable/ic_time"-->
+            <!--android:drawablePadding="0sp"-->
+            <!--android:text="Set time"-->
+            <!--android:visibility="invisible"-->
+            <!--android:layout_below="@+id/tvDate"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
+
+            <Button
+                android:id="@+id/btnPreview"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Preview"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/mp_yellow"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/fire_event"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@+id/etTime"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="94dp"
+                android:background="@drawable/icon_chevron_down"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/query"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:text="QUERY"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

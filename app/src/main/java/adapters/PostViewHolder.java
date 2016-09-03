@@ -33,7 +33,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
 
-        tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+        tvTitle = (TextView) itemView.findViewById(R.id.etTitle);
         tvSubtext = (TextView) itemView.findViewById(R.id.tvSubtext);
         tvSpotsLeft = (TextView) itemView.findViewById(R.id.tvSpotsLeft);
         starView = (FloatingActionButton) itemView.findViewById(R.id.btnBookmark);

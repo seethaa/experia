@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -65,13 +64,13 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public class CreateExNameDescriptionPhotoFragment extends Fragment implements
          EasyPermissions.PermissionCallbacks{
 
-    @BindView(R.id.fire_event) Button nextBtn;
-    @BindView(R.id.query) Button checkBtn;
+    @BindView(R.id.btnNext) Button nextBtn;
+//    @BindView(R.id.query) Button checkBtn;
 //    @BindView(R.id.tilDescription)
 //    TextInputLayout tilDescription;
-    @BindView(R.id.etName) EditText experienceName;
+    @BindView(R.id.etTitle) EditText experienceName;
 
-    @BindView(R.id.ivSelectedPhoto)
+    @BindView(R.id.ivExperienceImage)
     ImageView experiencePhoto;
 //    @BindView(R.id.btPhoto)
 //    Button selectBtn;
@@ -139,15 +138,6 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     private StorageReference mStorageRef;
     // [END declare_ref]
 
-    // newInstance constructor for creating fragment with arguments
-//    public static CreateExNameDescriptionPhotoFragment newInstance(int page, String title) {
-//        CreateExNameDescriptionPhotoFragment fragmentFirst = new CreateExNameDescriptionPhotoFragment();
-//        Bundle args = new Bundle();
-//        args.putInt("someInt", page);
-//        args.putString("someTitle", title);
-//        fragmentFirst.setArguments(args);
-//        return fragmentFirst;
-//    }
 
     public static CreateExNameDescriptionPhotoFragment newInstance(int color, int icon) {
         CreateExNameDescriptionPhotoFragment fragment = new CreateExNameDescriptionPhotoFragment();
@@ -158,13 +148,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
         return fragment;
     }
-//    public static CreateExNameDescriptionPhotoFragment newInstance(User currUser) {
-//        CreateExNameDescriptionPhotoFragment fg = new CreateExNameDescriptionPhotoFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable("currUser", Parcels.wrap(currUser));
-//        fg.setArguments(args);
-//        return fg;
-//    }
+
 
     private OnNameDescriptionPhotoCompleteListener listener;
 
@@ -199,9 +183,11 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_create_page1, container, false);
+        rootView = inflater.inflate(R.layout.item_create_experience, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
+
+        getActivity().setTitle("Experience Basic Details");
+//        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
 

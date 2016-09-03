@@ -4,13 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 
 import com.experia.experia.R;
 
 import java.util.Calendar;
-
 
 public class DatePickerDialogFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -29,7 +28,7 @@ public class DatePickerDialogFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        EditText etDate = (EditText) getActivity().findViewById(R.id.etDate);
+        Button etDate = (Button) getActivity().findViewById(R.id.etDate);
         etDate.setText(view.getMonth()+"/"+view.getDayOfMonth()+"/"+view.getYear());
     }
 }

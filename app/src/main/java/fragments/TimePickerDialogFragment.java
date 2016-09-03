@@ -5,16 +5,13 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.experia.experia.R;
 
 import java.util.Calendar;
 
-/**
- * Created by doc_dungeon on 8/27/16.
- */
 public class TimePickerDialogFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
@@ -32,7 +29,7 @@ public class TimePickerDialogFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        EditText etTime= (EditText) getActivity().findViewById(R.id.etTime);
+        Button etTime= (Button) getActivity().findViewById(R.id.etTime);
         etTime.setText(hourOfDay+":"+minute);
     }
 }

@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,10 @@ import util.CupboardDBHelper;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class CreateExTimeLocationFragment extends Fragment {
-    @BindView(R.id.btnGoToReview) Button gotoReviewBtn;
-//    @BindView(R.id.etDate) EditText etDate;
-    @BindView(R.id.etTime) EditText etTime;
-    @BindView(R.id.query) Button checkBtn;
+    @BindView(R.id.btnPreview) Button gotoReviewBtn;
+    @BindView(R.id.etDate) Button etDate;
+    @BindView(R.id.etTime) Button etTime;
+//    @BindView(R.id.query) Button checkBtn;
 //    @BindView(R.id.btnAdvanced) Button moreDetailsBtn;
 
     //@BindView(R.id.iv_icon) ImageView logoImageView;
@@ -90,10 +89,12 @@ public class CreateExTimeLocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_create_page2, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_time_location, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
+        getActivity().setTitle("Experience Details");
+
+//        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
         gotoReviewBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,12 +105,12 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
-        checkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkDB(v);
-            }
-        });
+//        checkBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                checkDB(v);
+//            }
+//        });
 
 
 
@@ -121,6 +122,12 @@ public class CreateExTimeLocationFragment extends Fragment {
         });
 
 
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
 
 
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());

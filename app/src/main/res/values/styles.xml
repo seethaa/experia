@@ -2,10 +2,11 @@
 
     <!-- Base application theme. -->
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#003262</item>
         <item name="colorPrimaryDark">#002549</item>
         <item name="colorAccent">#3b7ea1</item>
+        <item name="android:windowContentTransitions">true</item>
 
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
 

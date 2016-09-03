@@ -6,14 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.experia.experia.R;
 
@@ -30,14 +29,15 @@ public class CreateExReviewFragment extends Fragment {
 //    @BindView(R.id.etDate) EditText etDate;
     @BindView(R.id.ivExperienceImage) ImageView ivImage;
 
-    @BindView(R.id.tvDayAtTime) EditText etTime;
-    @BindView(R.id.tvDate) EditText etDate;
+    @BindView(R.id.tvDayAtTime)
+    TextView etTime;
+    @BindView(R.id.tvDate) TextView etDate;
 
-    @BindView(R.id.tvExperienceTitle) EditText etTitle;
+    @BindView(R.id.tvExperienceTitle) TextView etTitle;
 
-    @BindView(R.id.tvDescription) EditText etDescription;
-    @BindView(R.id.tvLocationName) EditText etAddress;
-    @BindView(R.id.tvSpotsLeft) EditText etNumGuests;
+    @BindView(R.id.tvDescription) TextView etDescription;
+    @BindView(R.id.tvLocationName) TextView etAddress;
+    @BindView(R.id.tvSpotsLeft) TextView etNumGuests;
     boolean populated = false;
 
     private Calendar mCalendar;
@@ -139,12 +139,14 @@ public class CreateExReviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        getActivity().setTitle("Preview Experience");
+
         System.out.println("DEBUGGY GOT TO CREATE VIEW");
 
-        View rootView = inflater.inflate(R.layout.fragment_create_edit, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_create_review, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
+//        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
 

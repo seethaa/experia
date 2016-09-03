@@ -4,9 +4,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,7 +30,6 @@ import java.util.Map;
 
 import adapters.LockableViewPager;
 import adapters.SmartFragmentStatePagerAdapter;
-import fragments.CreateExCardFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.CreateExReviewFragment;
 import fragments.CreateExTimeLocationFragment;
@@ -96,11 +96,14 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_create_experience);
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
+//        extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
         mSimpleFragmentAdapter = new MyPagerAdapter(getSupportFragmentManager());
 //        mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1));
 //        mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
@@ -111,7 +114,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
         mViewPager = (LockableViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSimpleFragmentAdapter);
-        extensiblePageIndicator.initViewPager(mViewPager);
+//        extensiblePageIndicator.initViewPager(mViewPager);
         mViewPager.setSwipeable(false);
 
 
@@ -348,11 +351,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
@@ -394,9 +392,9 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return CreateExCardFragment.newInstance(R.color.frag1, R.drawable.char1);
+//                    return CreateExCardFragment.newInstance(R.color.frag1, R.drawable.char1);
 
-//                    return CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1);
+                    return CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
                     return CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2);
                 case 2: // Fragment # 1 - This will show SecondFragment
@@ -414,6 +412,18 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // This is the up button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                // overridePendingTransition(R.animator.anim_left, R.animator.anim_right);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 }
