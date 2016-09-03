@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.experia.experia.R;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,7 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 import fragments.BookmarksFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
@@ -225,11 +226,11 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     }
 
     @Override
-    public void onMapCameraChange(DataSnapshot snapshot, HashSet<String> geoKeySet) {
+    public void onMapCameraChange(DataSnapshot snapshot, HashMap<String, GeoLocation> geoKeyMap) {
         experiences.clear();
         for (DataSnapshot Snapshot: snapshot.getChildren()) {
             String key = Snapshot.getKey();
-            if(geoKeySet.contains(key)) {
+            if(geoKeyMap.containsKey(key)) {
                 Experience exp = Snapshot.getValue(Experience.class);
                 exp.key = key;
                 experiences.add(exp);

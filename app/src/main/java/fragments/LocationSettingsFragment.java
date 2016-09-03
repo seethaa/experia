@@ -56,7 +56,7 @@ import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 import adapters.MapFragmentAdapter;
 import models.Experience;
@@ -85,7 +85,7 @@ public class LocationSettingsFragment extends Fragment implements
     private RecyclerView mRecycler;
     private MapFragmentAdapter mAdapter;
     private DatabaseReference mDatabase;
-    private HashSet<String> geoKeySet;
+    private HashMap<String, GeoLocation> geoKeyMap;
     private ValueEventListener valueEventListener;
     private OnMapCameraChangeListener listener;
     PlaceAutocompleteFragment autocompleteFragment;
@@ -110,7 +110,7 @@ public class LocationSettingsFragment extends Fragment implements
         ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        geoKeySet = new HashSet<String>();
+        geoKeyMap = new HashMap<String, GeoLocation>();
         mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
         Log.d(TAG, mGoogleApiClient.toString());
     }
@@ -197,7 +197,7 @@ public class LocationSettingsFragment extends Fragment implements
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                listener.onMapCameraChange(snapshot, geoKeySet);
+                listener.onMapCameraChange(snapshot, geoKeyMap);
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
@@ -322,13 +322,12 @@ public class LocationSettingsFragment extends Fragment implements
     private void queryGeoFire(double radius, double latitude, double longitude) {
         // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius);
-        geoKeySet.clear();
+        geoKeyMap.clear();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                addMarker(key, location);
-                geoKeySet.add(key);
+                geoKeyMap.put(key, location);
             }
 
             @Override
@@ -361,7 +360,7 @@ public class LocationSettingsFragment extends Fragment implements
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                listener.onMapCameraChange(snapshot, geoKeySet);
+                listener.onMapCameraChange(snapshot, geoKeyMap);
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
@@ -420,65 +419,43 @@ public class LocationSettingsFragment extends Fragment implements
 
 
 
-    private void addMarker(final String key, final GeoLocation location) {
-        mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        Experience exp = dataSnapshot.getValue(Experience.class);
-                        Log.d("DEBUG", exp.toString());
-                        // [START_EXCLUDE]
-                        if (exp == null) {
-                            // User is null, error out
-                            Log.e(TAG, "Experience " + key + " is unexpectedly null");
-                        } else {
-                            int type = exp.type;
-                            System.out.println("DEBUG GOT HERE");
-                            Log.d(TAG, Integer.toString(type));
-                            setMarker(type, location);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
-                });
 
-    }
 
-    private void setMarker(int type, GeoLocation location) {
-        System.out.println("DEBUG SET Marker type = "+ type);
-        // Set the color of the marker to green
-        BitmapDescriptor defaultMarker;
-        switch(type){
-            case 1:
-                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_favorite);
-                break;
-            case 2:
-                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_invite_friends);
-                break;
-            case 3:
-                defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_calendar);
-                break;
-            default:
-                defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                break;
+    private void setMarker(ArrayList<Experience> experiences) {
+        for(Experience exp:experiences){
+            System.out.println("DEBUG SET Marker type = "+ exp.type);
+            // Set the color of the marker to green
+            BitmapDescriptor defaultMarker;
+            switch(exp.type){
+                case 1:
+                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_favorite);
+                    break;
+                case 2:
+                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_invite_friends);
+                    break;
+                case 3:
+                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_calendar);
+                    break;
+                default:
+                    defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                    break;
+            }
+
+            Log.d(TAG, defaultMarker.toString());
+
+
+            // listingPosition is a LatLng point
+            LatLng listingPosition = new LatLng(geoKeyMap.get(exp.key).latitude, geoKeyMap.get(exp.key).longitude);
+            // Create the marker on the fragment
+            Log.d("DEBUG", map.toString());
+
+            Marker mapMarker = map.addMarker(new MarkerOptions()
+                    .position(listingPosition)
+                    .title("title1")
+                    .snippet("desc1")
+                    .icon(defaultMarker));
         }
 
-        Log.d(TAG, defaultMarker.toString());
-
-
-        // listingPosition is a LatLng point
-        LatLng listingPosition = new LatLng(location.latitude, location.longitude);
-        // Create the marker on the fragment
-        Log.d("DEBUG", map.toString());
-
-        Marker mapMarker = map.addMarker(new MarkerOptions()
-                .position(listingPosition)
-                .title("title1")
-                .snippet("desc1")
-                .icon(defaultMarker));
 
     }
 
@@ -498,7 +475,7 @@ public class LocationSettingsFragment extends Fragment implements
     // Define the events that the fragment will use to communicate
     public interface OnMapCameraChangeListener {
         // This can be any number of events to be sent to the activity
-        public void onMapCameraChange(DataSnapshot snapshot, HashSet<String> geoKeySet);
+        public void onMapCameraChange(DataSnapshot snapshot, HashMap<String, GeoLocation> geoKeyMap);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -516,6 +493,7 @@ public class LocationSettingsFragment extends Fragment implements
     public void updateAdapter(ArrayList<Experience> experiences){
         mAdapter = new MapFragmentAdapter(getContext(), experiences);
         mRecycler.setAdapter(mAdapter);
+        setMarker(experiences);
         Log.d(TAG,"experience called onece");
     }
 }
