@@ -354,6 +354,8 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
     @Override
     public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
+        System.out.println("DEBUGGY GOT TO REVIEW: " + mTime);
+
 
          this.mUserDisplayName = mUserDisplayName;
          this.mTitle = mTitle;
@@ -368,7 +370,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 //        double mLatitude;
 //        double mLongitude;
         submitPostTest();
-        System.out.println("DEBUGGY: " + mTime);
 
     }
 

@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 
 import java.text.SimpleDateFormat;
@@ -99,7 +100,8 @@ public class CreateExReviewFragment extends Fragment {
         etDescription.setText(mBody);
         etAddress.setText(mAddress);
         etNumGuests.setText(mNumGuests+"");
-
+        Glide.with(getActivity()).load(mImgURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+                .into(ivImage);
 
     }
 
