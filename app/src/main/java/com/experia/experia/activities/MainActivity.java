@@ -44,6 +44,7 @@ import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.LocationSettingsFragment;
 import fragments.PostListFragment;
 import fragments.ProfileFragment;
+import fragments.RecentPostsFragment;
 import models.Experience;
 import models.NamedGeofence;
 
@@ -277,7 +278,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         @Override
         public Fragment getItem(int position) {
             if (position ==0){//Nearby
-                Fragment cndpf = PostListFragment.newInstance(null);
+                PostListFragment cndpf = RecentPostsFragment.newInstance(null);
                 return cndpf;
             }
             else if (position ==1){//Search
@@ -286,11 +287,11 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             }
 
             else if (position ==2){//Create
-               BookmarksFragment bmf = BookmarksFragment.newInstance(null);
+                PostListFragment bmf = BookmarksFragment.newInstance(null);
                 return bmf;
             }
             else if (position ==3){//Favorite
-                BookmarksFragment bmf = BookmarksFragment.newInstance(null);
+                Fragment bmf = BookmarksFragment.newInstance(null);
                 return bmf;
             }
             else if (position ==4){//Profile
@@ -299,7 +300,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             }
 //
             else{
-                Fragment cndpf = PostListFragment.newInstance(null);
+                PostListFragment cndpf = RecentPostsFragment.newInstance(null);
                 return cndpf;
             }
         }
