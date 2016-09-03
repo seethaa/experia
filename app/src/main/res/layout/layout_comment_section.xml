@@ -23,13 +23,15 @@
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:backgroundTint="@color/mp_lightblue"
+            android:textColorHint="@color/mp_lightblue"
             android:hint="Write a comment..."/>
 
         <Button
             android:id="@+id/button_post_comment"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_weight="0.2"
+            android:backgroundTint="@color/mp_brown"
             android:layout_height="wrap_content"
             android:text="Post"/>
 

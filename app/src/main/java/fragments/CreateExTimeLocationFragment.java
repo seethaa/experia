@@ -76,7 +76,7 @@ public class CreateExTimeLocationFragment extends Fragment {
 
     // Now we can fire the event when the user selects something in the fragment
     public void onSaveWhereAndWhen(View v) {
-//        exDate = etDate.getText().toString();
+        exDate = etDate.getText().toString();
         exTime = etTime.getText().toString();
         exAddress = etStreet.getText().toString();
 

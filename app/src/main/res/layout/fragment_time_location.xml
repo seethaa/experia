@@ -53,8 +53,12 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/tvTime"
                 android:layout_gravity="left"
-                android:hint="@string/createStreet"
-                android:textSize="@dimen/lg_creation_prompt" />
+                android:hint="Enter Address"
+                android:background="@drawable/bg_rectangle_edittext"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/mp_lightblue"
+                android:textSize="24sp" />
 
             <!--<Button-->
             <!--android:id="@+id/btnDate"-->
