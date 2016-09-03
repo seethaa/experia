@@ -40,6 +40,7 @@ public class GeofenceController {
   private Gson gson;
   private SharedPreferences prefs;
   private GeofenceControllerListener listener;
+  private GoogleApiClientConnectListener googleApiClientConnectListener;
 
   private List<NamedGeofence> namedGeofences;
 
@@ -208,6 +209,8 @@ public class GeofenceController {
           }
         }
       });
+
+      googleApiClientConnectListener.onGoogleApiClientConnect();
     }
 
     @Override
@@ -224,6 +227,8 @@ public class GeofenceController {
       for (NamedGeofence namedGeofence : namedGeofencesToRemove) {
         removeIds.add(namedGeofence.id);
       }
+
+
 
       if (removeIds.size() > 0) {
         PendingResult<Status> result = LocationServices.GeofencingApi.removeGeofences(googleApiClient, removeIds);
@@ -267,6 +272,14 @@ public class GeofenceController {
   public interface GeofenceControllerListener {
     void onGeofencesUpdated();
     void onError();
+  }
+
+  public interface GoogleApiClientConnectListener {
+    void onGoogleApiClientConnect();
+  }
+
+  public void setOnEventListener(GoogleApiClientConnectListener listener) {
+    this.googleApiClientConnectListener = listener;
   }
 
   // end region

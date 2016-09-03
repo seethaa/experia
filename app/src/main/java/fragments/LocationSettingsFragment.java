@@ -152,6 +152,7 @@ public class LocationSettingsFragment extends Fragment implements
         }
         if (autocompleteFragment == null) {
 
+
             autocompleteFragment = (PlaceAutocompleteFragment)
                     getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -297,6 +298,7 @@ public class LocationSettingsFragment extends Fragment implements
             throw new RuntimeException(e);
         }
     }
+
 
 
     @Override

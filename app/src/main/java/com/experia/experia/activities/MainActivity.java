@@ -86,6 +86,37 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
 
         GeofenceController.getInstance().init(this);
+        GeofenceController.getInstance().setOnEventListener(new GeofenceController.GoogleApiClientConnectListener() {
+            @Override
+            public void onGoogleApiClientConnect() {
+                // Display the connection status
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (location != null) {
+                    //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                    if(fmMap.isAdded()) {
+                        fmMap.map.moveCamera(cameraUpdate);
+                        fmMap.startLocationUpdates();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         //Hardcode for geofence example
         NamedGeofence geofence = new NamedGeofence();
         geofence.name = "Event1";
@@ -165,32 +196,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-// Display the connection status
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location != null) {
-            //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-            if(fmMap.isAdded()) {
-                fmMap.map.moveCamera(cameraUpdate);
-                fmMap.startLocationUpdates();
-            }
 
-        } else {
-            Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
-        }
 
     }
 
