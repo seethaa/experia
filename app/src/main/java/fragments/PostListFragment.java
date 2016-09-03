@@ -31,7 +31,7 @@ import adapters.PostViewHolder;
 import models.Experience;
 import models.User;
 
-public class PostListFragment extends Fragment {
+public abstract class PostListFragment extends Fragment {
 
     private static final String TAG = "PostListFragment";
 
@@ -46,13 +46,13 @@ public class PostListFragment extends Fragment {
     public PostListFragment() {
 
     }
-    public static PostListFragment newInstance(User currUser) {
-        PostListFragment fg = new PostListFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("currUser", Parcels.wrap(currUser));
-        fg.setArguments(args);
-        return fg;
-    }
+//    public static PostListFragment newInstance(User currUser) {
+//        PostListFragment fg = new PostListFragment();
+//        Bundle args = new Bundle();
+//        args.putParcelable("currUser", Parcels.wrap(currUser));
+//        fg.setArguments(args);
+//        return fg;
+//    }
 
 
 
@@ -243,16 +243,16 @@ public class PostListFragment extends Fragment {
     }
 
 
-    public Query getQuery(DatabaseReference databaseReference) {
-        // [START recent_posts_query]
-        // Last 100 posts, these are automatically the 100 most recent
-        // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("posts")
-                .limitToFirst(100);
-        // [END recent_posts_query]
-
-        return recentPostsQuery;
-    }
+//    public Query getQuery(DatabaseReference databaseReference) {
+//        // [START recent_posts_query]
+//        // Last 100 posts, these are automatically the 100 most recent
+//        // due to sorting by push() keys
+//        Query recentPostsQuery = databaseReference.child("posts")
+//                .limitToFirst(100);
+//        // [END recent_posts_query]
+//
+//        return recentPostsQuery;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -264,4 +264,7 @@ public class PostListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public abstract Query getQuery(DatabaseReference databaseReference);
+
 }
