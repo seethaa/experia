@@ -77,18 +77,22 @@
             android:text="@string/camera_button_text"
             android:layout_gravity="center_horizontal"
             android:layout_above="@+id/etTitle"
-            android:layout_marginLeft="50dp" />
+            android:backgroundTint="@color/mp_brown"
+            android:layout_marginLeft="50dp"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_pick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose picture"
+            android:backgroundTint="@color/mp_brown"
             android:layout_gravity="right|center"
             android:layout_above="@+id/etTitle"
             android:layout_toRightOf="@+id/button_camera"
             android:layout_toEndOf="@+id/button_camera"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:textSize="12sp" />
 
         <ImageButton
             android:layout_width="50dp"
@@ -118,7 +122,7 @@
             android:id="@+id/etDescription"
             android:layout_width="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/mp_lightblue"
+            android:textColor="@color/colorPrimary"
             android:paddingRight="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
@@ -143,7 +147,7 @@
             android:layout_height="wrap_content"
             tools:text="Kayaking in Mendocino"
             android:hint="Title"
-            android:textColor="@color/mp_lightblue"
+            android:textColor="@color/colorPrimary"
             android:backgroundTint="@color/mp_lightblue"
             android:textColorHint="@color/mp_lightblue"
             android:layout_below="@+id/ivExperienceImage"
@@ -195,7 +199,7 @@
             android:text="Next"
             android:id="@+id/btnNext"
             android:layout_below="@+id/etTags"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             android:backgroundTint="@color/mp_yellow"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
@@ -206,7 +210,7 @@
             android:id="@+id/etTags"
             android:layout_width="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/mp_lightblue"
+            android:textColor="@color/colorPrimary"
             android:paddingRight="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
