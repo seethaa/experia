@@ -159,7 +159,6 @@ public class LocationSettingsFragment extends Fragment implements
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    // TODO: Get info about the selected place.
                     Log.i(TAG, "Place: " + place.getAddress());
                     Log.i(TAG, "location: " + place.getLatLng().toString());
                     if (place.getLatLng() != null) {
@@ -181,7 +180,6 @@ public class LocationSettingsFragment extends Fragment implements
 
                 @Override
                 public void onError(Status status) {
-                    // TODO: Handle the error.
                     Log.i(TAG, "An error occurred: " + status);
                 }
             });
@@ -503,7 +501,7 @@ public class LocationSettingsFragment extends Fragment implements
             Marker mapMarker = map.addMarker(new MarkerOptions()
                     .position(listingPosition)
                     .title(exp.title)
-                    .snippet(exp.address)
+                    .snippet(exp.addressName)
                     .icon(defaultMarker));
             markerList.add(mapMarker);
         }

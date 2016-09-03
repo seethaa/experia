@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.experia.experia.R;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,6 +72,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     String mTags;
     String mImgURL;
     String mAddress;
+    String mAddressName;
     int mType;
     double mLatitude;
     double mLongitude;
@@ -164,9 +166,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
         mDuration = "5 HOURS";
 
-        mLatitude = 1.0;
-        mLongitude = 1.0;
-
 //        mNumGuests = 100;
 //
 //        mDate = "Today";
@@ -191,7 +190,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType, finalLatitude, finalLongitude);
+                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mAddressName, mType, finalLatitude, finalLongitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -254,8 +253,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
         // [START single_value_read]
         final String userId = getUid();
-        final double finalLatitude = mLatitude;
-        final double finalLongitude = mLongitude;
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -272,7 +269,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType, finalLatitude, finalLongitude);
+                            writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mAddressName, mType, mLatitude, mLongitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -289,13 +286,13 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body, int numGuests, String date, String time, String duration, String tags, String imgURL, String address, int type , double latitude, double longitude ) {
+    private void writeNewPost(String userId, String username, String title, String body, int numGuests, String date, String time, String duration, String tags, String imgURL, String address, String addressName, int type , double latitude, double longitude ) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String totalSpots, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, type);
+        Experience post = new Experience(userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, addressName, type);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -331,10 +328,14 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     }
 
     @Override
-    public void onWhereAndWhenCompleted(String address, String date, String time) {
+    public void onWhereAndWhenCompleted(String address, String addressName, LatLng location, String date, String time) {
         mAddress = address;
         mDate = date;
         mTime = time;
+        mAddressName = addressName;
+        mLatitude = location.latitude;
+        mLongitude = location.longitude;
+
         System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
 //        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
 
@@ -345,7 +346,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         mViewPager.setCurrentItem(2);
 
         CreateExReviewFragment fragment = (CreateExReviewFragment) mSimpleFragmentAdapter.getRegisteredFragment(2);
-        fragment.populatePreviewFields(mUserDisplayName, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mType);
+        fragment.populatePreviewFields(mUserDisplayName, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mAddressName, mLatitude, mLongitude, mType);
 //        ((TextView) fragment.getView().findViewById(R.id.tvTitle)).setText("TESTING");
 
     }
@@ -353,7 +354,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 
     @Override
-    public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
+    public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, double mLatitude, double mLongitude, int mType) {
         System.out.println("DEBUGGY GOT TO REVIEW: " + mTime);
 
 
@@ -366,9 +367,9 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 //        String mTags;
          this.mImgURL = mImgURL;
          this.mAddress = mAddress;
+         this.mLatitude = mLatitude;
+         this.mLongitude = mLongitude;
 //        int mType;
-//        double mLatitude;
-//        double mLongitude;
         submitPostTest();
 
     }

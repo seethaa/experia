@@ -23,6 +23,7 @@ public class InfoDetailFragment extends Fragment {
 //    private TextView mTitleView;
     private TextView mBodyView;
     private TextView mAddress;
+    private TextView mAddressName;
     private TextView mDate;
 
     private TextView mSpotsAvailable;
@@ -63,6 +64,7 @@ public class InfoDetailFragment extends Fragment {
 //        mTitleView = (TextView) view.findViewById(R.id.tvExperienceTitle);
         mBodyView = (TextView) view.findViewById(R.id.tvDescription);
         mAddress = (TextView) view.findViewById(R.id.tvLocationAddress);
+        mAddressName = (TextView) view.findViewById(R.id.tvLocationName);
         mDate = (TextView) view.findViewById(R.id.tvDate);
         mSpotsAvailable = (TextView) view.findViewById(R.id.tvSpotsLeft);
         mNumGoing = (TextView) view.findViewById(R.id.tvNumGoing);
@@ -78,6 +80,8 @@ public class InfoDetailFragment extends Fragment {
         mSpotsAvailable.setText(mExperience.getSpotsLeft() + " spots left");
         mNumGoing.setText(mExperience.joinCount + " going");
         mAddress.setText(mExperience.address);
+        mAddressName.setText(mExperience.addressName);
+        mAddressName.setText(mExperience.addressName);
 
 
         mAuthorView.setOnClickListener(new View.OnClickListener() {

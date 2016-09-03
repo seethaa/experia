@@ -6,14 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.experia.experia.R;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +38,7 @@ public class CreateExTimeLocationFragment extends Fragment {
     //@BindView(R.id.iv_icon) ImageView logoImageView;
 //    @BindView(R.id.tvDate) TextView tvDate;
 //    @BindView(R.id.tvTime) TextView tvTime;
-    @BindView(R.id.etStreet) EditText etStreet;
+    PlaceAutocompleteFragment autocompleteFragment;
     static SQLiteDatabase db;
 
     private Unbinder unbinder;
@@ -44,6 +49,8 @@ public class CreateExTimeLocationFragment extends Fragment {
     String exDate;
     String exTime;
     String exAddress;
+    String exAddressName;
+    LatLng exLocation;
 
 
     public static CreateExTimeLocationFragment newInstance(int color, int icon) {
@@ -59,7 +66,7 @@ public class CreateExTimeLocationFragment extends Fragment {
 
     // Define the events that the fragment will use to communicate
     public interface OnWhereAndWhenCompleteListener {
-        public void onWhereAndWhenCompleted(String address, String date, String time);
+        public void onWhereAndWhenCompleted(String address, String addressName,  LatLng location, String date, String time);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -78,11 +85,10 @@ public class CreateExTimeLocationFragment extends Fragment {
     public void onSaveWhereAndWhen(View v) {
         exDate = etDate.getText().toString();
         exTime = etTime.getText().toString();
-        exAddress = etStreet.getText().toString();
 
 
-        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress);
-        listener.onWhereAndWhenCompleted(exAddress, exDate, exTime);
+        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress+ ", " + exAddressName + ", " + exLocation.toString());
+        listener.onWhereAndWhenCompleted(exAddress, exAddressName, exLocation, exDate, exTime);
     }
 
 
@@ -133,20 +139,39 @@ public class CreateExTimeLocationFragment extends Fragment {
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
         db = dbHelper.getWritableDatabase();
 
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if (place.getLatLng() != null) {
+                    //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+                    exLocation = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                    exAddress = place.getAddress().toString();
+                    exAddressName = place.getName().toString();
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("fragment_time_location", "An error occurred: " + status);
+            }
+        });
+
         return rootView;
     }
 
     public void setTimeLocation(View view){
 //         exDate = etDate.getText().toString();
          exTime = etTime.getText().toString();
-         exAddress = etStreet.getText().toString();
 
 
         //set values obj
         ContentValues values = new ContentValues(1);
         values.put("date", exDate);
         //values.put("time", exTime);
-        values.put("address", exAddress);
+        //values.put("address", exAddress);
 
 
         // update first record

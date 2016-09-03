@@ -37,7 +37,8 @@ public class CreateExReviewFragment extends Fragment {
     @BindView(R.id.tvExperienceTitle) TextView etTitle;
 
     @BindView(R.id.tvDescription) TextView etDescription;
-    @BindView(R.id.tvLocationName) TextView etAddress;
+    @BindView(R.id.tvLocationAddress) TextView etAddress;
+    @BindView(R.id.tvLocationName) TextView etAddressName;
     @BindView(R.id.tvSpotsLeft) TextView etNumGuests;
     boolean populated = false;
 
@@ -62,6 +63,9 @@ public class CreateExReviewFragment extends Fragment {
     String mTags;
     String mImgURL;
     String mAddress;
+    String mAddressName;
+    double mLatitude;
+    double mLongitude;
     int mType;
 
 
@@ -78,7 +82,7 @@ public class CreateExReviewFragment extends Fragment {
 
     private OnReviewCompleteListener listener;
 
-    public void populatePreviewFields(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType) {
+    public void populatePreviewFields(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, String mAddressName, double mLatitude, double mLongitude, int mType) {
 
         System.out.println("DEBUGGY GOT TO POP");
         this.mUserDisplayName = mUserDisplayName;
@@ -89,6 +93,9 @@ public class CreateExReviewFragment extends Fragment {
         this.mTime = mTime;
         this.mImgURL = mImgURL;
         this.mAddress = mAddress;
+        this.mAddressName = mAddressName;
+        this.mLatitude = mLatitude;
+        this.mLongitude = mLongitude;
         this.mType = mType;
         populated = true;
 
@@ -99,6 +106,7 @@ public class CreateExReviewFragment extends Fragment {
 
         etDescription.setText(mBody);
         etAddress.setText(mAddress);
+        etAddressName.setText(mAddressName);
         etNumGuests.setText(mNumGuests+"");
         Glide.with(getActivity()).load(mImgURL).centerCrop().placeholder(R.drawable.icon_take_photo)
                 .into(ivImage);
@@ -107,7 +115,7 @@ public class CreateExReviewFragment extends Fragment {
 
     // Define the events that the fragment will use to communicate
     public interface OnReviewCompleteListener {
-       public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, int mType);
+       public void OnReviewCompleted(String mUserDisplayName, String mTitle, String mBody, int mNumGuests, String mDate, String mTime, String mDuration, String mTags, String mImgURL, String mAddress, double mLatitude, double mLongitude, int mType);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -129,13 +137,15 @@ public class CreateExReviewFragment extends Fragment {
         mBody = etDescription.getText().toString();
         mNumGuests = Integer.parseInt(etNumGuests.getText().toString());
 //        mDate = ;
-        mTime = etTime.getText().toString();;
+        mTime = etTime.getText().toString();
 //        mImgURL = mImgURL;
-        mAddress = etAddress.getText().toString();
+        //mAddress = etAddress.getText().toString();
 //        mType = mType;
 
+
 //        System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress);
-        listener.OnReviewCompleted(mUserDisplayName, mTitle, mBody,mNumGuests,mDate,mTime, mDuration,mTags, mImgURL, mAddress,mType);
+        listener.OnReviewCompleted(mUserDisplayName, mTitle, mBody,mNumGuests,mDate,mTime, mDuration,mTags, mImgURL,
+                mAddress, mLatitude, mLongitude, mType);
     }
 
     @Override

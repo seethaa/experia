@@ -27,6 +27,7 @@ public class Experience {
     public String tags;
     public String imgURL;
     public String address;
+    public String addressName;
     public int spotsLeft;
     public int type;
     public int starCount = 0;
@@ -40,7 +41,7 @@ public class Experience {
         // Default constructor required for calls to DataSnapshot.getValue(Experience.class)
     }
 
-    public Experience(String uid, String title, String author, String description, int numGuests, String date, String time, String duration, String tags, String imgURL, String address, int type) {
+    public Experience(String uid, String title, String author, String description, int numGuests, String date, String time, String duration, String tags, String imgURL, String address, String addressName, int type) {
         this.uid = uid;
         this.title = title;
         this.author = author;
@@ -52,6 +53,7 @@ public class Experience {
         this.tags = tags;
         this.imgURL = imgURL;
         this.address = address;
+        this.addressName = addressName;
         this.type = type;
 
     }
@@ -75,6 +77,7 @@ public class Experience {
         result.put("tags", tags);
         result.put("imgURL", imgURL);
         result.put("address", address);
+        result.put("addressName", addressName);
         result.put("type", type);
         result.put("starCount", starCount);
         result.put("stars", stars);
