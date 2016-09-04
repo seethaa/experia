@@ -40,7 +40,7 @@ public class PostDetailActivity extends BaseActivity {
 
     private TextView mSpotsAvailable;
     private ImageView mImageViewExperience;
-
+//    private TextView mAddress;
 
 
     private EditText mCommentField;
@@ -80,6 +80,7 @@ public class PostDetailActivity extends BaseActivity {
 //
 //        mCommentButton.setOnClickListener(this);
 //        mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
 
 
 

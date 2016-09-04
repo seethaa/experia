@@ -2,9 +2,12 @@ package fragments;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,10 +82,23 @@ public class InfoDetailFragment extends Fragment {
         mDate.setText(mExperience.date);
         mSpotsAvailable.setText(mExperience.getSpotsLeft() + " spots left");
         mNumGoing.setText(mExperience.joinCount + " going");
-        mAddress.setText(mExperience.address);
+//        mAddress.setText(mExperience.address);
         mAddressName.setText(mExperience.addressName);
         mAddressName.setText(mExperience.addressName);
 
+        mAddress.setClickable(true);
+        SpannableString content = new SpannableString(mExperience.address);
+        content.setSpan(new UnderlineSpan(), 0, mExperience.address.length(), 0);
+        mAddress.setText(content);
+        mAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent geoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="
+                        +mAddress.getText().toString()));
+                startActivity(geoIntent);
+            }
+        });
 
         mAuthorView.setOnClickListener(new View.OnClickListener() {
             @Override
