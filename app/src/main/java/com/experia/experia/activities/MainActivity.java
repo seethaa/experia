@@ -191,7 +191,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
 
     @Override
-    public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL) {
+    public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL, String mTags) {
         //do nothing for now..
     }
 

@@ -7,8 +7,11 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,7 +23,11 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -82,6 +90,8 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     @BindView(R.id.button_camera) Button btnCamera;
     @BindView(R.id.button_pick) Button btnPick;
     @BindView(R.id.button_sign_in) Button btnSignIn;
+    @BindView(R.id.etTags) EditText etTags;
+
 //    @BindView(R.id.button_download) Button btnDownload;
 
     @BindView(R.id.layout_signin)
@@ -92,7 +102,8 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
 
 
-
+    boolean isTwise = false ;
+    boolean isEdit = true ;
 
     //@BindView(R.id.iv_icon) ImageView logoImageView;
     private Unbinder unbinder;
@@ -118,6 +129,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
     String mTitle;
     String mBody;
+    String mTags;
 
     private static final String TAG = "Storage#MainActivity";
 
@@ -154,7 +166,7 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
     // Define the events that the fragment will use to communicate
     public interface OnNameDescriptionPhotoCompleteListener {
-        public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL);
+        public void onNameDescriptionPhotoCompleted(String title, String description, String imgURL, String tags);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -173,10 +185,11 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
     public void onSaveNameAndDescriptionClick(View v) {
         mTitle = experienceName.getText().toString();
         mBody = experienceDescription.getText().toString();
+        mTags = etTags.getText().toString();
 
 
         System.out.println("DEBUGGY Exp 1 old: " + mTitle + ", " + mBody + ", " + mImageUri);
-        listener.onNameDescriptionPhotoCompleted(mTitle, mBody, mPhotoStringURL);
+        listener.onNameDescriptionPhotoCompleted(mTitle, mBody, mPhotoStringURL, mTags);
     }
 
 
@@ -190,7 +203,6 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 //        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), getArguments().getInt(ARG_SECTION_COLOR)));
         //logoImageView.setImageResource(getArguments().getInt(ARG_SECTION_NUMBER));
 
-
         nextBtn.setOnClickListener(new View.OnClickListener() { //go to next fragment
             @Override
             public void onClick(View v) {
@@ -198,6 +210,10 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 //                saveNameDescription(v);
             }
         });
+
+
+        setupTagView();
+
 
 
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
@@ -244,6 +260,98 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
 
 
         return rootView;
+    }
+
+    private void setupTagView() {
+
+        double scaletype =getResources().getDisplayMetrics().density;
+        if(scaletype >=3.0){
+            isTwise = true ;
+        }
+        etTags.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if (count >= 1 && !isEdit) {
+                    if (!Character.isSpaceChar(s.charAt(0))) {
+                        if (s.charAt(start) == ' ')
+                            setTag(); // generate chips
+                    } else {
+                        etTags.getText().clear();
+                        etTags.setSelection(0);
+                    }
+
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isEdit) {
+                    setTag();
+                }
+            }
+        });
+
+    }
+    public void setTag() {
+        if (etTags.getText().toString().contains(" ")) // check comma in string
+        {
+
+            SpannableStringBuilder ssb = new SpannableStringBuilder(etTags.getText());
+            // split string wich comma
+            String chips[] = etTags.getText().toString().trim().split(" ");
+            int x = 0;
+            for (String c : chips) {
+                LayoutInflater lf = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                TextView textView = (TextView) lf.inflate(
+                        R.layout.tag_edittext, null);
+                textView.setText(c); // set text
+                int spec = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                textView.measure(spec, spec);
+                textView.layout(0, 0, textView.getMeasuredWidth(),
+                        textView.getMeasuredHeight());
+                Bitmap b = Bitmap.createBitmap(textView.getWidth(),
+                        textView.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(b);
+                canvas.translate(-textView.getScrollX(), -textView.getScrollY());
+                textView.draw(canvas);
+                textView.setDrawingCacheEnabled(true);
+                Bitmap cacheBmp = textView.getDrawingCache();
+                Bitmap viewBmp = cacheBmp.copy(Bitmap.Config.ARGB_8888, true);
+                textView.destroyDrawingCache(); // destory drawable
+                BitmapDrawable bmpDrawable = new BitmapDrawable(viewBmp);
+                int width = bmpDrawable.getIntrinsicWidth() ;
+                int height = bmpDrawable.getIntrinsicHeight() ;
+                if(isTwise){
+                    width = width *2 ;
+                    height = height *2;
+                }
+                bmpDrawable.setBounds(0, 0,width ,height);
+                ssb.setSpan(new ImageSpan(bmpDrawable), x, x + c.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                x = x + c.length() + 1;
+            }
+            // set chips span
+            isEdit = false ;
+            etTags.setText(ssb);
+            // move cursor to last
+            etTags.setSelection(etTags.getText().length());
+        }
+
+    }
+    public  int convertDpToPixel(float dp){
+        Resources resources = getActivity().getApplicationContext().getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return (int)px;
     }
 
 

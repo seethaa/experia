@@ -53,7 +53,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mContext = applicationContext;
 
         tvTitle.setText(post.title);
-        tvSubtext.setText(post.tags);
+
+        String postTags = post.tags;
+        if (postTags!=null) {
+            postTags = postTags.trim();
+            postTags = " " + postTags;
+            postTags = postTags.replace(" ", " #");
+        }
+
+        tvSubtext.setText(postTags);
 //        numStarsView.setText(String.valueOf(post.starCount));
         tvDescription.setText(post.description);
         if (post.getSpotsLeft()>1) {

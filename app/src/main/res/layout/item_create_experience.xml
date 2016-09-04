@@ -199,6 +199,7 @@
             android:layout_alignStart="@+id/etDescription"
             android:visibility="invisible" />
 
+
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -212,24 +213,22 @@
             android:layout_gravity="center" />
 
         <EditText
-            tools:text="blahblahblah"
+            tools:text="Tags"
             android:id="@+id/etTags"
             android:layout_width="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimary"
             android:paddingRight="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
             android:hint="Enter a short description"
             android:background="@drawable/bg_rectangle_edittext"
             android:textCursorDrawable="@null"
-            android:backgroundTint="@color/mp_lightblue"
+            android:textColor="@color/colorPrimary"
             android:textColorHint="@color/mp_lightblue"
-            android:visibility="gone"
-            android:text="Tags"
             android:layout_below="@+id/view"
             android:layout_alignLeft="@+id/tvSubtext"
-            android:layout_alignStart="@+id/tvSubtext" />
+            android:layout_alignStart="@+id/tvSubtext"
+            android:layout_marginBottom="20dp" />
 
 
     </RelativeLayout>

@@ -317,10 +317,11 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 
     @Override
-    public void onNameDescriptionPhotoCompleted(String title, String description, String imgUrl) {
+    public void onNameDescriptionPhotoCompleted(String title, String description, String imgUrl, String tags) {
         mTitle = title;
         mBody = description;
         mImgURL = imgUrl;
+        mTags = tags;
         System.out.println("DEBUGGY Experience page 1: " + mTitle + ", " + mBody + " ," + imgUrl);
 
         mViewPager.setCurrentItem(1);
