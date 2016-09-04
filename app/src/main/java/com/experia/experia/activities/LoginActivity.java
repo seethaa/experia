@@ -292,6 +292,7 @@ public class LoginActivity extends BaseActivity implements
         User user = new User(displayName, name, email, photoURL );
 
         mDatabase.child("users").child(userId).setValue(user);
+
     }
     // [END basic_write]
 }

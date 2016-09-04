@@ -292,7 +292,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String totalSpots, String duration) {
 
-        Experience post = new Experience(userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, addressName, type);
+        Experience post = new Experience(key, userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, addressName, type);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

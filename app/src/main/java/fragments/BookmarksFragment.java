@@ -58,8 +58,8 @@ public class BookmarksFragment extends PostListFragment {
 //        Query myTopPostsQuery = databaseReference.child("user-posts").child(getUid())
 //                .orderByChild("starCount");
 
-        Query bookmarksQuery = databaseReference.child("posts")
-                .orderByChild("stars");
+        Query bookmarksQuery = databaseReference.child("user-stars").child(getUid());
+//                .orderByChild("stars");
 
         return bookmarksQuery;
 

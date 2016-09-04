@@ -25,11 +25,11 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
-import org.parceler.Parcels;
+import java.util.HashMap;
+import java.util.Map;
 
 import adapters.PostViewHolder;
 import models.Experience;
-import models.User;
 
 public abstract class PostListFragment extends Fragment {
 
@@ -156,10 +156,13 @@ public abstract class PostListFragment extends Fragment {
 
     // [START post_stars_transaction]
     private void onStarClicked(DatabaseReference postRef) {
+
+
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Experience p = mutableData.getValue(Experience.class);
+
                 if (p == null) {
                     return Transaction.success(mutableData);
                 }
@@ -176,6 +179,18 @@ public abstract class PostListFragment extends Fragment {
 
                 // Set value and report transaction success
                 mutableData.setValue(p);
+
+                String key = p.postId;
+                System.out.println("DEBUGGY Key: " + key);
+
+                //add to user-stars
+                Map<String, Object> postValues = p.toMap();
+                Map<String, Object> childUpdates = new HashMap<>();
+
+//                childUpdates.put("/user-stars/" + key, postValues);
+                childUpdates.put("/user-stars/" + getUid() + "/" + key, postValues);
+                mDatabase.updateChildren(childUpdates);
+
                 return Transaction.success(mutableData);
             }
 
@@ -243,16 +258,6 @@ public abstract class PostListFragment extends Fragment {
     }
 
 
-//    public Query getQuery(DatabaseReference databaseReference) {
-//        // [START recent_posts_query]
-//        // Last 100 posts, these are automatically the 100 most recent
-//        // due to sorting by push() keys
-//        Query recentPostsQuery = databaseReference.child("posts")
-//                .limitToFirst(100);
-//        // [END recent_posts_query]
-//
-//        return recentPostsQuery;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
