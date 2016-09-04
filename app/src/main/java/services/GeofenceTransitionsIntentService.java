@@ -13,17 +13,22 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.experia.experia.R;
-import com.experia.experia.activities.MainActivity;
+import com.experia.experia.activities.PostDetailActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import models.Constants;
-import models.NamedGeofence;
+import models.Experience;
 
 public class GeofenceTransitionsIntentService extends IntentService {
 
@@ -33,6 +38,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     private SharedPreferences prefs;
     private Gson gson;
+    private DatabaseReference mDatabase;
 
     // endregion
 
@@ -51,6 +57,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
         Log.d(TAG, "onHandleIntent");
         prefs = getApplicationContext().getSharedPreferences(Constants.SharedPrefs.Geofences, Context.MODE_PRIVATE);
         gson = new Gson();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         if (event != null) {
@@ -77,43 +84,44 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     private void onEnteredGeofences(List<String> geofenceIds) {
         for (String geofenceId : geofenceIds) {
-            String geofenceName = "";
+            final String geofenceName = "";
+            final String key = "-KQmjdn-AFxR3kWypKN6";
 
-            // Loop over all geofence keys in prefs and retrieve NamedGeofence from SharedPreference
-            Map<String, ?> keys = prefs.getAll();
-            for (Map.Entry<String, ?> entry : keys.entrySet()) {
-                String jsonString = prefs.getString(entry.getKey(), null);
-                NamedGeofence namedGeofence = gson.fromJson(jsonString, NamedGeofence.class);
-                if (namedGeofence.id.equals(geofenceId)) {
-                    geofenceName = namedGeofence.name;
-                    break;
-                }
-            }
-            Log.d("DEBUG", geofenceId);
+            mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final Experience exp = dataSnapshot.getValue(Experience.class);
+                            // send notification to user
+                            try {
+                                createBigPictureStyleNoti(72, key, R.drawable.ic_logo_placeholder, exp.title,
+                                        exp.description, exp.address, exp.imgURL);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-            // send notification to user
-            createBigPictureStyleNoti(72,R.drawable.ic_logo_placeholder, "Oktoberfest!",
-                    "Live Band playing at the Roxy");
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w(TAG, "getKey:onCancelled", databaseError.toException());
+                        }
+                    });
 
-            // Set the notification text and send the notification
-//            String contextText = String.format(this.getResources().getString(R.string.Notification_Text), geofenceName);
-//
-//            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-//            Intent intent = new Intent(this, AllGeofencesActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            PendingIntent pendingNotificationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//            Notification notification = new NotificationCompat.Builder(this)
-//                    .setSmallIcon(R.mipmap.ic_launcher)
-//                    .setContentTitle(this.getResources().getString(R.string.Notification_Title))
-//                    .setContentText(contextText)
-//                    .setContentIntent(pendingNotificationIntent)
-//                    .setStyle(new NotificationCompat.BigTextStyle().bigText(contextText))
-//                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                    .setAutoCancel(true)
-//                    .build();
-//            notificationManager.notify(0, notification);
+//            // Loop over all geofence keys in prefs and retrieve NamedGeofence from SharedPreference
+//            Map<String, ?> keys = prefs.getAll();
+//            for (Map.Entry<String, ?> entry : keys.entrySet()) {
+//                String jsonString = prefs.getString(entry.getKey(), null);
+//                NamedGeofence namedGeofence = gson.fromJson(jsonString, NamedGeofence.class);
+//                if (namedGeofence.id.equals(geofenceId)) {
+//                    geofenceName = namedGeofence.title;
+//                    break;
+//                }
+//            }
+//            Log.d("DEBUG", geofenceId);
 
+//            // send notification to user
+//            createBigPictureStyleNoti(72,R.drawable.ic_logo_placeholder, geofenceName,
+//                    "Live Band playing at the Roxy");
         }
     }
 
@@ -124,10 +132,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
     // endregion
 
     //BigPicture Style Layout
-    private void createBigPictureStyleNoti (int nId, int iconRes, String title, String body) {
+    private void createBigPictureStyleNoti (int nId, String key, int iconRes, String title, String desc, String location, String imgURL) throws IOException {
         // First let's define the intent to trigger when notification is selected
         // Start out by creating a normal intent (in this case to open an activity)
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PostDetailActivity.class);
+        intent.putExtra(PostDetailActivity.EXTRA_POST_ID, key);
         // Next, let's turn this into a PendingIntent using
         //   public static PendingIntent getActivity(Context context, int requestCode,
         //       Intent intent, int flags)
@@ -141,7 +150,12 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // Big picture for style
         final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.big_oktober_fest);
-
+//        URL url = new URL(imgURL);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setDoInput(true);
+//        connection.connect();
+//        InputStream input = connection.getInputStream();
+//        Bitmap picture = BitmapFactory.decodeStream(input);
         //Items visible in Collapsed InboxView
         String contentText = "Learn archery from the best instructors who'll take the time to get " +
                 "you up and running and see you hitting the target.";
@@ -149,25 +163,44 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         //Items visible in Expanded InboxView
         String bigContentText = "Learn the archery of Robin Hood";
-        String summaryText = "Serious fun with bows & arrows";
+        String summaryText = desc.substring(0, 30) + "...";
+        String atLocation = "At " + location;
 
         // InboxStyle Notification
         Notification bigPictStyleNotification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
-                .setContentText(contentText)
-                .addAction(R.drawable.ic_phone_call,"ACTION",pIntent)
-                .addAction(R.drawable.ic_calendar,"ACTION",pIntent)
-                .addAction(R.drawable.ic_invite_friends,"ACTION",pIntent)
+                .setContentText(atLocation)
+                .addAction(R.drawable.icon_athlete,"",pIntent)
+                .addAction(R.drawable.icon_heart, "",pIntent)
+                .addAction(R.drawable.icon_join, "", pIntent)
                 .setSmallIcon(iconRes)  //miniature
                 .setLargeIcon(largeIcon)
-                .setSubText(subText)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSubText(summaryText)
+                .setContentIntent(pIntent)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true) // Hides the notification after its been selected
-                .setPriority(util.Constants.NOTICE_PRIORITY_MAX)
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                //.setPriority(util.Constants.NOTICE_PRIORITY_MAX)
                 .setStyle(new NotificationCompat.BigPictureStyle()
-                        .setBigContentTitle(bigContentText)
+                        .setBigContentTitle(title)
                         .setSummaryText(summaryText)
                         .bigPicture(picture))
                 .build();
+
+//        NotificationManager notiManager =
+//                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+//                .setContentTitle("Hello")
+//                .setContentText("hello")
+//                .setSmallIcon(R.drawable.ic_invite_friends)
+//                .setDefaults(Notification.DEFAULT_ALL)
+//                .setPriority(Notification.PRIORITY_HIGH)
+//                .setAutoCancel(false);
+
+//        notiManager.notify(0, mBuilder.build());
+//        Log.i("here", "here");
+
 
         // Get the notification manager system service
         NotificationManager mNotificationManager =

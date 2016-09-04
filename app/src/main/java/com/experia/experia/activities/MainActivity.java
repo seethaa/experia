@@ -34,7 +34,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +60,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     public ArrayList<Experience> experiences;
     public GoogleApiClient mGoogleApiClient;
+    public GeofenceController geofenceController;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationSettingsFragment fmMap;
+    private DatabaseReference mDatabase;
     private String TAG = "MainActivity";
 
 
@@ -65,7 +72,13 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabs);
         experiences = new ArrayList<Experience>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(connectionAddListener)
+                .build();
+        mGoogleApiClient.connect();
         //set up actionbar TODO
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
@@ -86,49 +99,88 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         tabLayout.setupWithViewPager(viewPager);
 
 
-        GeofenceController.getInstance().init(this);
-        GeofenceController.getInstance().setOnEventListener(new GeofenceController.GoogleApiClientConnectListener() {
-            @Override
-            public void onGoogleApiClientConnect() {
-                // Display the connection status
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                if (location != null) {
-                    //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-                    if(fmMap.isAdded()) {
-                        fmMap.map.moveCamera(cameraUpdate);
-                        fmMap.startLocationUpdates();
-                    }
+        geofenceController = GeofenceController.getInstance();
+        geofenceController.init(this);
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        //Hardcode for geofence example
+
         NamedGeofence geofence = new NamedGeofence();
-        geofence.name = "Event1";
-        geofence.latitude = 37.41069;
-        geofence.longitude = -121.93855;
+        geofence.title = "test";
+        geofence.desc = "desc";
+        geofence.latitude = 37.4122486;
+        geofence.longitude = -121.9571712;
         geofence.radius = 20f;
 
         //TODO put geofence from Geofire
-        GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
-        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
-        Log.d("DDB", mGoogleApiClient.toString());
+        geofenceController.addGeofence(geofence, geofenceControllerListener);
+
+
+
+        //Hardcode for geofence example
+
+        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to the database
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                final Experience experience = snapshot.getValue(Experience.class);
+                DatabaseReference geoFireLocation = mDatabase.child("path/to/geofire").child(snapshot.getKey());
+                Log.d(TAG, "geoFireLocation = " + geoFireLocation.toString());
+                if(geoFireLocation != null) {
+                    geoFireLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            double latitude = (double) snapshot.child("l/0").getValue();
+                            double longitude = (double) snapshot.child("l/1").getValue();
+
+                            Log.d(TAG, "experience = " + experience.toString());
+                            Log.d(TAG, "latitude = " + Double.toString(latitude) + ", longitude = " + Double.toString(longitude));
+                            NamedGeofence geofence = new NamedGeofence();
+                            geofence.title = experience.title;
+                            geofence.desc = experience.description;
+                            geofence.latitude = latitude;
+                            geofence.longitude = longitude;
+                            geofence.radius = 20f;
+
+                            //TODO put geofence from Geofire
+                            //geofenceController.addGeofence(geofence, geofenceControllerListener);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                return;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
+
+
+
+//        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
+//        Log.d("DDB", mGoogleApiClient.toString());
 
         //USing for testing right now...
         findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
@@ -180,7 +232,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     private GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
         @Override
         public void onGeofencesUpdated() {
-            //TODO update the geoFire
         }
 
         @Override
@@ -329,6 +380,44 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
 
     }
+
+    private GoogleApiClient.ConnectionCallbacks connectionAddListener = new GoogleApiClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(Bundle bundle) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location != null) {
+                //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                if(fmMap.isAdded()) {
+                    if(fmMap.map != null) {
+                        fmMap.map.moveCamera(cameraUpdate);
+                        fmMap.startLocationUpdates(mGoogleApiClient);
+                    }
+                }
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            Log.e(TAG, "Connecting to GoogleApiClient suspended.");
+        }
+    };
 
 
 }

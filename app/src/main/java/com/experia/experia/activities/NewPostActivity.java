@@ -292,12 +292,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         String key = mDatabase.child("posts").push().getKey();
         //    public Experience(String uid, String title, String author, String description, String totalSpots, String duration) {
 
-        Experience post = new Experience(key, userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, addressName, type);
-        Map<String, Object> postValues = post.toMap();
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, postValues);
-        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
         geoFire.setLocation(key, new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
@@ -308,6 +303,14 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
                 }
             }
         });
+
+        Experience post = new Experience(key, userId, title, username, body, numGuests, date, time, duration, tags, imgURL, address, addressName, type);
+        Map<String, Object> postValues = post.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
 
 
         mDatabase.updateChildren(childUpdates);

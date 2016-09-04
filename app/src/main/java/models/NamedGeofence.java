@@ -11,7 +11,8 @@ public class NamedGeofence implements Comparable {
   // region Properties
 
   public String id;
-  public String name;
+  public String title;
+  public String desc;
   public double latitude;
   public double longitude;
   public float radius;
@@ -37,7 +38,7 @@ public class NamedGeofence implements Comparable {
   @Override
   public int compareTo(@NonNull Object another) {
     NamedGeofence other = (NamedGeofence) another;
-    return name.compareTo(other.name);
+    return title.compareTo(other.title);
   }
 
   // endregion

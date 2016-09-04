@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.experia.experia.Manifest;
 import com.experia.experia.R;
-import com.experia.experia.activities.GeofenceController;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -75,7 +74,6 @@ public class LocationSettingsFragment extends Fragment implements
     private MapView mMapView;
     private ImageButton mZoomInButton;
     private ImageButton mZoomOutButton;
-    private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
@@ -114,8 +112,7 @@ public class LocationSettingsFragment extends Fragment implements
         geoFire = new GeoFire(ref);
         geoKeyMap = new HashMap<String, GeoLocation>();
         markerList = new ArrayList<Marker>();
-        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
-        Log.d(TAG, mGoogleApiClient.toString());
+
     }
 
     @Override
@@ -311,7 +308,8 @@ public class LocationSettingsFragment extends Fragment implements
     private void queryGeoFire(double radius, double latitude, double longitude) {
         // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latitude, longitude), radius);
-        geoKeyMap.clear();
+        if(geoKeyMap != null && !geoKeyMap.isEmpty()) geoKeyMap.clear();
+        Log.d(TAG, geoQuery.toString());
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
@@ -359,7 +357,7 @@ public class LocationSettingsFragment extends Fragment implements
         return diameter;
     }
 
-    public void startLocationUpdates() {
+public void startLocationUpdates(GoogleApiClient googleApiClient) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
@@ -376,7 +374,7 @@ public class LocationSettingsFragment extends Fragment implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
                 mLocationRequest, this);
     }
 
@@ -436,7 +434,7 @@ public class LocationSettingsFragment extends Fragment implements
         double longitude = map.getCameraPosition().target.longitude;
         Log.d(TAG, "zoom = " + Float.toString(zoom) + ", lat = " + Double.toString(latitude) + ", log = " + Double.toString(longitude));
         double radius = calculateZoomLevel(zoom) / 2000;
-        if (radius < 300)
+        if (radius < 2000)
             queryGeoFire(radius, latitude, longitude);
     }
 

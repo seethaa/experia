@@ -40,7 +40,6 @@ public class GeofenceController {
   private Gson gson;
   private SharedPreferences prefs;
   private GeofenceControllerListener listener;
-  private GoogleApiClientConnectListener googleApiClientConnectListener;
 
   private List<NamedGeofence> namedGeofences;
 
@@ -184,7 +183,8 @@ public class GeofenceController {
   private GoogleApiClient.ConnectionCallbacks connectionAddListener = new GoogleApiClient.ConnectionCallbacks() {
     @Override
     public void onConnected(Bundle bundle) {
-      Log.d("DEBUG", "onConnected");
+      Log.d("DEBUG", "onConnected, googleApiClient is "+ googleApiClient.isConnected());
+
       Intent intent = new Intent(context, GeofenceTransitionsIntentService.class);
       PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
       if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -209,8 +209,6 @@ public class GeofenceController {
           }
         }
       });
-
-      googleApiClientConnectListener.onGoogleApiClientConnect();
     }
 
     @Override
@@ -274,13 +272,7 @@ public class GeofenceController {
     void onError();
   }
 
-  public interface GoogleApiClientConnectListener {
-    void onGoogleApiClientConnect();
-  }
 
-  public void setOnEventListener(GoogleApiClientConnectListener listener) {
-    this.googleApiClientConnectListener = listener;
-  }
 
   // end region
 
