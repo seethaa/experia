@@ -15,7 +15,6 @@ import java.util.Map;
 @Parcel
 public class Experience {
     public String postId;
-    public String key;
     public String uid;
     public String title;
     public String author;

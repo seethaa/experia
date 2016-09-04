@@ -47,7 +47,7 @@ public class MapFragmentAdapter extends
             public void onClick(View v) {
                 // Launch PostDetailActivity
                 Intent intent = new Intent(context, PostDetailActivity.class);
-                intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, experience.key);
+                intent.putExtra(PostDetailActivity.EXTRA_POST_ID, experience.postId);
                 context.startActivity(intent);
             }
         });

@@ -494,7 +494,7 @@ public class LocationSettingsFragment extends Fragment implements
 
 
             // listingPosition is a LatLng point
-            LatLng listingPosition = new LatLng(geoKeyMap.get(exp.key).latitude, geoKeyMap.get(exp.key).longitude);
+            LatLng listingPosition = new LatLng(geoKeyMap.get(exp.postId).latitude, geoKeyMap.get(exp.postId).longitude);
             // Create the marker on the fragment
             Log.d("DEBUG", map.toString());
 

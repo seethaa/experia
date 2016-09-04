@@ -26,12 +26,12 @@ public class PostDetailActivity extends BaseActivity {
 
     private static final String TAG = "PostDetailActivity";
 
-    public static final String EXTRA_POST_KEY = "post_key";
+    public static final String EXTRA_POST_ID = "post_id";
 
     public DatabaseReference mPostReference;
     protected DatabaseReference mCommentsReference;
     private ValueEventListener mPostListener;
-    private String mPostKey;
+    private String mPostId;
 
     private Experience experience;
 //    private CommentAdapter mAdapter;
@@ -53,16 +53,16 @@ public class PostDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_experience_detail_with_tabs);
 
         // Get post key from intent
-        mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
-        if (mPostKey == null) {
+        mPostId = getIntent().getStringExtra(EXTRA_POST_ID);
+        if (mPostId == null) {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
 
         // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("posts").child(mPostKey);
+                .child("posts").child(mPostId);
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
-                .child("post-comments").child(mPostKey);
+                .child("post-comments").child(mPostId);
 
         // Initialize Views
 //        mAuthorView = (TextView) findViewById(R.id.tvHostName);
@@ -145,7 +145,7 @@ public class PostDetailActivity extends BaseActivity {
     }
 
     private void createDetailFragment(Experience experience) {
-        DetailFragment fragmentUserTimeline = DetailFragment.newInstance(experience, mPostKey);
+        DetailFragment fragmentUserTimeline = DetailFragment.newInstance(experience, mPostId);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flContainer, fragmentUserTimeline);
         ft.commit();

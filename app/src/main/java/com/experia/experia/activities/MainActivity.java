@@ -239,7 +239,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             String key = Snapshot.getKey();
             if(geoKeyMap.containsKey(key)) {
                 Experience exp = Snapshot.getValue(Experience.class);
-                exp.key = key;
                 experiences.add(exp);
                 Log.d(TAG,"key in geoKeySet: " + key);
             }
