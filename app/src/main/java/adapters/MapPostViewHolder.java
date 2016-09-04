@@ -36,7 +36,7 @@ public class MapPostViewHolder extends RecyclerView.ViewHolder {
         if (!TextUtils.isEmpty(post.imgURL)) {
             Glide.with(mContext).load(img)
                     .centerCrop()
-                    .placeholder(R.drawable.placeholderimg)
+                    .placeholder(R.drawable.pattern)
                     .into(ivExperience);
         }
     }

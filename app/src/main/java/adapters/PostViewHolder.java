@@ -109,36 +109,35 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         String img = post.imgURL;
         if (!TextUtils.isEmpty(post.imgURL)) {
-            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.placeholderimg)
+            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.pattern)
                     .into(ivExperience);
 //            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
 
+
+        }
+        else{
+            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").centerCrop().placeholder(R.drawable.pattern)
+                    .into(ivExperience);
 
         }
 
         int catType = post.type;
         int resID=R.drawable.icon_unknown;
         switch (catType) {
-            case 1: //athlete
-                resID = R.drawable.icon_athlete_a;
+            case 1: //adventure
+                resID = R.drawable.icon_map_adventure;
                 break;
             case 2: //relax
-                resID = R.drawable.icon_relax;
+                resID = R.drawable.icon_map_relax;
                 break;
             case 3: //impact
-                resID = R.drawable.icon_impact;
+                resID = R.drawable.icon_map_social;
                 break;
-            case 4: //music
-                resID = R.drawable.icon_music;
+            case 4: //learn
+                resID = R.drawable.icon_map_learn;
                 break;
-            case 5: //art
-                resID = R.drawable.icon_arts;
-                break;
-            case 6: //outdoors
-                resID = R.drawable.icon_outdoors;
-                break;
-            case 7: //skill/learn
-                resID = R.drawable.icon_learn;
+            case 5: //fun
+                resID = R.drawable.icon_map_fun;
                 break;
             default: //unknown
                 resID = R.drawable.icon_unknown;

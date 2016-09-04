@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/ivExperienceImage"
                 android:transitionName="experienceimage"
-                android:src="@drawable/placeholderimg"
+                android:src="@drawable/pattern"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
@@ -183,12 +183,13 @@
                 android:layout_height="40dp"
                 android:text=""
                 android:id="@+id/ivCategory"
-                android:background="@color/semiblack"
                 android:clickable="false"
                 android:src="@drawable/icon_impact"
-                android:layout_alignBottom="@+id/ivExperienceImage"
-                android:layout_alignLeft="@+id/ivExperienceImage"
-                android:layout_alignStart="@+id/ivExperienceImage" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <!--android:background="@color/semiblack"-->
 
             <TextView
                 android:layout_width="wrap_content"
