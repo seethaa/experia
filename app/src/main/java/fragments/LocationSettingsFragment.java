@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import adapters.MapFragmentAdapter;
+import adapters.PostViewHolder;
 import models.Experience;
 import models.User;
 import permissions.dispatcher.NeedsPermission;
@@ -164,13 +165,13 @@ public class LocationSettingsFragment extends Fragment implements
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
                         map.animateCamera(cameraUpdate);
 
-                        BitmapDescriptor defaultMarker =
+                        BitmapDescriptor markerId =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                         map.addMarker(new MarkerOptions()
                                 .position(place.getLatLng())
                                 .title(place.getName().toString())
                                 .snippet(place.getAddress().toString())
-                                .icon(defaultMarker));
+                                .icon(markerId));
 
                     }
                 }
@@ -472,23 +473,8 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
         for (Experience exp : experiences) {
             System.out.println("DEBUG SET Marker type = " + exp.type);
             // Set the color of the marker to green
-            BitmapDescriptor defaultMarker;
-            switch (exp.type) {
-                case 1:
-                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_favorite);
-                    break;
-                case 2:
-                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_invite_friends);
-                    break;
-                case 3:
-                    defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_calendar);
-                    break;
-                default:
-                    defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                    break;
-            }
+            BitmapDescriptor markerId = BitmapDescriptorFactory.fromResource(PostViewHolder.chooseIcon(exp.type));
 
-            Log.d(TAG, defaultMarker.toString());
 
 
             // listingPosition is a LatLng point
@@ -500,7 +486,7 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
                     .position(listingPosition)
                     .title(exp.title)
                     .snippet(exp.addressName)
-                    .icon(defaultMarker));
+                    .icon(markerId));
             markerList.add(mapMarker);
         }
         map.setOnMarkerClickListener(this);

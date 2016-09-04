@@ -107,7 +107,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         geofence.title = "test";
         geofence.desc = "desc";
         geofence.latitude = 37.4122486;
-        geofence.longitude = -121.9571712;
+        geofence.longitude = -121.9211449;
         geofence.radius = 20f;
 
         //TODO put geofence from Geofire

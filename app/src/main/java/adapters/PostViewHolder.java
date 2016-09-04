@@ -120,8 +120,25 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                     .into(ivExperience);
 
         }
-
         int catType = post.type;
+
+        int resID = chooseIcon(catType);
+
+
+//            Glide.with(mContext).load(resID).centerCrop().placeholder(R.drawable.icon_unknown)
+//                    .into(ivCategory);
+        ivCategory.setImageResource(resID);
+
+
+        starView.setOnClickListener(starClickListener);
+
+        joinView.setOnClickListener(joinClickListener);
+
+
+
+    }
+
+    public static int chooseIcon(int catType){
         int resID=R.drawable.icon_unknown;
         switch (catType) {
             case 1: //adventure
@@ -143,16 +160,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                 resID = R.drawable.icon_unknown;
                 break;
         }
-//            Glide.with(mContext).load(resID).centerCrop().placeholder(R.drawable.icon_unknown)
-//                    .into(ivCategory);
-        ivCategory.setImageResource(resID);
-
-
-        starView.setOnClickListener(starClickListener);
-
-        joinView.setOnClickListener(joinClickListener);
-
-
-
+        return resID;
     }
 }

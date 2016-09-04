@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapters.PostViewHolder;
 import models.Constants;
 import models.Experience;
 
@@ -85,7 +86,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
     private void onEnteredGeofences(List<String> geofenceIds) {
         for (String geofenceId : geofenceIds) {
             final String geofenceName = "";
-            final String key = "-KQmjdn-AFxR3kWypKN6";
+            final String key = "-KQqqMkLnND-V9oy8qwG";
 
             mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
                     new ValueEventListener() {
@@ -94,8 +95,8 @@ public class GeofenceTransitionsIntentService extends IntentService {
                             final Experience exp = dataSnapshot.getValue(Experience.class);
                             // send notification to user
                             try {
-                                createBigPictureStyleNoti(72, key, R.drawable.ic_logo_placeholder, exp.title,
-                                        exp.description, exp.address, exp.imgURL);
+                                createBigPictureStyleNoti(72, key, exp.title,
+                                        exp.description, exp.address, exp.imgURL, exp.type);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -132,7 +133,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
     // endregion
 
     //BigPicture Style Layout
-    private void createBigPictureStyleNoti (int nId, String key, int iconRes, String title, String desc, String location, String imgURL) throws IOException {
+    private void createBigPictureStyleNoti (int nId, String key, String title, String desc, String location, String imgURL, int type) throws IOException {
         // First let's define the intent to trigger when notification is selected
         // Start out by creating a normal intent (in this case to open an activity)
         Intent intent = new Intent(this, PostDetailActivity.class);
@@ -145,8 +146,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
         PendingIntent pIntent = PendingIntent.getActivity(this, requestID, intent, flags);
 
         // .setLargeIcon expects a bitmap
+        int typeIconId = PostViewHolder.chooseIcon(type);
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_action_account_circle_40);
+                typeIconId);
+
+        int appIcon = R.drawable.icon_app;
 
         // Big picture for style
         final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.water_rocket);
@@ -173,7 +177,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .addAction(R.drawable.running_24,"",pIntent)
                 .addAction(R.drawable.like_24, "",pIntent)
                 .addAction(R.drawable.icon_invite, "", pIntent)
-                .setSmallIcon(iconRes)  //miniature
+                .setSmallIcon(appIcon)  //miniature
                 .setLargeIcon(largeIcon)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSubText(summaryText)
