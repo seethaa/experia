@@ -146,10 +146,10 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // .setLargeIcon expects a bitmap
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_bitmap_lg_crown);
+                R.drawable.ic_action_account_circle_40);
 
         // Big picture for style
-        final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.big_oktober_fest);
+        final Bitmap picture = BitmapFactory.decodeResource(getResources(), R.drawable.water_rocket);
 //        URL url = new URL(imgURL);
 //        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //        connection.setDoInput(true);
@@ -170,9 +170,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
         Notification bigPictStyleNotification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(atLocation)
-                .addAction(R.drawable.icon_athlete,"",pIntent)
-                .addAction(R.drawable.icon_heart, "",pIntent)
-                .addAction(R.drawable.icon_join, "", pIntent)
+                .addAction(R.drawable.running_24,"",pIntent)
+                .addAction(R.drawable.like_24, "",pIntent)
+                .addAction(R.drawable.icon_invite, "", pIntent)
                 .setSmallIcon(iconRes)  //miniature
                 .setLargeIcon(largeIcon)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

@@ -119,7 +119,7 @@ public abstract class PostListFragment extends Fragment {
                     viewHolder.joinView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_joined));
 
                 } else {
-                    viewHolder.joinView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_join_a));
+                    viewHolder.joinView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.icon_invite));
 
                 }
 
