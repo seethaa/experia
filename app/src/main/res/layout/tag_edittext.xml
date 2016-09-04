@@ -8,5 +8,5 @@
     android:padding="8dp"
     android:shadowColor="#FFFFFF"
     android:textColor="@color/mp_lightblue"
-    android:textSize="16dp"
+    android:textSize="20sp"
     android:textStyle="bold" />
