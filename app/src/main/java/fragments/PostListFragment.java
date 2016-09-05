@@ -167,29 +167,37 @@ public abstract class PostListFragment extends Fragment {
                     return Transaction.success(mutableData);
                 }
 
+                //for updating favorites tab
+                Map<String, Object> postValues = p.toMap();
+                Map<String, Object> childUpdates = new HashMap<>();
+
+                String key = p.postId;
+                System.out.println("DEBUGGY Key: " + key);
+
+
                 if (p.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
                     p.starCount = p.starCount - 1;
                     p.stars.remove(getUid());
+                    //put item into user-stars node
+                    childUpdates.put("/user-stars/" + getUid() + "/" + key, null);
+                    mDatabase.updateChildren(childUpdates);
                 } else {
                     // Star the post and add self to stars
                     p.starCount = p.starCount + 1;
                     p.stars.put(getUid(), true);
+
+                    //put item into user-stars node
+                    childUpdates.put("/user-stars/" + getUid() + "/" + key, postValues);
+                    mDatabase.updateChildren(childUpdates);
                 }
 
                 // Set value and report transaction success
                 mutableData.setValue(p);
 
-                String key = p.postId;
-                System.out.println("DEBUGGY Key: " + key);
 
-                //add to user-stars
-                Map<String, Object> postValues = p.toMap();
-                Map<String, Object> childUpdates = new HashMap<>();
 
-//                childUpdates.put("/user-stars/" + key, postValues);
-                childUpdates.put("/user-stars/" + getUid() + "/" + key, postValues);
-                mDatabase.updateChildren(childUpdates);
+
 
                 return Transaction.success(mutableData);
             }
