@@ -1,15 +1,15 @@
-# Group Project - *Experia*
+# Group Project - *mpromptu*
 
-How long have you been stuck in routine work and losing passion in your life? It is time to make a change! New learning experiences, discovering new cities more deeply, and enjoying in the moment are great ways to save us from boredom. **Experia** helps make that possible! **Experia** is an Android app that makes experience matches based on your location in real-time. It can be your local friend to introduce new stuff to do around your area, or your smart guide when you are traveling in a new city and looking for something unique, or even a great tool to make new friends! **Experia** can make you realize *there are so many possibilities in life!*
+How long have you been stuck in routine work and losing passion in your life? It is time to make a change! New learning experiences, discovering new cities more deeply, and enjoying in the moment are great ways to save us from boredom. **mpromptu** helps make that possible! **mpromptu** is an Android app that makes experience matches based on your location in real-time. It can be your local friend to introduce new stuff to do around your area, or your smart guide when you are traveling in a new city and looking for something unique, or even a great tool to make new friends! **mpromptu** can make you realize *there are so many possibilities in life!*
 
-Time spent: **80** hours spent in total
+Time spent: **120** hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 * [x] User can sign in with Facebook/Gmail account (to browse and save experiences)
 * [x] User can see navigation drawer with [Location, Category, Bookmarks, Settings, and Profile] fragments.
-  * [ ] User can select current location or type in location in the Location fragment (similar to Groupon).
+  * [x] User can select current location or type in location in the Location fragment (similar to Groupon).
   * [ ] User can select Category filters and show filtered experiences. User can select experience based on three categories of experience: **thrill**, **social**, and **fun** (or all)
 * [x] User can switch to map view to browse experiences around him/her
   * [x] Icons show type of experience nearby
@@ -22,22 +22,22 @@ The following **required** functionality is completed:
     * [x] User can view details about venue and location of experience
     * [x] User can see existing reviews and type his/her own.
 * [x] User receives push notifications based on location for related experiences.
-  * [ ] Use Firebase/Parse to set up push notificatons.
+  * [x] Use Firebase/Parse to set up push notificatons.
 * [x] User can share a new experience offer (maybe by clicking a Floating Action Button):
   * [x] Present this experience in the form of a card.
   * [x] User types a title with few words description.
   * [ ] User can add a 1 minute video of the experience they offer (like an intro video).
   * [ ] **Optional**: User can add a price for this experience
-* [ ] Incorporate APIs to provide valuable data to user.
-  * [x] Use Geofencing API to understand location of user and show proximity-based cards.
-  * [ ] Use (Foursquare?) API to get trending data on checkins.
-  * [ ] Optional: Uber API to allow user to reach experience destination.
 
 The following **optional** features are implemented:
 * [ ] Gamification allows user to gain points based on posts they make, or things they do
   * [ ] View others' scores and see stats
 * [ ] User can select **Offline mode**.
 * [ ] User can select in two time-frame options: **experience over time** or **experience in the moment**.
+* [ ] Incorporate APIs to provide valuable data to user.
+  * [x] Use Geofencing API to understand location of user and show proximity-based cards.
+  * [ ] Use (Foursquare?) API to get trending data on checkins.
+  * [ ] Optional: Uber API to allow user to reach experience destination.
 
 
 Here's a walkthrough of implemented user stories:

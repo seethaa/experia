@@ -167,7 +167,6 @@
                 android:text="3 spots left"
                 android:id="@+id/tvSpotsLeft"
                 android:textStyle="bold"
-                android:textColor="@color/red"
                 android:layout_gravity="center_vertical"
                 android:layout_alignTop="@+id/ivGuests"
                 android:layout_alignLeft="@+id/tvDate"
