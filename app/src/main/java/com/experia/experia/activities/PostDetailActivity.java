@@ -52,6 +52,8 @@ public class PostDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experience_detail_with_tabs);
 
+        getSupportActionBar().setTitle("mpromptu");
+
         // Get post key from intent
         mPostId = getIntent().getStringExtra(EXTRA_POST_ID);
         if (mPostId == null) {

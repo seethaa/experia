@@ -86,7 +86,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
     private void onEnteredGeofences(List<String> geofenceIds) {
         for (String geofenceId : geofenceIds) {
             final String geofenceName = "";
-            final String key = "-KQqqMkLnND-V9oy8qwG";
+            final String key = "-KQrslA0fkjFufjLJtR1";
 
             mDatabase.child("posts").child(key).addListenerForSingleValueEvent(
                     new ValueEventListener() {
