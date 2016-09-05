@@ -39,13 +39,14 @@
         android:icon="@drawable/icon_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/fb_app_id"/>
         <service android:name="services.GeofenceTransitionsIntentService"/>
         <activity
             android:name=".activities.LoginActivity"
-            android:label="mpromptu">
+            android:label="mpromptu"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,7 +55,8 @@
         </activity>
         <!--<activity android:name=".ExperienceCardActivity">-->
         <!--</activity>-->
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity"
+            >
 
         </activity>
         <activity android:name=".activities.UploadPhotoActivity" />

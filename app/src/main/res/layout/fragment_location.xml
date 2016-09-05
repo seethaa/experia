@@ -46,7 +46,8 @@
         android:id="@+id/btnZoomIn"
         android:src="@drawable/ic_add_circle_black_24dp"
         android:background="@android:color/transparent"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="350dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -54,7 +55,8 @@
         android:id="@+id/btnZoomOut"
         android:src="@drawable/ic_remove_circle_black_24dp"
         android:background="@android:color/transparent"
-        android:layout_below="@id/btnZoomIn"/>
+        android:layout_below="@id/btnZoomIn"
+        android:layout_alignLeft="@id/btnZoomIn"/>
 
 
 
