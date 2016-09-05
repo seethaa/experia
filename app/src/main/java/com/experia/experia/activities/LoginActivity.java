@@ -46,6 +46,7 @@ public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener
 {
+    static boolean play_video = false;
 
     @VisibleForTesting
 //    public ProgressDialog mProgressDialog;
@@ -165,8 +166,10 @@ public class LoginActivity extends BaseActivity implements
         });
         // [END initialize_fblogin]
 
-        login_video = (VideoView) findViewById(R.id.login_video);
-        setupVideo();
+        if(play_video) {
+            login_video = (VideoView) findViewById(R.id.login_video);
+            setupVideo();
+        }
     }
 
     private void setupVideo() {
@@ -262,8 +265,10 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (login_video != null) {
-            login_video.start();
+        if(play_video) {
+            if (login_video != null) {
+                login_video.start();
+            }
         }
     }
 
