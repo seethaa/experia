@@ -400,6 +400,7 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
     }
 
     public void updateAdapter(ArrayList<Experience> experiences) {
+        if(mAdapter != null) mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
         mAdapter = new MapFragmentAdapter(getContext(), experiences);
         mRecycler.setAdapter(mAdapter);
         setMarker(experiences);
