@@ -34,17 +34,15 @@
 
         <TextView
             android:id="@+id/tvMapTitle"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/white"
             android:layout_height="wrap_content"
             tools:text="Kayaking in Mendocino"
-            android:layout_alignBaseline="@+id/ivMapExperienceImage"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColorHighlight="@color/black" />
+            android:textColorHighlight="@color/black"
+            android:layout_above="@+id/tvMapSpotsLeft"
+            android:layout_alignLeft="@+id/tvMapSpotsLeft"
+            android:layout_alignStart="@+id/tvMapSpotsLeft" />
 
 
 
@@ -57,6 +55,7 @@
             android:textColor="@android:color/holo_red_light"
             android:layout_alignBottom="@+id/ivMapExperienceImage"
             android:textSize="14sp"
+            android:layout_marginBottom="5dp"
             android:text="5 spot(s) left" />
 
 

@@ -519,7 +519,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         }
 
         new MaterialDialog.Builder(this)
-                .title("Filter")
+                .title("Select types")
                 .items(R.array.filterItems)
                 .itemsCallbackMultiChoice(iArray, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
@@ -535,13 +535,14 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.clearSelectedIndices();
+                        dialog.selectAllIndicies();
                     }
                 })
-                .alwaysCallMultiChoiceCallback()
+                //.alwaysCallMultiChoiceCallback()
                 .positiveText("Apply")
+                .negativeText(R.string.cancel)
                 .autoDismiss(true)
-                .neutralText("Clear")
+                .neutralText("Apply All")
                 .show();
     }
 
