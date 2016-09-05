@@ -627,8 +627,11 @@ public class CreateExNameDescriptionPhotoFragment extends Fragment implements
         if (mDownloadUrl != null) {
 //            tvPictureDownload.setText(mDownloadUrl.toString());
             mPhotoStringURL = mDownloadUrl.toString();
-            Glide.with(getActivity()).load(mPhotoStringURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+            System.out.println("DEBUGGY photo url: " + mPhotoStringURL);
+            Glide.with(getContext()).load(mPhotoStringURL).fitCenter().placeholder(R.drawable.pattern)
                     .into(experiencePhoto);
+//            Glide.with(getActivity()).load(mPhotoStringURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+//                    .into(experiencePhoto);
 
             //llDownload.setVisibility(View.VISIBLE);
         } else {

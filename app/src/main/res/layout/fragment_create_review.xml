@@ -5,10 +5,6 @@
     android:layout_height="match_parent">
 
 
-
-
-
-
     <ImageView
         android:id="@+id/ivExperienceImage"
         android:layout_width="match_parent"

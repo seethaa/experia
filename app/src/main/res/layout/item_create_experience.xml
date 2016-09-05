@@ -12,14 +12,11 @@
     card_view:contentPaddingLeft="-15dp"
     card_view:contentPaddingRight="-15dp"
     app:cardUseCompatPadding="true"
-    android:clipChildren="false"
+    android:clipChildren="true"
     android:clickable="true">
 
 
     <RelativeLayout
-        android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="30dp"
@@ -31,7 +28,8 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             tools:visibility="gone"
-            android:layout_weight="0.20">
+            android:layout_weight="0.20"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/status_sign_in"
@@ -64,11 +62,26 @@
             android:layout_width="match_parent"
             android:id="@+id/ivExperienceImage"
             android:src="@drawable/icon_take_photo"
-            android:background="@color/mp_lightblue"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:background="@drawable/pattern"
             android:layout_height="200dp"
-            android:layout_marginBottom="25dp" />
+            android:layout_marginBottom="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="-8dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/ivExperienceImage"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:transitionName="experienceimage"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:src="@drawable/icon_take_photo" />-->
 
         <Button
             android:id="@+id/button_camera"
@@ -76,10 +89,11 @@
             android:layout_height="wrap_content"
             android:text="@string/camera_button_text"
             android:layout_gravity="center_horizontal"
-            android:layout_above="@+id/etTitle"
             android:backgroundTint="@color/mp_brown"
-            android:layout_marginLeft="50dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_above="@+id/etTitle"
+            android:layout_toLeftOf="@+id/button_pick"
+            android:layout_toStartOf="@+id/button_pick" />
 
         <Button
             android:id="@+id/button_pick"
@@ -88,35 +102,11 @@
             android:text="Choose picture"
             android:backgroundTint="@color/mp_brown"
             android:layout_gravity="right|center"
+            android:textSize="12sp"
             android:layout_above="@+id/etTitle"
-            android:layout_toRightOf="@+id/button_camera"
-            android:layout_toEndOf="@+id/button_camera"
-            android:layout_marginLeft="10dp"
-            android:textSize="12sp" />
+            android:layout_toRightOf="@+id/etDescription"
+            android:layout_toEndOf="@+id/etDescription" />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/ivEditPencil"
-            android:src="@drawable/icon_editpencil"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/ivExperienceImage"
-            android:layout_alignEnd="@+id/ivExperienceImage"
-            android:visibility="gone" />
-
-
-        <TextView
-            android:id="@+id/tvExpand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/icon_chevron_up"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="MORE"
-            android:layout_gravity="center"
-            android:layout_below="@+id/view"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etDescription"
@@ -136,14 +126,12 @@
             android:layout_below="@+id/etTitle"
             android:layout_alignLeft="@+id/layout_signin"
             android:layout_alignStart="@+id/layout_signin"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp" />
 
         <EditText
             android:id="@+id/etTitle"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:textSize="24sp"
             android:padding="3dp"
@@ -156,8 +144,8 @@
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/mp_lightblue"
             android:layout_below="@+id/ivExperienceImage"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignLeft="@+id/etDescription"
+            android:layout_alignStart="@+id/etDescription" />
 
         <View
             android:layout_width="match_parent"
@@ -185,20 +173,6 @@
         <!--android:layout_margin="5dp"-->
         <!--/>-->
 
-        <TextView
-            android:id="@+id/tvSubtext"
-            android:textSize="14sp"
-            android:layout_width="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_height="wrap_content"
-            tools:text="#Thrill #Fun"
-            android:maxLines="3"
-            android:layout_alignBaseline="@+id/btnNext"
-            android:layout_alignBottom="@+id/btnNext"
-            android:layout_alignLeft="@+id/etDescription"
-            android:layout_alignStart="@+id/etDescription"
-            android:visibility="invisible" />
-
 
         <Button
             android:layout_width="300dp"
@@ -209,8 +183,9 @@
             android:textColor="@color/colorPrimary"
             android:backgroundTint="@color/mp_yellow"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center" />
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
 
         <EditText
             tools:text="Tags"
@@ -225,10 +200,9 @@
             android:textCursorDrawable="@null"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/mp_lightblue"
-            android:layout_below="@+id/view"
-            android:layout_alignLeft="@+id/tvSubtext"
-            android:layout_alignStart="@+id/tvSubtext"
-            android:layout_marginBottom="20dp" />
+            android:layout_below="@+id/etDescription"
+            android:layout_alignLeft="@+id/etDescription"
+            android:layout_alignStart="@+id/etDescription" />
 
 
     </RelativeLayout>
