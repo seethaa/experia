@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -30,6 +31,7 @@ import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.experia.experia.R;
 import com.firebase.geofire.GeoLocation;
+import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -74,7 +76,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     User userClicked;
     String mDisplayName;
     private MaterialSimpleListAdapter materialDialogAdapter;
+    FABToolbarLayout toolbarLayout;
+    LinearLayout toolbar;
 
+    android.support.design.widget.FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,11 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         experiences = new ArrayList<Experience>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fabtoolbar_fab);
+        toolbarLayout = (FABToolbarLayout) findViewById(R.id.fabtoolbar);
+
+        toolbar = (LinearLayout) findViewById(R.id.fabtoolbar_toolbar);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(connectionAddListener)
@@ -195,14 +205,18 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 //        Log.d("DDB", mGoogleApiClient.toString());
 
         //USing for testing right now...
-        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                LinearLayout toolbar = (LinearLayout) findViewById(R.id.fabtoolbar_toolbar);
+                toolbarLayout.show();
+
+
                 //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
 
-                Intent i = new Intent(MainActivity.this, NewPostActivity.class);
-                i.putExtra("displayName", mDisplayName);
-                startActivity(i);
+//                Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+//                i.putExtra("displayName", mDisplayName);
+//                startActivity(i);
             }
         });
 

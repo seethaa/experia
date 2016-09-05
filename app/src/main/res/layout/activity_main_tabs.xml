@@ -27,45 +27,101 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_new_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_image_edit"
-        android:layout_margin="16dp"
-        android:layout_gravity="right" />
-
-    <!--<com.getbase.floatingactionbutton.FloatingActionsMenu-->
-        <!--android:id="@+id/multiple_actions"-->
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab_new_post"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentBottom="true"-->
         <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--fab:fab_addButtonColorNormal="@color/white"-->
-        <!--fab:fab_addButtonColorPressed="@color/white_pressed"-->
-        <!--fab:fab_addButtonPlusIconColor="@color/half_black"-->
-        <!--fab:fab_labelStyle="@style/menu_labels_style"-->
-        <!--android:layout_marginBottom="16dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginEnd="16dp">-->
+        <!--android:src="@drawable/ic_image_edit"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:layout_gravity="right" />-->
 
-        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--fab:fab_colorNormal="@color/white_fab"-->
-            <!--fab:fab_title="Action A"-->
-            <!--fab:fab_colorPressed="@color/pink"/>-->
+    <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout android:id="@+id/fabtoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:showDuration="600"
+        app:hideDuration="200"
+        app:horizontalMargin="30dp"
+        app:verticalMargin="30dp"
+        app:fadeInFraction="0.2"
+        app:fabId="@+id/fabtoolbar_fab"
+        app:containerId="@+id/fabtoolbar_container"
+        app:fabToolbarId="@+id/fabtoolbar_toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--fab:fab_colorNormal="@color/white_fab"-->
-            <!--fab:fab_title="Action B"-->
-            <!--fab:fab_colorPressed="@color/pink"/>-->
+        ...
 
-    <!--</com.getbase.floatingactionbutton.FloatingActionsMenu>-->
+        <RelativeLayout
+            android:id="@+id/fabtoolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabtoolbar_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="normal"
+                android:src="@drawable/abc_ic_menu_share_mtrl_alpha"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/fabtoolbar_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <!--<include layout="@layout/fab_fun"/>-->
+            <ImageView
+                android:id="@+id/ivfabfun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/fab_icon_fun"/>
+
+            <ImageView
+                android:id="@+id/ivfabadventure"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/fab_icon_thrill"/>
+
+            <ImageView
+                android:id="@+id/ivfabimpact"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/fab_icon_impact"/>
+
+            <ImageView
+                android:id="@+id/ivfabrelax"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/fab_icon_relax"/>
+
+            <ImageView
+                android:id="@+id/ivfablearn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/fab_icon_learn"/>
+
+
+            ...
+
+        </LinearLayout>
+
+    </com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout>
 
 </RelativeLayout>

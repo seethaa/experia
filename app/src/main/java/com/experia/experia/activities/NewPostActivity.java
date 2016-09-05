@@ -8,7 +8,6 @@ import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -107,12 +106,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 //        extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
         mSimpleFragmentAdapter = new MyPagerAdapter(getSupportFragmentManager());
-//        mSimpleFragmentAdapter.addFragment(CreateExNameDescriptionPhotoFragment.newInstance(R.color.frag1, R.drawable.char1));
-//        mSimpleFragmentAdapter.addFragment(CreateExTimeLocationFragment.newInstance(R.color.frag2, R.drawable.char2));
-//        mSimpleFragmentAdapter.addFragment(CreateExReviewFragment.newInstance(R.color.frag3, R.drawable.char3));
-
-        // mSimpleFragmentAdapter.addFragment(CreateExTotalTagsTypeFragment.newInstance(R.color.frag2, R.drawable.char2));
-//        mSimpleFragmentAdapter.addFragment(CreateExPhotoFragment.newInstance(R.color.frag3, R.drawable.char3));
 
         mViewPager = (LockableViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSimpleFragmentAdapter);
@@ -135,30 +128,6 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
     }
 
-    private void setupViews() {
-        setContentView(R.layout.activity_new_post);
-
-        etTitle = (EditText) findViewById(R.id.field_title);
-        etBody = (EditText) findViewById(R.id.field_body);
-        etNumGuests = (EditText) findViewById(R.id.field_numGuests);
-        etDate = (EditText) findViewById(R.id.field_date);
-        etDuration = (EditText) findViewById(R.id.field_duration);
-        etTags = (EditText) findViewById(R.id.field_tags);
-        etImgURL = (EditText) findViewById(R.id.field_imgURL);
-        etAddress = (EditText) findViewById(R.id.field_address);
-        etType = (EditText) findViewById(R.id.field_type);
-        etLatitude = (EditText) findViewById(R.id.field_latitude);
-        etLongitude = (EditText) findViewById(R.id.field_longitude);
-
-
-        findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitPost();
-            }
-        });
-
-    }
 
     private void submitPostTest() {
 
