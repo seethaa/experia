@@ -184,6 +184,7 @@ public class GeofenceController {
     @Override
     public void onConnected(Bundle bundle) {
       Log.d("DEBUG", "onConnected, googleApiClient is "+ googleApiClient.isConnected());
+      if(!googleApiClient.isConnected()) return;
 
       Intent intent = new Intent(context, GeofenceTransitionsIntentService.class);
       PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

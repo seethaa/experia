@@ -489,14 +489,25 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         new MaterialDialog.Builder(this)
                 .title("Filter")
                 .items(R.array.filterItems)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+//                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+//                    @Override
+//                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+//                        if(filterType != which) {
+//                            filterType = which;
+//                            fmMap.resetFirebaseValueEvent();
+//                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
+//                        }
+//                        return true;
+//                    }
+//                })
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        if(filterType != which) {
-                            filterType = which;
-                            fmMap.resetFirebaseValueEvent();
-                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
-                        }
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+//                        if(filterType != which) {
+//                            filterType = which;
+//                            fmMap.resetFirebaseValueEvent();
+//                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
+//                        }
                         return true;
                     }
                 })

@@ -28,7 +28,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="hint_password">password</string>
     <string name="hint_email">email</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Sign in with Email</string>
     <string name="emailpassword_title_text">Email and Password</string>
     <string name="create_account">Create Account</string>
     <string name="auth_failed">Authentication failed</string>
@@ -68,7 +68,7 @@
     <!-- number picker -->
     <string name="roboto_light">sans-serif-light</string>
     <string name="number_picker_formatter">%02d</string>
-    <string name="choose">Choose</string>
+    <string name="choose">Apply</string>
     <string name="cancel">Cancel</string>
 
 </resources>

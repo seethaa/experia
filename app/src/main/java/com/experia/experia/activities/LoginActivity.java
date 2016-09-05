@@ -46,7 +46,7 @@ public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener
 {
-    static boolean play_video = false;
+    static boolean play_video = true;
 
     @VisibleForTesting
 //    public ProgressDialog mProgressDialog;
@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity implements
         mTitle = (TextView) findViewById(R.id.title_text);
 
         Typeface tf = Typeface.createFromAsset(getAssets(),
-                "Ubuntu_C.ttf");
+                "UbuntuMono_B.ttf");
         mTitle.setTypeface(tf);
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#003262</color>
+    <color name="colorPrimary">#77003262</color>
     <color name="colorPrimaryDark">#2c3e50</color>
     <color name="colorAccent">#34495e</color>
     <color name="blueGrey">#34495e</color>
@@ -10,6 +10,7 @@
 
     <color name="mp_lightblue">#3b7ea1</color>
     <color name="mp_yellow">#fdb515</color>
+    <color name="mp_yellow_transparent">#affdb515</color>
     <color name="mp_brown">#c4820e</color>
     <color name="mp_almostwhite">#f9f9f9</color>
 
@@ -23,6 +24,7 @@
     <color name="bg_item_normal_state">#fff0f0f0</color>
     <color name="bg_item_dragging_state">#ffffdddd</color>
     <color name="bg_item_dragging_active_state">#ffff9999</color>
+    <color name="red_trans">#b8fd5e58</color>
     <color name="bg_item_swiping_state">#ffddddff</color>
     <color name="bg_item_swiping_active_state">#cccced</color>
 
