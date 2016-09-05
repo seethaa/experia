@@ -68,5 +68,7 @@
     <!-- number picker -->
     <string name="roboto_light">sans-serif-light</string>
     <string name="number_picker_formatter">%02d</string>
+    <string name="choose">Choose</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

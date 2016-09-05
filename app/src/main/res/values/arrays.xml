@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string-array name="type">
-        <item>thrill</item>
-        <item>social</item>
-        <item>fun</item>
+    <string-array name="filterItems">
+        <item>All</item>
+        <item>Adventure</item>
+        <item>Relax</item>
+        <item>Social</item>
+        <item>Learn</item>
+        <item>Fun</item>
     </string-array>
 </resources>

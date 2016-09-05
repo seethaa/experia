@@ -25,6 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.experia.experia.R;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
@@ -67,9 +70,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     private LocationSettingsFragment fmMap;
     private DatabaseReference mDatabase;
     private String TAG = "MainActivity";
-
+    public int filterType = 0;
     User userClicked;
     String mDisplayName;
+    private MaterialSimpleListAdapter materialDialogAdapter;
 
 
     @Override
@@ -157,7 +161,8 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                         }
                     });
                 }
-
+                materialDialogAdapter = new MaterialSimpleListAdapter(getApplicationContext());
+                materialDialogAdapter.addAll(createDataArrayList());
 
 
             }
@@ -219,6 +224,20 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_filter:
+                    //Toast.makeText(this, "Filter selected", Toast.LENGTH_SHORT)
+                    //        .show();
+                    showMaterialDialog();
+                    break;
+                default:
+                    break;
+            }
+            return true;
     }
 
     @Override
@@ -300,14 +319,15 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             String key = Snapshot.getKey();
             if(geoKeyMap.containsKey(key)) {
                 Experience exp = Snapshot.getValue(Experience.class);
-                experiences.add(exp);
-                Log.d(TAG,"key in geoKeySet: " + key);
+                if(filterType == 0 || exp.type == filterType) {
+                    experiences.add(exp);
+                    Log.d(TAG, "key in geoKeySet: " + key);
+                }
             }
             else
                 Log.d(TAG, "key not in geoKeySet: " + key);
 
         }
-        //TODO clean mAdapter
         fmMap.updateAdapter(experiences);
     }
 
@@ -464,5 +484,53 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     };
 
 
+    private void showMaterialDialog() {
 
+        new MaterialDialog.Builder(this)
+                .title("Filter")
+                .items(R.array.filterItems)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if(filterType != which) {
+                            filterType = which;
+                            fmMap.resetFirebaseValueEvent();
+                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
+    }
+
+    private ArrayList<MaterialSimpleListItem> createDataArrayList() {
+        ArrayList<MaterialSimpleListItem> dataArrayList = new ArrayList<>();
+        dataArrayList.add(new MaterialSimpleListItem.Builder(MainActivity.this)
+                .content("All")
+                .icon(R.drawable.icon_map_unknown)
+                .build());
+        dataArrayList.add(new MaterialSimpleListItem.Builder(this)
+                .content("Adventure")
+                .icon(R.drawable.icon_map_adventure)
+                .build());
+        dataArrayList.add(new MaterialSimpleListItem.Builder(this)
+                .content("Relax")
+                .icon(R.drawable.icon_map_relax)
+                .build());
+        dataArrayList.add(new MaterialSimpleListItem.Builder(this)
+                .content("Social")
+                .icon(R.drawable.icon_map_social)
+                .build());
+        dataArrayList.add(new MaterialSimpleListItem.Builder(this)
+                .content("Learn")
+                .icon(R.drawable.icon_map_learn)
+                .build());
+        dataArrayList.add(new MaterialSimpleListItem.Builder(this)
+                .content("Fun")
+                .icon(R.drawable.icon_map_fun)
+                .build());
+        
+        return dataArrayList;
+    }
 }

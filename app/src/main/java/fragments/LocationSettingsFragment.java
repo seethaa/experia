@@ -381,7 +381,7 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
 
 
 
-    private void resetFirebaseValueEvent() {
+    public void resetFirebaseValueEvent() {
         Log.d(TAG, "resetFirebaseValueEvent");
         mDatabase.child("posts").removeEventListener(valueEventListener);
         //TODO clean valueEventListener
@@ -470,6 +470,9 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
 
     // Marker functions start //
     private void setMarker(ArrayList<Experience> experiences) {
+        for(Marker m:markerList){
+            m.remove();
+        }
         markerList.clear();
         for (Experience exp : experiences) {
             System.out.println("DEBUG SET Marker type = " + exp.type);
