@@ -45,7 +45,8 @@
         <service android:name="services.GeofenceTransitionsIntentService"/>
         <activity
             android:name=".activities.LoginActivity"
-            android:label="mpromptu">
+            android:label="mpromptu"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -115,6 +115,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         geofence.longitude = -121.95787069;
         geofence.radius = 0.3f;
 
+
         //TODO put geofence from Geofire
         geofenceController.addGeofence(geofence, geofenceControllerListener);
 

@@ -157,7 +157,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                 resID = R.drawable.icon_map_fun;
                 break;
             default: //unknown
-                resID = R.drawable.icon_unknown;
+                resID = R.drawable.icon_map_unknown;
                 break;
         }
         return resID;
