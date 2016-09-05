@@ -3,9 +3,11 @@ package fragments;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,7 @@ public class CreateExTimeLocationFragment extends Fragment {
     @BindView(R.id.btnPreview) Button gotoReviewBtn;
     @BindView(R.id.etDate) Button etDate;
     @BindView(R.id.etTime) Button etTime;
+    @BindView(R.id.horizontal_number_picker) com.shawnlin.numberpicker.NumberPicker numberPicker;
 //    @BindView(R.id.query) Button checkBtn;
 //    @BindView(R.id.btnAdvanced) Button moreDetailsBtn;
 
@@ -51,6 +54,7 @@ public class CreateExTimeLocationFragment extends Fragment {
     String exAddress;
     String exAddressName;
     LatLng exLocation;
+    int numGoing;
 
 
     public static CreateExTimeLocationFragment newInstance(int color, int icon) {
@@ -66,7 +70,7 @@ public class CreateExTimeLocationFragment extends Fragment {
 
     // Define the events that the fragment will use to communicate
     public interface OnWhereAndWhenCompleteListener {
-        public void onWhereAndWhenCompleted(String address, String addressName,  LatLng location, String date, String time);
+        public void onWhereAndWhenCompleted(String address, String addressName, LatLng location, String date, String time, int numGoing);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -85,10 +89,11 @@ public class CreateExTimeLocationFragment extends Fragment {
     public void onSaveWhereAndWhen(View v) {
         exDate = etDate.getText().toString();
         exTime = etTime.getText().toString();
-
+        numGoing = numberPicker.getValue();
+        System.out.println("DEBUGGY Exp 2 num picker "+ numGoing);
 
         System.out.println("DEBUGGY Exp 2 old: " + exDate + ", " + exTime + ", " + exAddress+ ", " + exAddressName + ", " + exLocation.toString());
-        listener.onWhereAndWhenCompleted(exAddress, exAddressName, exLocation, exDate, exTime);
+        listener.onWhereAndWhenCompleted(exAddress, exAddressName, exLocation, exDate, exTime, numGoing);
     }
 
 
@@ -118,6 +123,7 @@ public class CreateExTimeLocationFragment extends Fragment {
 //            }
 //        });
 
+        setupNumberPicker();
 
 
         etTime.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +166,33 @@ public class CreateExTimeLocationFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void setupNumberPicker() {
+
+// set divider color
+        numberPicker.setDividerColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+//        numberPicker.setDividerColorResource(R.color.colorPrimary);
+
+// set formatter
+        numberPicker.setFormatter(getString(R.string.number_picker_formatter));
+//        numberPicker.setFormatter(R.string.number_picker_formatter);
+
+// set text color
+        numberPicker.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+//        numberPicker.setTextColorResource(R.color.colorPrimary);
+
+// set text size
+        numberPicker.setTextSize(getResources().getDimension(R.dimen.text_size));
+        numberPicker.setTextSize(R.dimen.text_size);
+
+// set typeface
+        numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
+//        numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
+//        numberPicker.setTypeface(getString(R.string.roboto_light));
+//        numberPicker.setTypeface(R.string.roboto_light, Typeface.NORMAL);
+//        numberPicker.setTypeface(R.string.roboto_light);
+
     }
 
     public void setTimeLocation(View view){

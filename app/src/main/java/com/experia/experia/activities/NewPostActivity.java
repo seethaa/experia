@@ -101,7 +101,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
         setContentView(R.layout.activity_create_experience);
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mUserDisplayName = getIntent().getStringExtra("displayName");
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -332,13 +332,14 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
     }
 
     @Override
-    public void onWhereAndWhenCompleted(String address, String addressName, LatLng location, String date, String time) {
+    public void onWhereAndWhenCompleted(String address, String addressName, LatLng location, String date, String time, int numGoing) {
         mAddress = address;
         mDate = date;
         mTime = time;
         mAddressName = addressName;
         mLatitude = location.latitude;
         mLongitude = location.longitude;
+        mNumGuests = numGoing;
 
         System.out.println("DEBUGGY Experience page 2: " + mAddress + ", " + mDate + ", " + mTime);
 //        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
@@ -430,6 +431,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 
 }

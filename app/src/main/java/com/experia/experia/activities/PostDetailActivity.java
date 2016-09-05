@@ -114,10 +114,12 @@ public class PostDetailActivity extends BaseActivity {
 
                 String img = experience.imgURL;
                 if (!TextUtils.isEmpty(experience.imgURL)) {
-                    Glide.with(getApplicationContext()).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
+                    Glide.with(getApplicationContext()).load(img).centerCrop().placeholder(R.drawable.pattern)
                             .into(mImageViewExperience);
 //            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
 
+                }
+                else{
 
                 }
                 // [END_EXCLUDE]

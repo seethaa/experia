@@ -40,6 +40,9 @@ public class CreateExReviewFragment extends Fragment {
     @BindView(R.id.tvLocationAddress) TextView etAddress;
     @BindView(R.id.tvLocationName) TextView etAddressName;
     @BindView(R.id.tvSpotsLeft) TextView etNumGuests;
+    @BindView(R.id.tvHostName) TextView tvHostName;
+
+
     boolean populated = false;
 
     private Calendar mCalendar;
@@ -110,6 +113,8 @@ public class CreateExReviewFragment extends Fragment {
         etNumGuests.setText(mNumGuests+"");
         Glide.with(getActivity()).load(mImgURL).centerCrop().placeholder(R.drawable.icon_take_photo)
                 .into(ivImage);
+
+        tvHostName.setText(mUserDisplayName);
 
     }
 

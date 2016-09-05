@@ -43,7 +43,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saturday at 08:00"
+        android:text="Today"
         android:id="@+id/tvDayAtTime"
         android:textStyle="bold"
         android:layout_gravity="center_vertical"
@@ -54,7 +54,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="April 12, 2016"
         android:id="@+id/tvDate"
         android:layout_below="@+id/tvDayAtTime"
         android:layout_alignLeft="@+id/tvDayAtTime"
@@ -75,7 +74,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Uber HQ"
+        tools:text="Uber HQ"
         android:id="@+id/tvLocationName"
         android:textStyle="bold"
         android:layout_gravity="center_vertical"
@@ -86,7 +85,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Market Street #400, San Francisco, CA"
+        tools:text="Market Street #400, San Francisco, CA"
         android:id="@+id/tvLocationAddress"
         android:layout_below="@+id/tvLocationName"
         android:layout_alignLeft="@+id/tvLocationName"
@@ -119,7 +118,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5 Going"
+        android:text="0 Going"
         android:id="@+id/tvNumGoing"
         android:layout_below="@+id/tvSpotsLeft"
         android:layout_alignLeft="@+id/tvSpotsLeft"
@@ -141,7 +140,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sam Chu"
+        android:text="You"
         android:id="@+id/tvHostName"
         android:textStyle="bold"
         android:layout_gravity="center_vertical"

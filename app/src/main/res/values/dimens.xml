@@ -21,4 +21,6 @@
     <dimen name="margin_1">8dp</dimen>
     <dimen name="margin_2">16dp</dimen>
 
+    <dimen name="text_size">20dp</dimen>
+
 </resources>

@@ -64,4 +64,9 @@
     <string name="label_download">Download File</string>
     <string name="log_out">Log out</string>
     <string name="success">Success</string>
+
+    <!-- number picker -->
+    <string name="roboto_light">sans-serif-light</string>
+    <string name="number_picker_formatter">%02d</string>
+
 </resources>

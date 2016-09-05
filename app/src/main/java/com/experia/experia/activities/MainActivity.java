@@ -39,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ import fragments.ProfileFragment;
 import fragments.RecentPostsFragment;
 import models.Experience;
 import models.NamedGeofence;
+import models.User;
 
 public class MainActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener,
                 GoogleApiClient.ConnectionCallbacks,
@@ -65,6 +67,9 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     private LocationSettingsFragment fmMap;
     private DatabaseReference mDatabase;
     private String TAG = "MainActivity";
+
+    User userClicked;
+    String mDisplayName;
 
 
     @Override
@@ -179,6 +184,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
 
 
+        getCurrentUserInfo();
 //        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
 //        Log.d("DDB", mGoogleApiClient.toString());
 
@@ -187,7 +193,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             @Override
             public void onClick(View v) {
                 //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+
+                Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+                i.putExtra("displayName", mDisplayName);
+                startActivity(i);
             }
         });
 
@@ -301,6 +310,31 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         fmMap.updateAdapter(experiences);
     }
 
+    public void getCurrentUserInfo() {
+
+            Query userQuery = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(getUid());
+
+
+            userQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userClicked = dataSnapshot.getValue(User.class);
+
+                    System.out.println("DEBUGGY USER CLICKED " + userClicked.getDisplayName() + " " +userClicked.getEmail());
+
+                    mDisplayName = userClicked.getDisplayName();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+    }
+
     // endregion
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -309,10 +343,10 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         private Context context;
 
         private int[] imageResId = {
-                R.drawable.ic_nearme,
-                R.drawable.ic_search,
-                R.drawable.ic_favorites,
-                R.drawable.ic_profile_neutral
+                R.drawable.tab_icon_home,
+                R.drawable.tab_icon_map,
+                R.drawable.tab_icon_favorites,
+                R.drawable.tab_icon_profile
         };
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -376,6 +410,15 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
             sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return sb;
+
+//            // Generate title based on item position
+//            Drawable image = context.getResources().getDrawable(imageResId[position]);
+//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//            // Replace blank spaces with image icon
+//            SpannableString sb = new SpannableString("   " + tabTitles[position]);
+//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            return sb;
         }
 
 
@@ -418,6 +461,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             Log.e(TAG, "Connecting to GoogleApiClient suspended.");
         }
     };
+
 
 
 }
