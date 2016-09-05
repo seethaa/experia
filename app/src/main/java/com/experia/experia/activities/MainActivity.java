@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
@@ -72,7 +73,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     private LocationSettingsFragment fmMap;
     private DatabaseReference mDatabase;
     private String TAG = "MainActivity";
-    public int filterType = 0;
+    public int filterType = 31; //5b'11111
     User userClicked;
     String mDisplayName;
     private MaterialSimpleListAdapter materialDialogAdapter;
@@ -333,7 +334,8 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             String key = Snapshot.getKey();
             if(geoKeyMap.containsKey(key)) {
                 Experience exp = Snapshot.getValue(Experience.class);
-                if(filterType == 0 || exp.type == filterType) {
+                Log.d(TAG, "type = " + exp.type+ ", filterType = "+filterType);
+                if(exp.type==0 || (1 << (exp.type - 1) & filterType) != 0) {
                     experiences.add(exp);
                     Log.d(TAG, "key in geoKeySet: " + key);
                 }
@@ -500,32 +502,46 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     private void showMaterialDialog() {
 
+        int count = 0;
+        int tmp = 1;
+        for(int i=0; i<5; ++i){
+            if((tmp & filterType) != 0) {
+                count++;
+            }
+            tmp <<= 1;
+        }
+        Integer[] iArray = new Integer[count];
+        int k=0;
+        for(int i=0; i<5; ++i){
+            if(((1 << i) & filterType )!=0){
+                iArray[k++] = i;
+            }
+        }
+
         new MaterialDialog.Builder(this)
                 .title("Filter")
                 .items(R.array.filterItems)
-//                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-//                    @Override
-//                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-//                        if(filterType != which) {
-//                            filterType = which;
-//                            fmMap.resetFirebaseValueEvent();
-//                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
-//                        }
-//                        return true;
-//                    }
-//                })
-                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                .itemsCallbackMultiChoice(iArray, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-//                        if(filterType != which) {
-//                            filterType = which;
-//                            fmMap.resetFirebaseValueEvent();
-//                            //Toast.makeText(getApplicationContext(), "filterType = " + Integer.toString(filterType), Toast.LENGTH_SHORT).show();
-//                        }
-                        return true;
+                        filterType = 0;
+                        for(Integer w:which){
+                            filterType += (1 << w);
+                        }
+                        fmMap.resetFirebaseValueEvent();
+                        return true; // allow selection
                     }
                 })
-                .positiveText(R.string.choose)
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.clearSelectedIndices();
+                    }
+                })
+                .alwaysCallMultiChoiceCallback()
+                .positiveText("Apply")
+                .autoDismiss(true)
+                .neutralText("Clear")
                 .show();
     }
 

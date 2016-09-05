@@ -2,7 +2,6 @@
 
 <resources>
     <string-array name="filterItems">
-        <item>All</item>
         <item>Adventure</item>
         <item>Relax</item>
         <item>Social</item>
