@@ -18,7 +18,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/im_cooking_class" />
+        android:src="@drawable/pattern" />
 
 
     <LinearLayout
