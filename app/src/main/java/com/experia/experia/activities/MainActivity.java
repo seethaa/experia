@@ -58,7 +58,6 @@ import fragments.PostListFragment;
 import fragments.ProfileFragment;
 import fragments.RecentPostsFragment;
 import models.Experience;
-import models.NamedGeofence;
 import models.User;
 
 public class MainActivity extends BaseActivity implements CreateExNameDescriptionPhotoFragment.OnNameDescriptionPhotoCompleteListener,
@@ -68,7 +67,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     public ArrayList<Experience> experiences;
     public GoogleApiClient mGoogleApiClient;
-    public GeofenceController geofenceController;
+//    public GeofenceController geofenceController;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationSettingsFragment fmMap;
     private DatabaseReference mDatabase;
@@ -118,22 +117,22 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
 
-
-        geofenceController = GeofenceController.getInstance();
-        geofenceController.init(this);
-
-
-        NamedGeofence geofence = new NamedGeofence();
-        geofence.title = "test";
-        geofence.desc = "desc";
-        geofence.latitude = 37.403561;
-        geofence.longitude = -121.95787069;
-        geofence.radius = 0.3f;
-
-
-        //TODO put geofence from Geofire
-        geofenceController.addGeofence(geofence, geofenceControllerListener);
-
+//
+//        geofenceController = GeofenceController.getInstance();
+//        geofenceController.init(this);
+//
+//
+//        NamedGeofence geofence = new NamedGeofence();
+//        geofence.title = "test";
+//        geofence.desc = "desc";
+//        geofence.latitude = 37.403561;
+//        geofence.longitude = -121.95787069;
+//        geofence.radius = 0.3f;
+//
+//
+//        //TODO put geofence from Geofire
+//        geofenceController.addGeofence(geofence, geofenceControllerListener);
+//
 
 
         //Hardcode for geofence example
@@ -152,17 +151,17 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                             double latitude = (double) snapshot.child("l/0").getValue();
                             double longitude = (double) snapshot.child("l/1").getValue();
 
-                            Log.d(TAG, "experience = " + experience.toString());
-                            Log.d(TAG, "latitude = " + Double.toString(latitude) + ", longitude = " + Double.toString(longitude));
-                            NamedGeofence geofence = new NamedGeofence();
-                            geofence.title = experience.title;
-                            geofence.desc = experience.description;
-                            geofence.latitude = latitude;
-                            geofence.longitude = longitude;
-                            geofence.radius = 20f;
-
-                            //TODO put geofence from Geofire
-                            //geofenceController.addGeofence(geofence, geofenceControllerListener);
+//                            Log.d(TAG, "experience = " + experience.toString());
+//                            Log.d(TAG, "latitude = " + Double.toString(latitude) + ", longitude = " + Double.toString(longitude));
+//                            NamedGeofence geofence = new NamedGeofence();
+//                            geofence.title = experience.title;
+//                            geofence.desc = experience.description;
+//                            geofence.latitude = latitude;
+//                            geofence.longitude = longitude;
+//                            geofence.radius = 20f;
+//
+//                            //TODO put geofence from Geofire
+//                            //geofenceController.addGeofence(geofence, geofenceControllerListener);
 
                         }
 
@@ -271,18 +270,18 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     }
 
 
-    // region GeofenceControllerListener
-
-    private GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
-        @Override
-        public void onGeofencesUpdated() {
-        }
-
-        @Override
-        public void onError() {
-            Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
-        }
-    };
+//    // region GeofenceControllerListener
+//
+//    private GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
+//        @Override
+//        public void onGeofencesUpdated() {
+//        }
+//
+//        @Override
+//        public void onError() {
+//            Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    };
 
 
     @Override
