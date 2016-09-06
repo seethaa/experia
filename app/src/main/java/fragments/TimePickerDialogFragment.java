@@ -37,16 +37,12 @@ public class TimePickerDialogFragment extends DialogFragment
         datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
         datetime.set(Calendar.MINUTE, minute);
 
-        if (datetime.get(Calendar.AM_PM) == Calendar.AM)
-            am_pm = "AM";
-        else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
-            am_pm = "PM";
-
         String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ?"12":datetime.get(Calendar.HOUR)+"";
-
+        String Hour = (hourOfDay < 10)? "0" + Integer.toString(hourOfDay) : Integer.toString(hourOfDay);
+        String Minute = (minute < 10)? "0" + Integer.toString(minute) : Integer.toString(minute);
 
         // Do something with the time chosen by the user
         Button etTime= (Button) getActivity().findViewById(R.id.etTime);
-        etTime.setText(strHrsToShow+":"+datetime.get(Calendar.MINUTE)+" "+am_pm);
+        etTime.setText(Hour+":"+Minute);
     }
 }

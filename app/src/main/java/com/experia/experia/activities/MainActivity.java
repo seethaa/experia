@@ -520,7 +520,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
         new MaterialDialog.Builder(this)
                 .title("Select types")
-                .items(R.array.filterItems)
+                .items(createDataArrayList())
                 .itemsCallbackMultiChoice(iArray, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
@@ -548,10 +548,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
     private ArrayList<MaterialSimpleListItem> createDataArrayList() {
         ArrayList<MaterialSimpleListItem> dataArrayList = new ArrayList<>();
-        dataArrayList.add(new MaterialSimpleListItem.Builder(MainActivity.this)
-                .content("All")
-                .icon(R.drawable.icon_map_unknown)
-                .build());
         dataArrayList.add(new MaterialSimpleListItem.Builder(this)
                 .content("Adventure")
                 .icon(R.drawable.icon_map_adventure)

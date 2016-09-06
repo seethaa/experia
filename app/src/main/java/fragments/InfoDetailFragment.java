@@ -4,10 +4,13 @@ package fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +21,21 @@ import com.experia.experia.activities.ProfileActivity;
 
 import org.parceler.Parcels;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import models.Experience;
 
 public class InfoDetailFragment extends Fragment {
     private static final String TAG = "InfoDetailActivity";
     private TextView mAuthorView;
-//    private TextView mTitleView;
     private TextView mBodyView;
     private TextView mAddress;
     private TextView mAddressName;
     private TextView mDate;
-
+    private TextView mTimeLeft;
     private TextView mSpotsAvailable;
     private TextView mNumGoing;
 
@@ -51,10 +58,6 @@ public class InfoDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mExperience =  Parcels.unwrap(getArguments().getParcelable("experience"));
-
-
-
-
     }
 
     @Override
@@ -64,25 +67,27 @@ public class InfoDetailFragment extends Fragment {
 
         // Initialize Views
         mAuthorView = (TextView) view.findViewById(R.id.tvHostName);
-//        mTitleView = (TextView) view.findViewById(R.id.tvExperienceTitle);
         mBodyView = (TextView) view.findViewById(R.id.tvDescription);
         mAddress = (TextView) view.findViewById(R.id.tvLocationAddress);
         mAddressName = (TextView) view.findViewById(R.id.tvLocationName);
         mDate = (TextView) view.findViewById(R.id.tvDate);
+        mTimeLeft = (TextView) view.findViewById(R.id.tvDayAtTime);
         mSpotsAvailable = (TextView) view.findViewById(R.id.tvSpotsLeft);
         mNumGoing = (TextView) view.findViewById(R.id.tvNumGoing);
 
-//        mImageViewExperience = (ImageView) view.findViewById(R.id.ivExperienceImage);
-
 
         mAuthorView.setText(mExperience.author);
-//        mTitleView.setText(mExperience.title);
         mBodyView.setText(mExperience.description);
         mAuthorView.setText(mExperience.author);
         mDate.setText(mExperience.date);
+        String date = mExperience.date;
+        String time = mExperience.time;
+        Log.d(TAG, date + " " + time);
+        Log.d(TAG, "relativeTimeAgo=" + getRelativeTimeAgo(date, time));
+        final Countdown timer = new Countdown(getRelativeTimeAgo(date, time),1000); //first parameter number of milliseconds in future
+        timer.start();
         mSpotsAvailable.setText(mExperience.getSpotsLeft() + " spots left");
         mNumGoing.setText(mExperience.joinCount + " going");
-//        mAddress.setText(mExperience.address);
         mAddressName.setText(mExperience.addressName);
         mAddressName.setText(mExperience.addressName);
 
@@ -110,13 +115,46 @@ public class InfoDetailFragment extends Fragment {
             }
         });
 
-//        String img = mExperience.imgURL;
-//        if (!TextUtils.isEmpty(mExperience.imgURL)) {
-//            Glide.with(getActivity()).load(img).centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
-//                    .into(mImageViewExperience);
-//            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
-
-            return view;
+        return view;
     }
 
+
+    public class Countdown extends CountDownTimer {
+
+        public Countdown(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override public void onFinish() {
+
+            mTimeLeft.setText("Time out!");
+            mTimeLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }
+
+        @Override public void onTick(long millisUntilFinished) {
+            long millis = millisUntilFinished;
+            String hms = String.format("Event starts in %02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+            System.out.println(hms);
+            mTimeLeft.setText(hms);
+        }
+    }
+    public long getRelativeTimeAgo(String date, String time) {
+        String twitterFormat = "MM/dd/yyyy HH:mm";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        long relativeTime = 0;
+        try {
+            long dateMillis = sf.parse(date+ " "+time).getTime();
+            relativeTime = dateMillis - System.currentTimeMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return relativeTime;
+    }
 }

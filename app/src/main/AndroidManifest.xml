@@ -64,7 +64,6 @@
         <activity android:name=".activities.PostDetailActivity" />
         <activity android:name=".activities.NewPostActivity" />
         <activity android:name=".activities.EmailPasswordActivity" />
-        <activity android:name=".activities.FacebookLoginActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
