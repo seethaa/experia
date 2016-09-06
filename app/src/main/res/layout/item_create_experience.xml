@@ -85,23 +85,23 @@
 
         <Button
             android:id="@+id/button_camera"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="@string/camera_button_text"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="@color/mp_brown"
             android:textSize="12sp"
-            android:layout_above="@+id/etTitle"
-            android:layout_toLeftOf="@+id/button_pick"
-            android:layout_toStartOf="@+id/button_pick" />
+            android:layout_alignTop="@+id/button_pick"
+            android:layout_alignRight="@+id/etDescription"
+            android:layout_alignEnd="@+id/etDescription" />
 
         <Button
             android:id="@+id/button_pick"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Choose picture"
+            android:text="Upload"
             android:backgroundTint="@color/mp_brown"
-            android:layout_gravity="right|center"
+            android:layout_gravity="center_horizontal"
             android:textSize="12sp"
             android:layout_above="@+id/etTitle"
             android:layout_toRightOf="@+id/etDescription"

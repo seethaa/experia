@@ -87,7 +87,7 @@ public class DetailFragment extends Fragment {
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 3;
-        private String tabTitles[] = new String[] { "Info", "Reviews", "Going" };
+        private String tabTitles[] = new String[] { "Info", "Comments", "Going" };
         private Context context;
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {

@@ -23,16 +23,29 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="400dp"
+                android:layout_width="match_parent"
                 android:id="@+id/ivExperienceImage"
-                android:transitionName="experienceimage"
-                android:src="@drawable/pattern_try"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_height="240dp"
+                android:src="@drawable/icon_take_photo"
+                android:background="@drawable/pattern"
+                android:layout_height="200dp"
                 android:layout_marginBottom="25dp"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="-8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" />
+
+            <!--<ImageView-->
+                <!--android:layout_width="400dp"-->
+                <!--android:id="@+id/ivExperienceImage"-->
+                <!--android:transitionName="experienceimage"-->
+                <!--android:src="@drawable/pattern_try"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_height="240dp"-->
+                <!--android:layout_marginBottom="25dp"-->
+                <!--android:layout_alignParentTop="true" />-->
 
             <TextView
                 android:id="@+id/tvSubtext"

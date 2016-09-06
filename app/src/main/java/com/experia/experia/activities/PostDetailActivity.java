@@ -52,7 +52,7 @@ public class PostDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experience_detail_with_tabs);
 
-        getSupportActionBar().setTitle("mpromptu");
+
 
         // Get post key from intent
         mPostId = getIntent().getStringExtra(EXTRA_POST_ID);
@@ -107,6 +107,9 @@ public class PostDetailActivity extends BaseActivity {
                 // [START_EXCLUDE]
 //                mAuthorView.setText(post.author);
                 mTitleView.setText(experience.title);
+
+                getSupportActionBar().setTitle(experience.title);
+
 //                mBodyView.setText(post.description);
 //                mAuthorView.setText(post.author);
 //                mDate.setText(post.date);

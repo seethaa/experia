@@ -1,5 +1,6 @@
 package fragments;
 
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -109,8 +110,12 @@ public class CreateExReviewFragment extends Fragment {
         etAddress.setText(mAddress);
         etAddressName.setText(mAddressName);
         etNumGuests.setText(mNumGuests+"");
-        Glide.with(getActivity()).load(mImgURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+
+        Glide.with(getContext()).load(mImgURL).fitCenter().placeholder(R.drawable.pattern)
                 .into(ivImage);
+
+//        Glide.with(getActivity()).load(mImgURL).centerCrop().placeholder(R.drawable.icon_take_photo)
+//                .into(ivImage);
 
         tvHostName.setText(mUserDisplayName);
 
@@ -151,6 +156,7 @@ public class CreateExReviewFragment extends Fragment {
                 mAddress, mLatitude, mLongitude, mType);
     }
 
+    @TargetApi(24)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

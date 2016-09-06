@@ -109,14 +109,19 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         String img = post.imgURL;
         if (!TextUtils.isEmpty(post.imgURL)) {
-            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.pattern_try)
+//            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.pattern_try)
+//                    .into(ivExperience);
+
+            Glide.with(mContext).load(img).fitCenter().placeholder(R.drawable.pattern)
                     .into(ivExperience);
-//            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
 
 
         }
         else{
-            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").centerCrop().placeholder(R.drawable.pattern_try)
+//            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").centerCrop().placeholder(R.drawable.pattern_try)
+//                    .into(ivExperience);
+
+            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").fitCenter().placeholder(R.drawable.pattern)
                     .into(ivExperience);
 
         }
