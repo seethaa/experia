@@ -80,6 +80,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     LinearLayout toolbar;
 
     android.support.design.widget.FloatingActionButton fab;
+    boolean fabbarOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +211,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             public void onClick(View v) {
 //                LinearLayout toolbar = (LinearLayout) findViewById(R.id.fabtoolbar_toolbar);
                 toolbarLayout.show();
-
+                fabbarOpen = true;
 
                 //startActivity(new Intent(MainActivity.this, NewPostActivity.class));
 
@@ -248,11 +249,27 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                     //        .show();
                     showMaterialDialog();
                     break;
+                case android.R.id.home:
+                    Toast.makeText(getApplicationContext(),"Back button clicked", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
             return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        if (fabbarOpen) {
+
+            toolbarLayout.hide();
+        }
+        else {
+            super.onBackPressed();
+        }
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -570,4 +587,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         
         return dataArrayList;
     }
+
+
+
 }

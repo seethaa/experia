@@ -500,8 +500,20 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < markerList.size(); ++i) {
             Marker m = markerList.get(i);
-            if (m.equals(marker))
+            if (m.equals(marker)) {
+
                 mRecycler.smoothScrollToPosition(i);
+
+//                View viewItem = mRecycler.getLayoutManager().findViewByPosition(i);
+//                android.support.v7.widget.CardView cardView = (CardView) viewItem.findViewById(R.id.cvMapExperiences);
+//
+//                cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card_border));
+
+//                android.support.v7.widget.CardView cardView = (CardView) mRecycler.getChildAt(i).findViewById(R.id.cvMapExperiences);//get cardview
+
+//                cardView.setCardBackgroundColor(Color.RED);
+//cardView.setc(ContextCompat.getDrawable(getContext(), R.drawable.card_border));
+            }
         }
         marker.showInfoWindow();
         return true;

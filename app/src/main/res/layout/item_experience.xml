@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +6,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvExperiences"
-    card_view:cardBackgroundColor="@color/cardview_light_background"
+    card_view:cardBackgroundColor="@color/white"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp"
     card_view:contentPaddingLeft="-15dp"
@@ -21,19 +20,19 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-          >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
                 android:id="@+id/ivExperienceImage"
                 android:transitionName="experienceimage"
-                android:src="@drawable/pattern"
+                android:src="@drawable/pattern_try"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:layout_height="250dp"
-                android:layout_marginBottom="25dp" />
+                android:layout_height="240dp"
+                android:layout_marginBottom="25dp"
+                android:layout_alignParentTop="true" />
 
             <TextView
                 android:id="@+id/tvSubtext"
