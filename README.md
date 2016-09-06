@@ -7,13 +7,17 @@ Time spent: **120** hours spent in total
 ## User Stories
 
 The following **required** functionality is completed:
-* [x] User can sign in with Facebook/Gmail account (to browse and save experiences)
-* [x] User can see navigation drawer with [Location, Category, Bookmarks, Settings, and Profile] fragments.
+* [x] User can sign in with Facebook/Gmail/Email account (to browse and save experiences)
+* [x] Login page with video background
+* [x] User can see ViewPager with [NewFeeds, Location, Favorite, and Profile] fragments.
   * [x] User can select current location or type in location in the Location fragment (similar to Groupon).
-  * [ ] User can select Category filters and show filtered experiences. User can select experience based on three categories of experience: **thrill**, **social**, and **fun** (or all)
 * [x] User can switch to map view to browse experiences around him/her
-  * [x] Icons show type of experience nearby
-  * [x] User can tap on an experience to go to detail view
+  * [x] Marker icons in map show type of experience nearby
+  * [x] A bottom card list shows experience nearby
+  * [x] The list of marker and bottom cards will both be updated when user change the map camera
+  * [x] User can tap on each of the bottom card to go to detail view
+  * [x] User can use Google AutoComplete search to go to the location they want
+  * [x] User can select Category filters and show filtered experiences in map. User can select experience based on five categories of experience: **adventure**, **learn**, **relax**, **social**, and **fun** (or all)
 * [x] User can browse list of activities around him/her 
   * [x] User can select and save activity to list (bookmarks)
   * [x] When user clicks on a card, he/she can see detailed description, reviews, and related pictures.
