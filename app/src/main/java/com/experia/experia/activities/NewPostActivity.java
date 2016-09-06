@@ -101,6 +101,7 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mUserDisplayName = getIntent().getStringExtra("displayName");
+        mType = getIntent().getIntExtra("category", 0);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 

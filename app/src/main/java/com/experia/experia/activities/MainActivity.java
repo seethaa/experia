@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -51,6 +52,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import fragments.BookmarksFragment;
 import fragments.CreateExNameDescriptionPhotoFragment;
 import fragments.LocationSettingsFragment;
@@ -82,10 +87,22 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     android.support.design.widget.FloatingActionButton fab;
     boolean fabbarOpen = false;
 
+    @BindView(R.id.ivfabfun) ImageView fabFun;
+    @BindView(R.id.ivfabadventure) ImageView fabAdventure;
+    @BindView(R.id.ivfabimpact) ImageView fabImpact;
+    @BindView(R.id.ivfabrelax) ImageView fabRelax;
+    @BindView(R.id.ivfablearn) ImageView fabLearn;
+
+    private Unbinder unbinder;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabs);
+
+        unbinder = ButterKnife.bind(this);
+
         experiences = new ArrayList<Experience>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -145,7 +162,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 final Experience experience = snapshot.getValue(Experience.class);
                 DatabaseReference geoFireLocation = mDatabase.child("path/to/geofire").child(snapshot.getKey());
                 Log.d(TAG, "geoFireLocation = " + geoFireLocation.toString());
-                if(geoFireLocation != null) {
+                if (geoFireLocation != null) {
                     geoFireLocation.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
@@ -200,7 +217,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
         });
 
 
-
         getCurrentUserInfo();
 //        mGoogleApiClient = GeofenceController.getInstance().googleApiClient;
 //        Log.d("DDB", mGoogleApiClient.toString());
@@ -221,6 +237,46 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             }
         });
 
+    }
+
+    @OnClick(R.id.ivfabfun)
+    public void funClick(View view) {
+        Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+        i.putExtra("displayName", mDisplayName);
+        i.putExtra("category", 5);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.ivfabadventure)
+    public void adventureClick(View view) {
+        Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+        i.putExtra("displayName", mDisplayName);
+        i.putExtra("category", 1);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.ivfabimpact)
+    public void impactClick(View view) {
+        Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+        i.putExtra("displayName", mDisplayName);
+        i.putExtra("category", 3);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.ivfabrelax)
+    public void relaxClick(View view) {
+        Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+        i.putExtra("displayName", mDisplayName);
+        i.putExtra("category", 2);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.ivfablearn)
+    public void learnClick(View view) {
+        Intent i = new Intent(MainActivity.this, NewPostActivity.class);
+        i.putExtra("displayName", mDisplayName);
+        i.putExtra("category", 4);
+        startActivity(i);
     }
 
     @Override
@@ -276,14 +332,6 @@ LocationSettingsFragment.OnMapCameraChangeListener{
     {
         super.onActivityResult(requestCode, resultCode, data);
         fmMap.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void onMapClick(MenuItem mi) {
-
-        //change this to maps
-//        startActivity(new Intent(Ma.this, NewPostActivity.class));
-
-        // handle click here
     }
 
 
