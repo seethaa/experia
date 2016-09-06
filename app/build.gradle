@@ -87,7 +87,7 @@ dependencies {
     compile 'com.github.qiugang:EditTag:v1.2.3'
 
     compile 'com.shawnlin:number-picker:2.0.1'
-    compile 'com.uber.sdk:rides-android:0.5.3'
+
 
     compile 'com.afollestad.material-dialogs:core:0.8.6.0@aar'
     compile 'com.afollestad.material-dialogs:commons:0.8.6.0@aar'
