@@ -249,7 +249,7 @@ public class LocationSettingsFragment extends Fragment implements
         map = googleMap;
         if (map != null) {
             // Map is ready
-            Toast.makeText(getContext(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             MapPermissionsDispatcher.getMyLocationWithCheck(this);
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();

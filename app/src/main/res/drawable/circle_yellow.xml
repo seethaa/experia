@@ -3,8 +3,8 @@
     android:shape="oval">
 
     <gradient
-        android:centerColor="@color/mp_yellow_transparent"
-        android:endColor="@color/mp_yellow"
-        android:startColor="@color/mp_yellow" />
+        android:centerColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimary"
+        android:startColor="@color/colorPrimary" />
 
 </shape>

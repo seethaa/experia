@@ -492,6 +492,7 @@ LocationSettingsFragment.OnMapCameraChangeListener{
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+            Log.d(TAG, String.valueOf(mGoogleApiClient.isConnected()));
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (location != null) {
                 //Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
