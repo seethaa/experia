@@ -36,6 +36,37 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true" />
 
+            <!--<LinearLayout-->
+                <!--android:id="@+id/linearLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+
+                <!--android:background="@drawable/bg_gradient_2"-->
+                <!--android:orientation="vertical"-->
+                <!--android:padding="10dp"-->
+                <!--android:layout_alignTop="@+id/ivExperienceImage"-->
+                <!--android:layout_alignRight="@+id/ivExperienceImage"-->
+
+                <!--&gt;-->
+
+                <TextView
+                    android:id="@+id/tvTimeLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:shadowColor="#000"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/white"
+                    android:background="@color/semiblack"
+                    android:textSize="12sp"
+                    android:layout_alignRight="@+id/ivExperienceImage"
+                    android:layout_alignTop="@+id/ivExperienceImage"
+                    android:layout_alignEnd="@+id/ivExperienceImage"
+                    tools:text="in 00:00:00" />
+
+
+            <!--</LinearLayout>-->
+
             <!--<ImageView-->
                 <!--android:layout_width="400dp"-->
                 <!--android:id="@+id/ivExperienceImage"-->

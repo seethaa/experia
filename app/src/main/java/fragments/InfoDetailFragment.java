@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -128,7 +127,7 @@ public class InfoDetailFragment extends Fragment {
         @Override public void onFinish() {
 
             mTimeLeft.setText("Just missed!");
-            mTimeLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+//            mTimeLeft.setTextColor(getResources().getColor(R.color.mp_brown, null));
         }
 
         @Override public void onTick(long millisUntilFinished) {
@@ -141,9 +140,15 @@ public class InfoDetailFragment extends Fragment {
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
             System.out.println(hms);
             mTimeLeft.setText(hms);
+//            if(millisUntilFinished <= 1000) {//less than 15 mins
+//                mTimeLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+//            }
+//            else{ //greater than or equal to 15 mins
+//                mTimeLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+//            }
         }
     }
-    public long getRelativeTimeAgo(String date, String time) {
+    public static long getRelativeTimeAgo(String date, String time) {
         String twitterFormat = "MM/dd/yyyy HH:mm";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);

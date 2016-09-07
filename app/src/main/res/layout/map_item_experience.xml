@@ -31,32 +31,93 @@
             android:layout_alignParentRight="true"
              />
 
-
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/bg_gradient_2"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:layout_alignTop="@+id/ivMapExperienceImage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
         <TextView
             android:id="@+id/tvMapTitle"
             android:layout_width="wrap_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"
             android:layout_height="wrap_content"
             tools:text="Kayaking in Mendocino"
             android:textColorHighlight="@color/black"
-            android:layout_above="@+id/tvMapSpotsLeft"
-            android:layout_alignLeft="@+id/tvMapSpotsLeft"
-            android:layout_alignStart="@+id/tvMapSpotsLeft" />
+             />
+        </LinearLayout>
 
-
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/tvMapSpotsLeft"
-            android:textColor="@android:color/holo_red_light"
+
+            android:background="@drawable/bg_gradient_1"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
             android:layout_alignBottom="@+id/ivMapExperienceImage"
-            android:textSize="14sp"
-            android:layout_marginBottom="5dp"
-            android:text="5 spot(s) left" />
+            android:layout_alignLeft="@+id/ivMapExperienceImage"
+
+            >
+
+            <TextView
+                android:id="@+id/tvTimeLeft"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:gravity="left"
+                android:shadowColor="#000"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="in 00:00:00" />
+            <TextView
+                android:id="@+id/tvMapSpotsLeft"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
+                android:gravity="left"
+                android:shadowColor="#000"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="12sp"
+                android:text="5 spot(s) left" />
+
+
+        </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tvTimeLeft"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:textSize="12sp"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--tools:text="in 00:00:00"-->
+            <!--android:padding="3dp"-->
+            <!--android:textColorHighlight="@color/black"-->
+            <!--android:layout_above="@+id/tvMapSpotsLeft"-->
+            <!--android:layout_alignLeft="@+id/tvMapSpotsLeft"-->
+            <!--android:layout_alignStart="@+id/tvMapSpotsLeft" />-->
+
+
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:id="@+id/tvMapSpotsLeft"-->
+            <!--android:textColor="@android:color/holo_red_light"-->
+            <!--android:layout_alignBottom="@+id/ivMapExperienceImage"-->
+            <!--android:padding="3dp"-->
+            <!--android:textSize="12sp"-->
+            <!--android:text="5 spot(s) left" />-->
 
 
     </RelativeLayout>

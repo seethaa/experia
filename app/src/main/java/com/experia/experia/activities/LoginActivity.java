@@ -191,7 +191,7 @@ public class LoginActivity extends BaseActivity implements
                 Uri.parse(
                         "android.resource://"
                                 + getPackageName() + "/"
-                                + R.raw.out2
+                                + R.raw.out3
                         // TODO: have a better video
                         // R.raw.login_video_2
                         // R.raw.login_video_3
