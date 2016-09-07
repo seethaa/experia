@@ -29,6 +29,7 @@ public class DetailFragment extends Fragment {
     private InfoDetailFragment infoDetailFragment;
     private ReviewsDetailFragment reviewsDetailFragment;
 
+
     private static Experience mExperience;
     private String imgURL;
 
