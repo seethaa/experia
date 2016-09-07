@@ -127,7 +127,7 @@ public class InfoDetailFragment extends Fragment {
 
         @Override public void onFinish() {
 
-            mTimeLeft.setText("Time out!");
+            mTimeLeft.setText("Just missed!");
             mTimeLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }
 
