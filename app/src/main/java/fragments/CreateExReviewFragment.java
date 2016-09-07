@@ -187,10 +187,10 @@ public class CreateExReviewFragment extends Fragment {
             }
         });
 
-        android.icu.util.Calendar c = android.icu.util.Calendar.getInstance();
-        int year = c.get(android.icu.util.Calendar.YEAR);
-        int month = c.get(android.icu.util.Calendar.MONTH)+1;
-        int date = c.get(android.icu.util.Calendar.DAY_OF_MONTH);
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int date = c.get(Calendar.DAY_OF_MONTH);
         Log.d("YMD", Integer.toString(year)+Integer.toString(month)+Integer.toString(date));
         String Year = Integer.toString(year);
         String Month = (month < 10)? "0"+Integer.toString(month) : Integer.toString(month);
