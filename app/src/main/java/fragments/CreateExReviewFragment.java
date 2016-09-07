@@ -7,18 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -187,55 +189,56 @@ public class CreateExReviewFragment extends Fragment {
             }
         });
 
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH)+1;
-        int date = c.get(Calendar.DAY_OF_MONTH);
-        Log.d("YMD", Integer.toString(year)+Integer.toString(month)+Integer.toString(date));
-        String Year = Integer.toString(year);
-        String Month = (month < 10)? "0"+Integer.toString(month) : Integer.toString(month);
-        String Date = (date < 10)? "0"+Integer.toString(date) : Integer.toString(date);
-        etDate.setText(Month + "/" + Date + "/" + Year);
 
-        //date on click listener
-//        etDate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                mCalendar = Calendar.getInstance();
-//
-//                mDateListener = new DatePickerDialog.OnDateSetListener() {
-//
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-//                                          int dayOfMonth) {
-//                        mCalendar.set(Calendar.YEAR, year);
-//                        mCalendar.set(Calendar.MONTH, monthOfYear);
-//                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//
-//                        //update date in edittext
-//                        String myFormat = "MM-dd-yy";
-//                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-//
-//                        mDate = sdf.format(mCalendar.getTime());
-//                        etDate.setText(mDate);
-//
-//
-//
-//                    }
-//
-//                };
-//
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), mDateListener, mCalendar
-//                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
-//                        mCalendar.get(Calendar.DAY_OF_MONTH));
-//                //disable all past dates
-//                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-//                datePickerDialog.show();
-//
-//
-//            }
-//        });
+//        android.icu.util.Calendar c = android.icu.util.Calendar.getInstance();
+//        int year = c.get(android.icu.util.Calendar.YEAR);
+//        int month = c.get(android.icu.util.Calendar.MONTH)+1;
+//        int date = c.get(android.icu.util.Calendar.DAY_OF_MONTH);
+//        Log.d("YMD", Integer.toString(year)+Integer.toString(month)+Integer.toString(date));
+//        String Year = Integer.toString(year);
+//        String Month = (month < 10)? "0"+Integer.toString(month) : Integer.toString(month);
+//        String Date = (date < 10)? "0"+Integer.toString(date) : Integer.toString(date);
+//        etDate.setText(Month + "/" + Date + "/" + Year);
+
+//        date on click listener
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mCalendar = Calendar.getInstance();
+
+                mDateListener = new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        mCalendar.set(Calendar.YEAR, year);
+                        mCalendar.set(Calendar.MONTH, monthOfYear);
+                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        //update date in edittext
+                        String myFormat = "MM-dd-yy";
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                        mDate = sdf.format(mCalendar.getTime());
+                        etDate.setText(mDate);
+
+
+
+                    }
+
+                };
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), mDateListener, mCalendar
+                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                //disable all past dates
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+
+
+            }
+        });
 
         return rootView;
     }

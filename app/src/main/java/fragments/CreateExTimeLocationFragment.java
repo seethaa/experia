@@ -22,8 +22,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -135,23 +133,23 @@ public class CreateExTimeLocationFragment extends Fragment {
             }
         });
 
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH)+1;
-        int date = c.get(Calendar.DAY_OF_MONTH);
-        Log.d("YMD", Integer.toString(year)+Integer.toString(month)+Integer.toString(date));
-        String Year = Integer.toString(year);
-        String Month = (month < 10)? "0"+Integer.toString(month) : Integer.toString(month);
-        String Date = (date < 10)? "0"+Integer.toString(date) : Integer.toString(date);
-        etDate.setText(Month + "/" + Date + "/" + Year);
+//        Calendar c = Calendar.getInstance();
+//        int year = c.get(Calendar.YEAR);
+//        int month = c.get(Calendar.MONTH)+1;
+//        int date = c.get(Calendar.DAY_OF_MONTH);
+//        Log.d("YMD", Integer.toString(year)+Integer.toString(month)+Integer.toString(date));
+//        String Year = Integer.toString(year);
+//        String Month = (month < 10)? "0"+Integer.toString(month) : Integer.toString(month);
+//        String Date = (date < 10)? "0"+Integer.toString(date) : Integer.toString(date);
+//        etDate.setText(Month + "/" + Date + "/" + Year);
 
 
-//        etDate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDatePickerDialog(v);
-//            }
-//        });
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
 
 
         CupboardDBHelper dbHelper = new CupboardDBHelper(getContext());
