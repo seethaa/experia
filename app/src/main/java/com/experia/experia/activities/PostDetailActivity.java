@@ -2,11 +2,8 @@ package com.experia.experia.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,10 +14,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import fragments.DetailFragment;
 import models.Experience;
+import models.User;
 
 public class PostDetailActivity extends BaseActivity {
 
@@ -34,18 +33,14 @@ public class PostDetailActivity extends BaseActivity {
     private String mPostId;
 
     private Experience experience;
-//    private CommentAdapter mAdapter;
 
     private TextView mTitleView;
 
-    private TextView mSpotsAvailable;
     private ImageView mImageViewExperience;
-//    private TextView mAddress;
 
+    User userClicked;
+    String userImgURL;
 
-    private EditText mCommentField;
-    private Button mCommentButton;
-    private RecyclerView mCommentsRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +55,8 @@ public class PostDetailActivity extends BaseActivity {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
 
+        getUserClicked();
+
         // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts").child(mPostId);
@@ -67,26 +64,10 @@ public class PostDetailActivity extends BaseActivity {
                 .child("post-comments").child(mPostId);
 
         // Initialize Views
-//        mAuthorView = (TextView) findViewById(R.id.tvHostName);
         mTitleView = (TextView) findViewById(R.id.tvExperienceTitle);
-//        mBodyView = (TextView) findViewById(R.id.tvDescription);
-//        mAddress = (TextView) findViewById(R.id.tvLocationAddress);
-//        mDate = (TextView) findViewById(R.id.tvDate);
-//        mSpotsAvailable = (TextView) findViewById(R.id.tvSpotsLeft);
+
         mImageViewExperience = (ImageView) findViewById(R.id.ivExperienceImage);
-//
-//
-//        mCommentField = (EditText) findViewById(R.id.field_comment_text);
-//        mCommentButton = (Button) findViewById(R.id.button_post_comment);
-//        mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
-//
-//        mCommentButton.setOnClickListener(this);
-//        mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-
-
-
-//        setupFragmentTabs();
 
     }
 
@@ -110,18 +91,10 @@ public class PostDetailActivity extends BaseActivity {
 
                 getSupportActionBar().setTitle(experience.title);
 
-//                mBodyView.setText(post.description);
-//                mAuthorView.setText(post.author);
-//                mDate.setText(post.date);
-//                mSpotsAvailable.setText(experience.getSpotsLeft() + " spots left");
-//                mAddress.setText(post.address);
-
-
                 String img = experience.imgURL;
                 if (!TextUtils.isEmpty(experience.imgURL)) {
                     Glide.with(getApplicationContext()).load(img).centerCrop().placeholder(R.drawable.pattern)
                             .into(mImageViewExperience);
-//            .bitmapTransform(new RoundedCornersTransformation(holder.itemView.getContext(), 5, 5))
 
                 }
                 else{
@@ -152,8 +125,44 @@ public class PostDetailActivity extends BaseActivity {
 
     }
 
+    public void getUserClicked() {
+        Query userQuery = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(getUid());
+
+
+        userQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userClicked = dataSnapshot.getValue(User.class);
+
+                System.out.println("DEBUGGY USER CLICKED " + userClicked.getDisplayName() + " " +userClicked.getEmail());
+
+                userImgURL = userClicked.getImageURL();
+
+//                mName.setText(userClicked.username);
+//                if (userClicked.getImageURL()!=null && !TextUtils.isEmpty(userClicked.getImageURL())) {
+//                    Glide.with(getApplicationContext()).load(userClicked.getImageURL()).asBitmap().centerCrop().into(new BitmapImageViewTarget(mProfileImage) {
+//                        @Override
+//                        protected void setResource(Bitmap resource) {
+//                            RoundedBitmapDrawable circularBitmapDrawable =
+//                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
+//                            circularBitmapDrawable.setCircular(true);
+//                            mProfileImage.setImageDrawable(circularBitmapDrawable);
+//                        }
+//                    });
+//                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void createDetailFragment(Experience experience) {
-        DetailFragment fragmentUserTimeline = DetailFragment.newInstance(experience, mPostId);
+        DetailFragment fragmentUserTimeline = DetailFragment.newInstance(experience, mPostId, userImgURL);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flContainer, fragmentUserTimeline);
         ft.commit();
@@ -171,6 +180,7 @@ public class PostDetailActivity extends BaseActivity {
 //        // Clean up comments listener
 //        mAdapter.cleanupListener();
     }
+
 
 
 }

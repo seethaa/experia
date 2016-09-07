@@ -7,6 +7,9 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
+        android:elevation="10dp"
+        android:background="@color/white_pressed"
+        style="@style/MyCustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="scrollable" />

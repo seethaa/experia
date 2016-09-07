@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -120,6 +122,9 @@ public class LocationSettingsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_location, container, false);
+
+        setHasOptionsMenu(true);
+
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         mZoomInButton = (ImageButton) rootView.findViewById(R.id.btnZoomIn);
@@ -518,7 +523,11 @@ public void startLocationUpdates(GoogleApiClient googleApiClient) {
         marker.showInfoWindow();
         return true;
     }
+
     // Marker function end
-
-
+    @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+    }
 }

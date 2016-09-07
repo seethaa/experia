@@ -103,6 +103,8 @@ LocationSettingsFragment.OnMapCameraChangeListener{
 
         unbinder = ButterKnife.bind(this);
 
+
+
         experiences = new ArrayList<Experience>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -237,6 +239,13 @@ LocationSettingsFragment.OnMapCameraChangeListener{
             }
         });
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.action_filter).setVisible(false);
+        return true;
     }
 
     @OnClick(R.id.ivfabfun)

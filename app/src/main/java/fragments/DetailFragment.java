@@ -30,15 +30,17 @@ public class DetailFragment extends Fragment {
     private ReviewsDetailFragment reviewsDetailFragment;
 
     private static Experience mExperience;
+    private String imgURL;
 
     public DatabaseReference mPostReference;
     protected DatabaseReference mCommentsReference;
 
-    public static DetailFragment newInstance(Experience experience, String postkey) {
+    public static DetailFragment newInstance(Experience experience, String postkey, String userImgURL) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putParcelable("experience", Parcels.wrap(experience));
         args.putParcelable("postkey", Parcels.wrap(postkey));
+        args.putParcelable("imgURL", Parcels.wrap(postkey));
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,10 +50,11 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mExperience =  Parcels.unwrap(getArguments().getParcelable("experience"));
         mPostKey = Parcels.unwrap(getArguments().getParcelable("postkey"));
+        imgURL = Parcels.unwrap(getArguments().getParcelable("imgURL"));
 
 //        mExperience = (Experience) Parcels.unwrap(getActivity().getIntent().getParcelableExtra("experience"));
 
-        System.out.println("DEBUGGY EXperience: " + mExperience.title);
+        System.out.println("DEBUGGY IMG url: " + imgURL);
         // Initialize Database
 //        mPostReference = FirebaseDatabase.getInstance().getReference()
 //                .child("posts").child(mPostKey);
@@ -107,7 +110,7 @@ public class DetailFragment extends Fragment {
                 return infoDetailFragment;
             }
             else if (position ==1){
-                reviewsDetailFragment = ReviewsDetailFragment.newInstance(mExperience, mPostKey);
+                reviewsDetailFragment = ReviewsDetailFragment.newInstance(mExperience, mPostKey, imgURL);
                 return reviewsDetailFragment;
             }
             else{

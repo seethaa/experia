@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.experia.experia.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -46,16 +48,20 @@ public class ReviewsDetailFragment extends Fragment implements View.OnClickListe
     private CommentAdapter mAdapter;
     protected DatabaseReference mCommentsReference;
 
+    private static String mImgURL;
+    private ImageView mCommentPhoto;
 
 
 
-    public static ReviewsDetailFragment newInstance(Experience experience, String postkey) {
+
+    public static ReviewsDetailFragment newInstance(Experience experience, String postkey, String imgURL) {
 
 
         ReviewsDetailFragment fg = new ReviewsDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable("experience", Parcels.wrap(experience));
         args.putParcelable("postkey", Parcels.wrap(postkey));
+        args.putParcelable("imgURL", Parcels.wrap(imgURL));
         fg.setArguments(args);
         return fg;
     }
@@ -66,6 +72,8 @@ public class ReviewsDetailFragment extends Fragment implements View.OnClickListe
 
         mExperience =  Parcels.unwrap(getArguments().getParcelable("experience"));
         mPostKey = Parcels.unwrap(getArguments().getParcelable("postkey"));
+        mImgURL = Parcels.unwrap(getArguments().getParcelable("imgURL"));
+
 
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
@@ -79,14 +87,17 @@ public class ReviewsDetailFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_detail_reviews, container, false);
 
         // Initialize Views
+        mCommentPhoto = (ImageView) view.findViewById(R.id.comment_photo);
 
         mCommentField = (EditText) view.findViewById(R.id.field_comment_text);
         mCommentButton = (Button) view.findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) view.findViewById(R.id.recycler_comments);
 
+
+
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-            return view;
+        return view;
     }
 
     @Override
@@ -148,12 +159,14 @@ public class ReviewsDetailFragment extends Fragment implements View.OnClickListe
 
         public TextView authorView;
         public TextView bodyView;
+        public ImageView authorPhoto;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
 
             authorView = (TextView) itemView.findViewById(R.id.comment_author);
             bodyView = (TextView) itemView.findViewById(R.id.comment_body);
+            authorPhoto = (ImageView) itemView.findViewById(R.id.comment_photo);
         }
     }
 
@@ -272,6 +285,11 @@ public class ReviewsDetailFragment extends Fragment implements View.OnClickListe
             Comment comment = mComments.get(position);
             holder.authorView.setText(comment.author);
             holder.bodyView.setText(comment.text);
+
+            if (mImgURL!=null) {
+                Glide.with(mContext).load(mImgURL).centerCrop().placeholder(R.drawable.ic_action_account_circle_40)
+                        .into(holder.authorPhoto);
+            }
         }
 
         @Override
