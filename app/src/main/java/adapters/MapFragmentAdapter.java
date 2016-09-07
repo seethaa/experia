@@ -2,7 +2,6 @@ package adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,9 +16,7 @@ import com.experia.experia.activities.PostDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import fragments.InfoDetailFragment;
 import models.Experience;
 
 /**
@@ -76,7 +73,7 @@ public class MapFragmentAdapter extends
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tvMapTitle);
             ivExperience = (ImageView) itemView.findViewById(R.id.ivMapExperienceImage);
-            tvTimeLeft = (TextView) itemView.findViewById(R.id.tvTimeLeft);
+//            tvTimeLeft = (TextView) itemView.findViewById(R.id.tvTimeLeft);
             tvSpotsLeft = (TextView) itemView.findViewById(R.id.tvMapSpotsLeft);
         }
 
@@ -87,8 +84,8 @@ public class MapFragmentAdapter extends
 
             String date = post.date;
             String time = post.time;
-            final Countdown timer = new Countdown(InfoDetailFragment.getRelativeTimeAgo(date, time),1000); //first parameter number of milliseconds in future
-            timer.start();
+//            final Countdown timer = new Countdown(InfoDetailFragment.getRelativeTimeAgo(date, time),1000); //first parameter number of milliseconds in future
+//            timer.start();
 
             tvSpotsLeft.setText(Integer.toString(post.getSpotsLeft()) + " spot(s) left");
 
@@ -102,36 +99,36 @@ public class MapFragmentAdapter extends
         }
 
 
-        public class Countdown extends CountDownTimer {
-
-            public Countdown(long millisInFuture, long countDownInterval) {
-                super(millisInFuture, countDownInterval);
-            }
-
-            @Override public void onFinish() {
-
-                tvTimeLeft.setText("Just missed!");
-//                tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.mp_brown));
-            }
-
-            @Override public void onTick(long millisUntilFinished) {
-                long millis = millisUntilFinished;
-                String hms = String.format("in %02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) -
-                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-                System.out.println(hms);
-                tvTimeLeft.setText(hms);
-//                if(millisUntilFinished <= 1000*60*899) {//less than 15 mins
-//                    tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.red));
-//                }
-//                else{ //greater than or equal to 15 mins
-//                    tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-//                }
-            }
-        }
+//        public class Countdown extends CountDownTimer {
+//
+//            public Countdown(long millisInFuture, long countDownInterval) {
+//                super(millisInFuture, countDownInterval);
+//            }
+//
+//            @Override public void onFinish() {
+//
+//                tvTimeLeft.setText("Just missed!");
+////                tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.mp_brown));
+//            }
+//
+//            @Override public void onTick(long millisUntilFinished) {
+//                long millis = millisUntilFinished;
+//                String hms = String.format("in %02d:%02d:%02d",
+//                        TimeUnit.MILLISECONDS.toHours(millis),
+//                        TimeUnit.MILLISECONDS.toMinutes(millis) -
+//                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+//                        TimeUnit.MILLISECONDS.toSeconds(millis) -
+//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+//                System.out.println(hms);
+//                tvTimeLeft.setText(hms);
+////                if(millisUntilFinished <= 1000*60*899) {//less than 15 mins
+////                    tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+////                }
+////                else{ //greater than or equal to 15 mins
+////                    tvTimeLeft.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+////                }
+//            }
+//        }
     }
 
     // Store a member variable for the experiences

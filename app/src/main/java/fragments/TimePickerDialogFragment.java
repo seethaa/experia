@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TimePicker;
 
@@ -43,6 +44,7 @@ public class TimePickerDialogFragment extends DialogFragment
 
         // Do something with the time chosen by the user
         Button etTime= (Button) getActivity().findViewById(R.id.etTime);
+        Log.d("TP", Hour + Minute);
         etTime.setText(Hour+":"+Minute);
     }
 }
