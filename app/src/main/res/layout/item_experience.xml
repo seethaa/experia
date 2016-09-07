@@ -6,21 +6,22 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvExperiences"
-    card_view:cardBackgroundColor="@color/white"
+    card_view:cardBackgroundColor="@color/cardview_light_background"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp"
     card_view:contentPaddingLeft="-15dp"
     card_view:contentPaddingRight="-15dp"
     app:cardUseCompatPadding="true"
+    android:clipChildren="true"
     android:clickable="true">
 
 
+
         <RelativeLayout
-            android:orientation="vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:elevation="30dp"
+            android:clipToPadding="false">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -50,7 +51,7 @@
             <TextView
                 android:id="@+id/tvSubtext"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -59,11 +60,6 @@
                 android:layout_below="@+id/etTitle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
-
-
-
-
-
 
 
 
@@ -96,7 +92,7 @@
 
                 <TextView
                     android:id="@+id/etTitle"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_width="wrap_content"
                     android:textSize="24sp"
@@ -126,14 +122,14 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:layout_gravity="right"
-                android:layout_above="@+id/etTitle"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="right"
-                android:layout_toRightOf="@+id/tvSpotsLeft"
                 android:layout_toEndOf="@+id/tvSpotsLeft"
                 android:id="@+id/linearLayout3"
-                android:measureWithLargestChild="false">
+                android:measureWithLargestChild="false"
+                android:layout_above="@+id/tvSpotsLeft"
+                android:layout_toRightOf="@+id/tvSubtext">
 
 
                 <android.support.design.widget.FloatingActionButton
@@ -145,16 +141,6 @@
                     android:layout_marginRight="10dp"
                     app:elevation="4dp"
                 />
-
-                <!--<ImageButton-->
-                    <!--android:id="@+id/btnBookmark"-->
-                    <!--android:background="@drawable/circle"-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:padding="8dp"-->
-                    <!--android:layout_marginRight="8dp"-->
-                    <!--android:src="@drawable/icon_bookmark"-->
-                    <!--/>-->
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/btnRSVP"
@@ -190,16 +176,18 @@
                 <!--android:layout_margin="5dp"-->
                 <!--/>-->
 
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:text=""
                 android:id="@+id/ivCategory"
                 android:clickable="false"
                 android:src="@drawable/icon_impact"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp" />
 
             <!--android:background="@color/semiblack"-->
 
@@ -212,11 +200,10 @@
                 android:textColor="@color/mp_lightblue"
                 android:layout_below="@+id/ivExperienceImage"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="16dp"
                 android:textSize="14sp"
                 android:layout_marginBottom="5dp"
-                android:layout_alignRight="@+id/tvDescription"
-                android:layout_alignEnd="@+id/tvDescription" />
+                />
 
 
         </RelativeLayout>

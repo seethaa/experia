@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +20,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView tvSubtext;
     public TextView tvSpotsLeft;
     public ImageView ivExperience;
-    public ImageButton ivCategory;
+    public ImageView ivCategory;
     public TextView tvExpand;
     public TextView tvDescription;
     public Context mContext;
@@ -39,7 +38,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         starView = (FloatingActionButton) itemView.findViewById(R.id.btnBookmark);
         joinView = (FloatingActionButton) itemView.findViewById(R.id.btnRSVP);
         ivExperience = (ImageView) itemView.findViewById(R.id.ivExperienceImage);
-        ivCategory = (ImageButton) itemView.findViewById(R.id.ivCategory);
+        ivCategory = (ImageView) itemView.findViewById(R.id.ivCategory);
 
 //        starView = (ImageView) itemView.findViewById(R.id.star);
 //        numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
@@ -49,7 +48,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindToPost(Context applicationContext, Experience post, View.OnClickListener starClickListener, View.OnClickListener joinClickListener) {
+    public void bindToPost(Context applicationContext, View itemView, Experience post, View.OnClickListener starClickListener, View.OnClickListener joinClickListener) {
         mContext = applicationContext;
 
         tvTitle.setText(post.title);
@@ -109,22 +108,22 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         String img = post.imgURL;
         if (!TextUtils.isEmpty(post.imgURL)) {
-//            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.pattern_try)
-//                    .into(ivExperience);
-
-            Glide.with(mContext).load(img).fitCenter().placeholder(R.drawable.pattern)
+            Glide.with(mContext).load(img).centerCrop().placeholder(R.drawable.pattern)
                     .into(ivExperience);
+
+//            Glide.with(itemView.getContext()).load(img).fitCenter().placeholder(R.drawable.pattern)
+//                    .into(ivExperience);
 
 
         }
-        else{
-//            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").centerCrop().placeholder(R.drawable.pattern_try)
+//        else{
+////            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").centerCrop().placeholder(R.drawable.pattern_try)
+////                    .into(ivExperience);
+//
+//            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").fitCenter().placeholder(R.drawable.pattern)
 //                    .into(ivExperience);
-
-            Glide.with(mContext).load("http://i.imgur.com/ipVZhKi.png").fitCenter().placeholder(R.drawable.pattern)
-                    .into(ivExperience);
-
-        }
+//
+//        }
         int catType = post.type;
 
         int resID = chooseIcon(catType);

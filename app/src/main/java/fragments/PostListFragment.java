@@ -123,9 +123,11 @@ public abstract class PostListFragment extends Fragment {
 
                 }
 
+
 //                Glide.with(getActivity()).load("ewlkf").centerCrop().placeholder(R.drawable.ic_bitmap_lg_crown)
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
-                viewHolder.bindToPost(getActivity(), model, new View.OnClickListener() {
+                viewHolder.bindToPost(getActivity(), viewHolder.itemView, model, new View.OnClickListener()
+                {
                     @Override
                     public void onClick(View starView) {
                         // Need to write to both places the post is stored

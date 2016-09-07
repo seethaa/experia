@@ -97,7 +97,7 @@
 
         <Button
             android:id="@+id/button_pick"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Upload"
             android:backgroundTint="@color/mp_brown"

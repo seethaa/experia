@@ -2,6 +2,7 @@ package com.experia.experia.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -163,6 +164,13 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
                             writeNewPost(userId, user.username, mTitle, mBody, mNumGuests, mDate, mTime, mDuration, mTags, mImgURL, mAddress, mAddressName, mType, finalLatitude, finalLongitude);
                         }
 
+
+                        String cat = getCategoryInText(mType);
+                        //show snackbar message to user on create
+                        Snackbar.make(getCurrentFocus(), "Your " + cat + " has been created!", Snackbar.LENGTH_LONG)
+//                .setAction(R.string.snackbar_action, myOnClickListener)
+                                .show(); // Don’t forget to show!
+
                         // Finish this Activity, back to the stream
                         finish();
                         // [END_EXCLUDE]
@@ -284,9 +292,37 @@ public class NewPostActivity extends BaseActivity implements CreateExNameDescrip
 
 
         mDatabase.updateChildren(childUpdates);
+
+
+
     }
 
+    private String getCategoryInText(int type) {
 
+            String cat ="";
+            switch (type) {
+                case 1: //adventure
+                    cat = "Adventure";
+                    break;
+                case 2: //relax
+                    cat = "Relax";
+                    break;
+                case 3: //impact
+                    cat = "Impact";
+                    break;
+                case 4: //learn
+                    cat = "Learn";
+                    break;
+                case 5: //fun
+                    cat = "Fun";
+                    break;
+                default: //unknown
+                    cat = "";
+                    break;
+            }
+            return cat;
+
+    }
 
 
     @Override
