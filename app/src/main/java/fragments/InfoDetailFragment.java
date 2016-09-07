@@ -156,6 +156,7 @@ public class InfoDetailFragment extends Fragment {
         long relativeTime = 0;
         try {
             long dateMillis = sf.parse(date+ " "+time).getTime();
+            Log.d(TAG, "dateMillis = " + Long.toString(dateMillis) + ", current = "+Long.toString(System.currentTimeMillis()));
             relativeTime = dateMillis - System.currentTimeMillis();
         } catch (ParseException e) {
             e.printStackTrace();
